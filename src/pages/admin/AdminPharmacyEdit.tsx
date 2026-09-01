@@ -8,7 +8,7 @@ import {
     DocumentTextIcon,
 } from "@heroicons/react/24/outline";
 
-const API_ORIGIN = (import.meta.env.VITE_API_URL || "http://localhost:3000/api").replace(
+const API_ORIGIN = (import.meta.env.VITE_API_URL || "http://localhost:3001/api").replace(
     /\/api\/?$/,
     ""
 );
