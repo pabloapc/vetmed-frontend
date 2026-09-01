@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
-    <string name="app_name">Gimed</string>
-    <string name="title_activity_main">Gimed</string>
-    <string name="package_name">com.tripleclick.gimed</string>
-    <string name="custom_url_scheme">com.tripleclick.gimed</string>
-</resources>

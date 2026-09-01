@@ -4,13 +4,12 @@ import { useSearchParams } from "react-router-dom";
 
 const labelForTargetType = (t?: string) => {
     if (!t) return "-";
-    if (t === "pharmacy") return "Farmacia";
-    if (t === "doctor") return "Doctor";
+    if (t === "veterinaria") return "Veterinaria";
     if (t === "emergency") return "Urgencia";
     return t;
 };
 
-type TargetFilter = "all" | "pharmacy" | "doctor" | "emergency";
+type TargetFilter = "all" | "veterinaria" | "emergency";
 
 type StatusFilter = "all" | "pending" | "accepted" | "fulfilled" | "cancelled";
 
@@ -24,9 +23,7 @@ export const AdminRequests: React.FC = () => {
 
     const [q, setQ] = useState("");
     const [targetType, setTargetType] = useState<TargetFilter>(
-        initialTarget === "pharmacy" ||
-            initialTarget === "doctor" ||
-            initialTarget === "emergency"
+        initialTarget === "veterinaria" || initialTarget === "emergency"
             ? initialTarget
             : "all"
     );
@@ -92,12 +89,11 @@ export const AdminRequests: React.FC = () => {
         return filtered.reduce(
             (acc, r) => {
                 acc.total += 1;
-                if (r?.targetType === "pharmacy") acc.pharmacy += 1;
-                if (r?.targetType === "doctor") acc.doctor += 1;
+                if (r?.targetType === "veterinaria") acc.veterinaria += 1;
                 if (r?.targetType === "emergency") acc.emergency += 1;
                 return acc;
             },
-            { total: 0, pharmacy: 0, doctor: 0, emergency: 0 }
+            { total: 0, veterinaria: 0, emergency: 0 }
         );
     }, [filtered]);
 
@@ -114,18 +110,14 @@ export const AdminRequests: React.FC = () => {
                 </div>
             )}
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
                 <div className="rounded-xl border border-slate-200 bg-white p-3">
                     <div className="text-xs text-slate-500">Total</div>
                     <div className="text-2xl font-semibold text-slate-900 mt-1">{counts.total}</div>
                 </div>
                 <div className="rounded-xl border border-amber-200 bg-amber-50 p-3">
-                    <div className="text-xs text-amber-700">Farmacias</div>
-                    <div className="text-2xl font-semibold text-amber-900 mt-1">{counts.pharmacy}</div>
-                </div>
-                <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-3">
-                    <div className="text-xs text-emerald-700">Doctores</div>
-                    <div className="text-2xl font-semibold text-emerald-900 mt-1">{counts.doctor}</div>
+                    <div className="text-xs text-amber-700">Veterinarias</div>
+                    <div className="text-2xl font-semibold text-amber-900 mt-1">{counts.veterinaria}</div>
                 </div>
                 <div className="rounded-xl border border-red-200 bg-red-50 p-3">
                     <div className="text-xs text-red-700">Urgencias</div>
@@ -152,8 +144,7 @@ export const AdminRequests: React.FC = () => {
                     className="border px-3 py-2 rounded"
                 >
                     <option value="all">Todos los destinos</option>
-                    <option value="pharmacy">Farmacias</option>
-                    <option value="doctor">Doctores</option>
+                    <option value="veterinaria">Veterinarias</option>
                     <option value="emergency">Urgencias</option>
                 </select>
                 <select

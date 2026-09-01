@@ -13,7 +13,7 @@ export interface Emergency {
     url?: string;
 }
 
-// Backend doctor response structure
+// Backend emergency response structure
 export interface BackendEmergency {
   id: string;
   name: string;

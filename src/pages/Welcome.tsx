@@ -10,7 +10,6 @@ import {
     ClockIcon,
     ExclamationCircleIcon,
     ShieldCheckIcon,
-    UserCircleIcon,
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../hooks/useAuth";
 import { requestService } from "../services/requestService";
@@ -25,18 +24,11 @@ const statusStyles: Record<string, { label: string; className: string }> = {
 
 const quickActions = [
     {
-        title: "Farmacias",
+        title: "Veterinarias",
         description: "Buscá cobertura, horarios y beneficios cerca tuyo.",
-        to: "/pharmacies",
+        to: "/veterinarias",
         Icon: BuildingStorefrontIcon,
         className: "from-amber-50 to-orange-50 border-amber-100 text-amber-700",
-    },
-    {
-        title: "Telemedicina",
-        description: "Encontrá profesionales para consulta y seguimiento.",
-        to: "/doctors",
-        Icon: UserCircleIcon,
-        className: "from-sky-50 to-cyan-50 border-sky-100 text-sky-700",
     },
     {
         title: "Urgencias",
@@ -102,8 +94,7 @@ export const Welcome: React.FC = () => {
 
     if (user.role && user.role !== "user") {
         const redirectMap: Record<string, string> = {
-            pharmacy: "/pharmacy/requests",
-            doctor: "/doctor/requests",
+            veterinaria: "/veterinaria/requests",
             emergency: "/emergency/requests",
             admin: "/admin",
         };
@@ -113,8 +104,8 @@ export const Welcome: React.FC = () => {
     const rawInsurer = (user as any)?.insurerId ?? user.entityId;
     const rawPlan = (user as any)?.planId;
     const insurerId = getId(rawInsurer);
-    const insurerName = getName(rawInsurer) || (!insurerId ? "Gimed" : "Cobertura asignada");
-    const planName = getName(rawPlan) || (!insurerId ? "Base Gimed" : "Plan pendiente");
+    const insurerName = getName(rawInsurer) || (!insurerId ? "Vetfind" : "Cobertura asignada");
+    const planName = getName(rawPlan) || (!insurerId ? "Base Vetfind" : "Plan pendiente");
     const pendingCount = requests.filter((request) => request.status === "pending").length;
     const acceptedCount = requests.filter((request) => request.status === "accepted").length;
     const latestRequests = [...requests]
@@ -202,7 +193,7 @@ export const Welcome: React.FC = () => {
                                 <ClipboardDocumentListIcon className="w-8 h-8 text-gray-300 mx-auto mb-3" />
                                 <p className="text-sm font-medium text-gray-700">Todavía no tenés solicitudes.</p>
                                 <p className="text-sm text-gray-500 mt-1">
-                                    Podés empezar consultando farmacias, telemedicina o urgencias.
+                                    Podés empezar consultando veterinarias o urgencias.
                                 </p>
                             </div>
                         ) : (
@@ -214,16 +205,13 @@ export const Welcome: React.FC = () => {
                                     };
                                     const targetName =
                                         request?.target?.name ||
-                                        request?.pharmacy?.name ||
-                                        request?.doctor?.name ||
+                                        request?.veterinaria?.name ||
                                         request?.emergency?.name ||
-                                        (request?.targetType === "pharmacy"
-                                            ? "Farmacia"
-                                            : request?.targetType === "doctor"
-                                            ? "Profesional de salud"
+                                        (request?.targetType === "veterinaria"
+                                            ? "Veterinaria"
                                             : request?.targetType === "emergency"
                                             ? "Servicio de emergencia"
-                                            : request?.pharmacy ? "Farmacia" : request?.doctor ? "Profesional de salud" : request?.emergency ? "Servicio de emergencia" : "Prestador");
+                                            : request?.veterinaria ? "Veterinaria" : request?.emergency ? "Servicio de emergencia" : "Prestador");
 
                                     return (
                                         <div
@@ -335,7 +323,7 @@ export const Welcome: React.FC = () => {
                         <BoltIcon className="w-6 h-6 text-red-500 mb-3" />
                         <p className="text-sm font-semibold text-gray-900">Acción inmediata</p>
                         <p className="mt-1 text-sm text-gray-500">
-                            Accedé a farmacias, telemedicina y urgencias en un toque.
+                            Accedé a veterinarias, telemedicina y urgencias en un toque.
                         </p>
                     </div>
                 </section>

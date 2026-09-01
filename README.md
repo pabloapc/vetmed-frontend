@@ -1,17 +1,16 @@
-# Gimed Frontend
+# Vetfind Frontend
 
-Frontend web de Gimed.  
-Plataforma React/TypeScript para registro, acceso, gestión y administración de usuarios, farmacias, doctores, emergencias, obras sociales y prestaciones médicas.
+Frontend web de Vetfind.  
+Plataforma React/TypeScript para registro, acceso, gestión y administración de usuarios, veterinarias, emergencias, obras sociales y prestaciones médicas.
 
-El sistema cuenta con el registro de usuarios para que puedan acceder a Farmacias (por ubicación lat/longitud), Telemedicina o visita médica, y urgencias médicas. Todos estos módulos generan una solicitud (generando un token) a los usuarios registrados con roles de farmacia, médico o emergencias, ya que tienen su propio perfil en donde visualizan los pedidos o solicitudes que pueden confirmar. El usuario `role:user` (consumidor/cliente) confirma esta solicitud cuando el servicio o producto fue recibido. También se cuenta con un usuario ADMIN que puede visualizar todos los movimientos de todos los perfiles.
+El sistema cuenta con el registro de usuarios para que puedan acceder a Veterinarias (por ubicación lat/longitud, incluyendo videollamada) y urgencias médicas. Todos estos módulos generan una solicitud (generando un token) a los usuarios registrados con roles de veterinaria o emergencias, ya que tienen su propio perfil en donde visualizan los pedidos o solicitudes que pueden confirmar. El usuario `role:user` (consumidor/cliente) confirma esta solicitud cuando el servicio o producto fue recibido. También se cuenta con un usuario ADMIN que puede visualizar todos los movimientos de todos los perfiles.
 
 **Roles disponibles:**
 
 | Rol | Descripción |
 |---|---|
 | `user` | Usuario consumidor/cliente |
-| `pharmacy` | Farmacia registrada |
-| `doctor` | Profesional médico |
+| `veterinaria` | Veterinaria registrada (incluye videollamada) |
 | `emergency` | Servicio de urgencias |
 | `admin` | Administrador global |
 
@@ -20,7 +19,7 @@ El sistema cuenta con el registro de usuarios para que puedan acceder a Farmacia
 ## 🆕 Últimos cambios (abril 2026)
 
 ### Obras Sociales y Prepagas (`InsurersSection` + `InsurerDetail`)
-- Nueva sección pública en Home listando obras sociales y prepagas asociadas a Gimed con búsqueda y paginación.
+- Nueva sección pública en Home listando obras sociales y prepagas asociadas a Vetfind con búsqueda y paginación.
 - Cards interactivas con navegación directa a `/insurers/:id` vía teclado y click.
 - Página de detalle `/insurers/:id` con jerarquía completa: Institución → Planes → Coberturas/Ofertas vinculadas.
 - Integración real con endpoints `/coverage/insurers`, `/coverage/plans` y `/coverage/plan-coverages` con fallback gracioso.
@@ -31,22 +30,21 @@ El sistema cuenta con el registro de usuarios para que puedan acceder a Farmacia
 ### Menú de acceso rápido — `BottomNavMenu`
 - Nuevo componente fijo en la parte inferior estilo billetera virtual (Mercado Pago, PayPal).
 - Visible únicamente para usuarios autenticados (`isAuthenticated`).
-- 4 accesos: **Home** (`/welcome`), **Telemedicina** (`/doctors`), **Farmacia** (`/pharmacies`), **Chat** (WhatsApp directo).
-- Botón WhatsApp abre conversación pregenerada con número de soporte Gimed.
+- 3 accesos: **Home** (`/welcome`), **Veterinaria** (`/veterinarias`), **Chat** (WhatsApp directo).
+- Botón WhatsApp abre conversación pregenerada con número de soporte Vetfind.
 - Animaciones con Framer Motion (entrada y tap feedback).
 
 **Responsive del BottomNavMenu:**
 - Etiquetas "Home" y "Chat" se ocultan por debajo de 480px; solo quedan íconos.
-- Disponible en: `/welcome`, `/doctors`, `/pharmacies`.
+- Disponible en: `/welcome`, `/veterinarias`.
 
-### UX Mobile — Cards de Farmacias y Doctores
-- Badge principal (descuento o especialidad) movido al header superior derecho para visibilidad instantánea.
+### UX Mobile — Cards de Veterinarias
+- Badge principal (descuento o beneficio) movido al header superior derecho para visibilidad instantánea.
 - Padding reducido en mobile para mostrar más resultados en el FCP.
 - Reemplazado el botón único "Ver detalles y solicitar" por **dos botones táctiles en mobile**:
   - `Detalle` con ícono `InformationCircleIcon` — muestra/oculta la sección expandible.
-  - `Solicitar` — abre la sección y hace scroll automático al formulario.
+  - `Solicitar` — abre la sección y hace scroll automático al formulario. Incluye la opción de solicitar videollamada.
 - En desktop se mantiene el botón único original.
-- Botón "Solicitar" en doctores usa el color `sky-600` (identidad de la sección).
 
 ### Navbar — ajustes responsive
 - Etiquetas de texto **Inicio**, **Solicitudes** y **Cerrar** en la barra de escritorio se ocultan por debajo de 1020px.
@@ -59,10 +57,10 @@ El sistema cuenta con el registro de usuarios para que puedan acceder a Farmacia
 - Footer con `pb-28` en páginas que usan `BottomNavMenu` para evitar solapamiento de contenido.
 
 
-const pharmacySchema = new mongoose.Schema({
+const veterinariaSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, 'Por favor ingrese el nombre de la farmacia'],
+    required: [true, 'Por favor ingrese el nombre de la veterinaria'],
     trim: true
   },
   address: {
@@ -111,7 +109,7 @@ const pharmacySchema = new mongoose.Schema({
 
 
 
-Consumidor del backend [gimed-backend](https://github.com/pabloapc/gimed-backend).
+Consumidor del backend [vetfind-backend](https://github.com/pabloapc/vetfind-backend).
 
 ---
 
@@ -132,8 +130,8 @@ Consumidor del backend [gimed-backend](https://github.com/pabloapc/gimed-backend
 
 1. Clona el repo:
    ```bash
-   git clone https://github.com/pabloapc/gimed-frontend.git
-   cd gimed-frontend
+   git clone https://github.com/pabloapc/vetfind-frontend.git
+   cd vetfind-frontend
    ```
 
 2. Instala dependencias:
@@ -178,8 +176,7 @@ Consumidor del backend [gimed-backend](https://github.com/pabloapc/gimed-backend
   |     |-- Home.tsx            # Landing pública con InsurersSection
   |     |-- Welcome.tsx         # Dashboard post-login con accesos rápidos
   |     |-- InsurerDetail.tsx   # Detalle de obra social: planes y coberturas vinculadas
-  |     |-- Pharmacies.tsx      # Listado de farmacias con UX mobile mejorado
-  |     |-- Doctors.tsx         # Listado de profesionales con UX mobile mejorado
+  |     |-- Veterinarias.tsx      # Listado de veterinarias con UX mobile mejorado
   |     |-- ... (resto de páginas)
   |-- /services
   |     |-- adminService.ts     # Incluye listPlanCoverages() con fallback de endpoint
@@ -195,14 +192,13 @@ Consumidor del backend [gimed-backend](https://github.com/pabloapc/gimed-backend
 - **`/login`, `/register`, `/verify-email`, `/resend-verification`** — Autenticación
 - **`/welcome`** — Dashboard post-login con resumen de solicitudes y accesos rápidos
 - **`/profile`** — Perfil de usuario (requiere sesión)
-- **`/pharmacies`** — Farmacias con búsqueda, geolocalización y UX mobile optimizado
-- **`/doctors`** — Profesionales de salud con filtros por especialidad y UX mobile optimizado
+- **`/veterinarias`** — Veterinarias con búsqueda, geolocalización, videollamada y UX mobile optimizado
 - **`/emergencies`** — Servicios de urgencia
 - **`/insurers/:id`** — Detalle de obra social o prepaga con planes y coberturas vinculadas
-- **`/pharmacy/requests`, `/doctor/requests`, `/emergency/requests`, `/requests`** — Solicitudes y reservas (requiere sesión)
+- **`/veterinaria/requests`, `/emergency/requests`, `/requests`** — Solicitudes y reservas (requiere sesión)
 - **`/search`** — Resultados de búsqueda de entidades/servicios
-- **`/admin/*`** — Panel de administración (usuarios, farmacias, médicos, emergencias, obras sociales, planes, coberturas, prestaciones, leads)
-  - Rutas: `/admin/users`, `/admin/pharmacies`, `/admin/doctors`, `/admin/insurers`, `/admin/plans`, `/admin/plan-coverages`, `/admin/prestations`, `/admin/leads`, ...
+- **`/admin/*`** — Panel de administración (usuarios, veterinarias, emergencias, obras sociales, planes, coberturas, prestaciones, leads)
+  - Rutas: `/admin/users`, `/admin/veterinarias`, `/admin/insurers`, `/admin/plans`, `/admin/plan-coverages`, `/admin/prestations`, `/admin/leads`, ...
 
 ---
 
@@ -210,7 +206,7 @@ Consumidor del backend [gimed-backend](https://github.com/pabloapc/gimed-backend
 
 - **Contexto global:** manejo JWT y usuario a través de `AuthProvider` y hooks-context.
 - **Rutas protegidas:** sólo accesibles con sesión y/o admin (ver `ProtectedRoute`, `ProtectedAdminRoute`).
-- **Rol de usuario:** refleja la autenticación del backend (`user`, `admin`, `doctor`, `pharmacy`, etc).
+- **Rol de usuario:** refleja la autenticación del backend (`user`, `admin`, `veterinaria`, `emergency`, etc).
 
 ---
 
@@ -250,7 +246,7 @@ ISC
 
 ## 🧠 Resumen técnico
 
-Gimed es una **SPA (Single Page Application)** construida en **React 19 + TypeScript** con **Vite** como bundler. Se comunica exclusivamente con un backend REST propio (`gimed-backend`, Node.js + Express + MongoDB) a través de **Axios** con interceptores JWT para autenticación stateless.
+Vetfind es una **SPA (Single Page Application)** construida en **React 19 + TypeScript** con **Vite** como bundler. Se comunica exclusivamente con un backend REST propio (`vetmed-backend`, Node.js + Express + MongoDB) a través de **Axios** con interceptores JWT para autenticación stateless.
 
 ### Arquitectura general
 
@@ -270,9 +266,9 @@ Browser
 3. Las rutas protegidas (`ProtectedRoute`, `ProtectedAdminRoute`) validan el rol antes de renderizar.
 
 ### Modelo de solicitudes (core del negocio)
-1. Un `user` encuentra una farmacia, doctor o emergencia.
+1. Un `user` encuentra una veterinaria o emergencia (la veterinaria incluye videollamada como tipo de consulta).
 2. Genera una **solicitud** → el backend crea un registro con un **token de 6 dígitos** y TTL de 2 minutos.
-3. El prestador (farmacia/doctor/emergencia) ve la solicitud en su panel y la acepta o cancela.
+3. El prestador (veterinaria/emergencia) ve la solicitud en su panel y la acepta o cancela.
 4. El usuario confirma la entrega/consulta cerrando el ciclo.
 
 ### Puntos técnicos clave
@@ -296,8 +292,7 @@ Browser
 | Recurso | Endpoint base |
 |---|---|
 | Auth | `/api/auth/login`, `/api/auth/register` |
-| Farmacias | `/api/pharmacies` |
-| Doctores | `/api/doctors` |
+| Veterinarias | `/api/veterinarias` |
 | Emergencias | `/api/emergencies` |
 | Solicitudes | `/api/requests` |
 | Obras sociales | `/api/coverage/insurers` |
@@ -315,24 +310,24 @@ Browser
 
 ## 💼 Resumen comercial
 
-**Gimed** es una plataforma digital de salud que conecta a personas con los servicios médicos que necesitan, en el momento que los necesitan. Funciona como una **ventanilla única de acceso a la salud**: farmacias, médicos, urgencias y cobertura de obras sociales, todo desde el teléfono.
+**Vetfind** es una plataforma digital de salud que conecta a personas con los servicios médicos que necesitan, en el momento que los necesitan. Funciona como una **ventanilla única de acceso a la salud**: veterinarias, médicos, urgencias y cobertura de obras sociales, todo desde el teléfono.
 
 ### ¿Qué problema resuelve?
 
-Hoy el sistema de salud está fragmentado. Un afiliado no sabe qué cobertura tiene, no encuentra un turno rápido, no sabe a qué farmacia puede ir con descuento. **Gimed unifica ese acceso** en una sola app, conectando al paciente con su obra social, médico de cabecera y farmacia de confianza.
+Hoy el sistema de salud está fragmentado. Un afiliado no sabe qué cobertura tiene, no encuentra un turno rápido, no sabe a qué veterinaria puede ir con descuento. **Vetfind unifica ese acceso** en una sola app, conectando al paciente con su obra social, médico de cabecera y veterinaria de confianza.
 
 ### Propuesta de valor
 
-| Para quien | Qué le ofrece Gimed |
+| Para quien | Qué le ofrece Vetfind |
 |---|---|
-| **Paciente / afiliado** | Encuentra farmacias con descuento por cobertura, agenda consultas médicas, accede a urgencias y ve toda su información de salud en un lugar. |
-| **Farmacia** | Recibe solicitudes digitales de sus afiliados y gestiona pedidos con token de validación. |
+| **Paciente / afiliado** | Encuentra veterinarias con descuento por cobertura, agenda consultas médicas, accede a urgencias y ve toda su información de salud en un lugar. |
+| **Veterinaria** | Recibe solicitudes digitales de sus afiliados y gestiona pedidos con token de validación. |
 | **Médico / profesional** | Recibe y confirma turnos, coordina videollamadas y gestiona su agenda desde un panel propio. |
 | **Obra social / prepaga** | Registra sus planes y coberturas; sus afiliados los encuentran dentro de la plataforma y pueden navegar qué prestaciones tienen disponibles. |
 | **Empresa / asegurador** | Integra su red de prestadores y afiliados vía API a través del módulo B2B (contacto directo desde la home). |
 
 ### Diferencial clave
-- **Geolocalización real**: el usuario ve las farmacias y médicos más cercanos a su posición.
+- **Geolocalización real**: el usuario ve las veterinarias y médicos más cercanos a su posición.
 - **Token de validación**: cada solicitud genera un código único y temporizado que garantiza que el servicio fue efectivamente prestado — sin papel, sin fraude.
 - **Coberturas transparentes**: el afiliado puede ver exactamente qué porcentaje de cobertura tiene por prestación, copago incluido.
 - **Acceso multiplataforma**: funciona en móvil y desktop, con UX optimizado para touch (menú bottom, botones táctiles, badges de acceso rápido).
@@ -342,7 +337,7 @@ Hoy el sistema de salud está fragmentado. Un afiliado no sabe qué cobertura ti
 
 ```
 ✅ Registro y autenticación de usuarios
-✅ Búsqueda de farmacias por cercanía con descuentos
+✅ Búsqueda de veterinarias por cercanía con descuentos
 ✅ Telemedicina / consultas médicas con turno digital
 ✅ Urgencias médicas con georreferencia
 ✅ Obras sociales y prepagas con planes y coberturas detalladas
@@ -353,8 +348,8 @@ Hoy el sistema de salud está fragmentado. Un afiliado no sabe qué cobertura ti
 ```
 
 ### Modelo de negocio (potencial)
-- **SaaS B2B**: obras sociales, clínicas y aseguradoras pagan por integrar su red en Gimed.
-- **Comisión por transacción**: fee sobre solicitudes confirmadas (farmacia, turno médico).
-- **Licencia de plataforma**: hospitales o municipios que quieran desplegar Gimed en su red.
+- **SaaS B2B**: obras sociales, clínicas y aseguradoras pagan por integrar su red en Vetfind.
+- **Comisión por transacción**: fee sobre solicitudes confirmadas (veterinaria, turno médico).
+- **Licencia de plataforma**: hospitales o municipios que quieran desplegar Vetfind en su red.
 - **Datos de salud (anonimizados)**: reportes de demanda por zona/especialidad para planificación sanitaria.
 

@@ -357,7 +357,7 @@ export const InsurerDetail: React.FC = () => {
 
                         <p className="text-gray-600 text-sm md:text-base">
                             {insurerDescription ||
-                                "Conocé su red de planes y las ofertas disponibles dentro de Gimed."}
+                                "Conocé su red de planes y las ofertas disponibles dentro de Vetfind."}
                         </p>
 
                         <div className="mt-4 flex flex-wrap items-center gap-3">

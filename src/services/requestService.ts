@@ -12,7 +12,7 @@ function getAuthHeader() {
 
 export const requestService = {
     createRequest: async (payload: {
-        pharmacyId: string;
+        veterinariaId: string;
         actionType: string;
         notes?: string;
         userSnapshot?: { name?: string; email?: string; telefono?: string };
@@ -28,15 +28,9 @@ export const requestService = {
         return res.data;
     },
 
-    getRequestsForPharmacy: async () => {
+    getRequestsForVeterinaria: async () => {
         const headers = { ...getAuthHeader() };
-        const res = await api.get("/requests/pharmacy", { headers });
-        return res.data;
-    },
-
-    getRequestsForDoctor: async () => {
-        const headers = { ...getAuthHeader() };
-        const res = await api.get("/requests/doctor", { headers });
+        const res = await api.get("/requests/veterinaria", { headers });
         return res.data;
     },
 

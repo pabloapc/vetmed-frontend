@@ -14,7 +14,7 @@ type Props = {
  * RequestRow
  *
  * Componente reutilizable para mostrar una solicitud (request) y
- * permitir al doctor (o farmacia) aceptar programando día/hora y url,
+ * permitir a la veterinaria aceptar programando día/hora y url,
  * editar la metadata, marcar como cumplida o cancelar.
  *
  * Actualizaciones:
@@ -51,11 +51,11 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
     const [showPrescriptionEditor, setShowPrescriptionEditor] = useState(false);
     const [prescriptionText, setPrescriptionText] = useState<string>(() => {
         // plantilla de ejemplo
-        const doctorName = (user && user.name) || "Dr./Dra. Nombre";
+        const veterinarianName = (user && user.name) || "Dr./Dra. Nombre";
         const dateStr = new Date().toLocaleDateString();
-        return `Receta médica\n\nPaciente: ${
+        return `Receta veterinaria\n\nPaciente: ${
             userInfo?.name || "Nombre paciente"
-        }\nFecha: ${dateStr}\n\nPrescripción:\n- Paracetamol 500 mg, 1 tableta cada 8 horas por 5 días\n- Ibuprofeno 400 mg, 1 tableta si dolor (máx 3/día)\n\nIndicaciones adicionales:\n- Reposo relativo\n- Consultar si persisten los síntomas\n\nMédico: ${doctorName}\nFirma: ____________________`;
+        }\nFecha: ${dateStr}\n\nPrescripción:\n- Paracetamol 500 mg, 1 tableta cada 8 horas por 5 días\n- Ibuprofeno 400 mg, 1 tableta si dolor (máx 3/día)\n\nIndicaciones adicionales:\n- Reposo relativo\n- Consultar si persisten los síntomas\n\nVeterinario: ${veterinarianName}\nFirma: ____________________`;
     });
 
     // convierte ISO/Date a string para input datetime-local (yyyy-MM-ddTHH:mm)
@@ -247,7 +247,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
 
             doc.setFont("Helvetica", "normal");
             doc.setFontSize(14);
-            doc.text("Receta médica", pageWidth / 2, 60, { align: "center" });
+            doc.text("Receta veterinaria", pageWidth / 2, 60, { align: "center" });
 
             doc.setFontSize(11);
             const lines: string[] = [];
@@ -260,7 +260,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
             const presLines = prescriptionText.split("\n");
             presLines.forEach((l) => lines.push(l));
             lines.push("");
-            lines.push(`Médico: ${user?.name || "Dr./Dra. Nombre"}`);
+            lines.push(`Veterinario: ${user?.name || "Dr./Dra. Nombre"}`);
             lines.push("Firma: ____________________________");
 
             // write lines with simple wrapping

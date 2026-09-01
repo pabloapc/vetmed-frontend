@@ -61,8 +61,7 @@ export const AdminUserEdit: React.FC = () => {
     useEffect(() => {
         if (!data) return;
         if (
-            data.role === "pharmacy" ||
-            data.role === "doctor" ||
+            data.role === "veterinaria" ||
             data.role === "emergency"
         ) {
             setEntityOptions([]);
@@ -95,21 +94,21 @@ export const AdminUserEdit: React.FC = () => {
             const q = entityQuery?.trim() || "";
             console.debug("handleSearchEntities start", { role: data.role, q });
 
-            if (data.role === "pharmacy") {
-                const res: any = await adminService.listPharmacies({
+            if (data.role === "veterinaria") {
+                const res: any = await adminService.listVeterinarias({
                     q,
                     page: 1,
                     limit: 50,
                     unassigned: true,
                 });
-                console.debug("adminService.listPharmacies rawres=", res);
+                console.debug("adminService.listVeterinarias rawres=", res);
 
                 let list: any[] = [];
                 if (Array.isArray(res)) list = res;
-                else if (res && res.data && Array.isArray(res.data.pharmacies))
-                    list = res.data.pharmacies;
-                else if (res && res.pharmacies && Array.isArray(res.pharmacies))
-                    list = res.pharmacies;
+                else if (res && res.data && Array.isArray(res.data.veterinarias))
+                    list = res.data.veterinarias;
+                else if (res && res.veterinarias && Array.isArray(res.veterinarias))
+                    list = res.veterinarias;
                 else if (res && res.data && Array.isArray(res.data))
                     list = res.data;
                 else if (
@@ -125,39 +124,6 @@ export const AdminUserEdit: React.FC = () => {
                         id: p._id ?? p.id ?? (p._doc && p._doc._id) ?? "",
                         name: p.name ?? p.nombre ?? "",
                         address: p.address ?? p.direccion ?? "",
-                    })
-                );
-                setEntityOptions(opts);
-            } else if (data.role === "doctor") {
-                const res: any = await adminService.listDoctors({
-                    q,
-                    page: 1,
-                    limit: 50,
-                    unassigned: true,
-                });
-                console.debug("adminService.listDoctors rawres=", res);
-
-                let list: any[] = [];
-                if (Array.isArray(res)) list = res;
-                else if (res && res.data && Array.isArray(res.data.doctors))
-                    list = res.data.doctors;
-                else if (res && res.doctors && Array.isArray(res.doctors))
-                    list = res.doctors;
-                else if (res && res.data && Array.isArray(res.data))
-                    list = res.data;
-                else if (
-                    res &&
-                    res.data &&
-                    res.data.data &&
-                    Array.isArray(res.data.data)
-                )
-                    list = res.data.data;
-
-                const opts = (Array.isArray(list) ? list : []).map(
-                    (d: any) => ({
-                        id: d._id ?? d.id ?? (d._doc && d._doc._id) ?? "",
-                        name: d.name ?? d.nombre ?? "",
-                        address: d.address ?? d.direccion ?? "",
                     })
                 );
                 setEntityOptions(opts);
@@ -329,8 +295,7 @@ export const AdminUserEdit: React.FC = () => {
                         className="mt-1 w-full border rounded px-3 py-2"
                     >
                         <option value="user">user</option>
-                        <option value="pharmacy">pharmacy</option>
-                        <option value="doctor">doctor</option>
+                        <option value="veterinaria">veterinaria</option>
                         <option value="admin">admin</option>
                         <option value="emergency">emergency</option>
                     </select>
@@ -355,9 +320,8 @@ export const AdminUserEdit: React.FC = () => {
                     </p>
                 </div>
 
-                {/* Show assignment controls for pharmacy/doctor/emergency */}
-                {(data.role === "pharmacy" ||
-                    data.role === "doctor" ||
+                {/* Show assignment controls for veterinaria/emergency */}
+                {(data.role === "veterinaria" ||
                     data.role === "emergency") && (
                     <div className="mt-3 p-3 border rounded bg-gray-50">
                         <div className="flex items-center gap-3 mb-3">
@@ -399,10 +363,8 @@ export const AdminUserEdit: React.FC = () => {
                                 <div className="flex gap-2 mb-2">
                                     <input
                                         placeholder={`Buscar ${
-                                            data.role === "pharmacy"
-                                                ? "farmacias"
-                                                : data.role === "doctor"
-                                                ? "doctores"
+                                            data.role === "veterinaria"
+                                                ? "veterinarias"
                                                 : "servicios de emergencia"
                                         }`}
                                         value={entityQuery}

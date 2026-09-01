@@ -98,8 +98,7 @@ export const AdminUserCreate: React.FC = () => {
                         className="mt-1 w-full border rounded px-3 py-2"
                     >
                         <option value="user">user</option>
-                        <option value="pharmacy">pharmacy</option>
-                        <option value="doctor">doctor</option>
+                        <option value="veterinaria">veterinaria</option>
                         <option value="admin">admin</option>
                     </select>
                 </div>

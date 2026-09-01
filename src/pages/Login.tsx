@@ -63,10 +63,8 @@ export const Login: React.FC = () => {
 
             if (role === 'admin') {
                 navigate('/admin');
-            } else if (role === 'pharmacy') {
-                navigate('/pharmacy/requests');
-            } else if (role === 'doctor') {
-                navigate('/doctor/requests');
+            } else if (role === 'veterinaria') {
+                navigate('/veterinaria/requests');
             } else if (role === 'emergency') {
                 navigate('/emergency/requests');
             } else {
@@ -90,7 +88,7 @@ export const Login: React.FC = () => {
                 {/* Logo */}
                 <div className="relative z-10">
                     <Link to="/" className="text-white text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                        Gimed
+                        Vetfind
                     </Link>
                 </div>
 
@@ -101,7 +99,7 @@ export const Login: React.FC = () => {
                         siempre cerca.
                     </h1>
                     <p className="text-blue-100 text-base leading-relaxed max-w-sm">
-                        Accedé a farmacias, profesionales de salud y servicios de emergencia desde una sola plataforma segura.
+                        Accedé a veterinarias, profesionales de salud y servicios de emergencia desde una sola plataforma segura.
                     </p>
 
                     <div className="space-y-3 pt-2">
@@ -120,7 +118,7 @@ export const Login: React.FC = () => {
 
                 {/* Footer */}
                 <div className="relative z-10 text-blue-300 text-xs">
-                    © {new Date().getFullYear()} Gimed. Todos los derechos reservados.
+                    © {new Date().getFullYear()} Vetfind. Todos los derechos reservados.
                 </div>
             </div>
 
@@ -130,7 +128,7 @@ export const Login: React.FC = () => {
 
                     {/* Mobile logo */}
                     <div className="lg:hidden mb-8 text-center">
-                        <Link to="/" className="text-blue-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">Gimed</Link>
+                        <Link to="/" className="text-blue-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">Vetfind</Link>
                     </div>
 
                     {/* Header */}

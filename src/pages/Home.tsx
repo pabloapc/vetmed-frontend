@@ -421,10 +421,8 @@ export const Home: React.FC = () => {
         setShowSuggestions(false);
         setSelectedIndex(-1);
         if (!s) return;
-        if (s.type === "pharmacy") {
-            navigate(`/pharmacies/${s.id}`);
-        } else if (s.type === "doctor") {
-            navigate(`/doctors/${s.id}`);
+        if (s.type === "veterinaria") {
+            navigate(`/veterinarias/${s.id}`);
         } else {
             navigate(`/search?q=${encodeURIComponent(s.name || query)}`);
         }
@@ -473,7 +471,7 @@ export const Home: React.FC = () => {
             id: "t1",
             name: "María López",
             role: "Paciente",
-            quote: "Encontré la farmacia que necesitaba en segundos. Muy fácil de usar.",
+            quote: "Encontré la veterinaria que necesitaba en segundos. Muy fácil de usar.",
             rating: 5,
         },
         {
@@ -552,10 +550,10 @@ export const Home: React.FC = () => {
                     >
                         <div className="text-center">
                             <motion.h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                                Gimed, tu salud cerca tuyo
+                                Vetfind, tu salud cerca tuyo
                             </motion.h1>
                             <motion.p className="text-lg md:text-xl text-blue-100 mb-6 max-w-3xl mx-auto">
-                                Encontrá farmacias y profesionales, reservá
+                                Encontrá veterinarias y profesionales, reservá
                                 videollamadas y gestioná afiliaciones desde una
                                 sola plataforma.
                             </motion.p>
@@ -573,7 +571,7 @@ export const Home: React.FC = () => {
                                                 if (suggestions.length)
                                                     setShowSuggestions(true);
                                             }}
-                                            placeholder="Buscar farmacia, doctor o dirección..."
+                                            placeholder="Buscar veterinaria o dirección..."
                                             className="w-full border-0 rounded-full px-5 py-3.5 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
                                             aria-autocomplete="list"
                                             aria-controls="search-suggestions"
@@ -612,7 +610,7 @@ export const Home: React.FC = () => {
                                                             <div className="flex items-start gap-3 flex-1">
                                                                 <div className="mt-0.5">
                                                                     {s.type ===
-                                                                    "pharmacy" ? (
+                                                                    "veterinaria" ? (
                                                                         <MapPinIcon className="w-5 h-5 text-blue-600" />
                                                                     ) : (
                                                                         <UserCircleIcon className="w-5 h-5 text-green-600" />
@@ -757,10 +755,10 @@ export const Home: React.FC = () => {
                                 //     className="flex justify-center space-x-4 mt-3"
                                 // >
                                 //     <Link
-                                //         to="/pharmacies"
+                                //         to="/veterinarias"
                                 //         className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-medium"
                                 //     >
-                                //         Ver Farmacias
+                                //         Ver Veterinarias
                                 //     </Link>
                                 // </motion.div>
                                 <></>
@@ -797,14 +795,14 @@ export const Home: React.FC = () => {
                                 <div>
                                     <h3 className="text-base font-semibold text-gray-900">Para pacientes</h3>
                                     <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                                        Buscá farmacias, compará descuentos y reservá consultas con profesionales.
+                                        Buscá veterinarias, compará descuentos y reservá consultas con profesionales.
                                     </p>
                                 </div>
                                 <Link
-                                    to="/pharmacies"
+                                    to="/veterinarias"
                                     className="mt-auto text-sm text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1.5"
                                 >
-                                    Buscar farmacias
+                                    Buscar veterinarias
                                     <ArrowRightCircleIcon className="w-4 h-4" />
                                 </Link>
                             </motion.div>
@@ -818,16 +816,16 @@ export const Home: React.FC = () => {
                                     <UserCircleIcon className="w-5 h-5 text-sky-600" />
                                 </div>
                                 <div>
-                                    <h3 className="text-base font-semibold text-gray-900">Para profesionales</h3>
+                                    <h3 className="text-base font-semibold text-gray-900">Para veterinarias</h3>
                                     <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                                        Gestioná citas, atendé videollamadas y conectate con pacientes de tu zona.
+                                        Gestioná turnos, atendé videollamadas y conectate con dueños de mascotas de tu zona.
                                     </p>
                                 </div>
                                 <Link
-                                    to="/doctors"
+                                    to="/register-entity"
                                     className="mt-auto text-sm text-sky-600 hover:text-sky-700 font-medium inline-flex items-center gap-1.5"
                                 >
-                                    Ver profesionales
+                                    Sumar mi veterinaria
                                     <ArrowRightCircleIcon className="w-4 h-4" />
                                 </Link>
                             </motion.div>
@@ -869,23 +867,17 @@ export const Home: React.FC = () => {
                                     Impulsamos la atención desde la comunidad
                                 </h2>
                                 <p className="text-sm md:text-base opacity-90 mb-3">
-                                    Gimed conecta usuarios, farmacias,
+                                    Vetfind conecta usuarios, veterinarias,
                                     profesionales y organizaciones para
                                     facilitar cuidados, descuentos y gestión de
                                     afiliados.
                                 </p>
                                 <div className="mt-3 flex gap-3">
                                     <Link
-                                        to="/pharmacies"
+                                        to="/veterinarias"
                                         className="bg-white text-sky-700 px-4 py-2 rounded-md font-medium"
                                     >
-                                        Buscar farmacias
-                                    </Link>
-                                    <Link
-                                        to="/doctors"
-                                        className="bg-white/20 border border-white text-white px-4 py-2 rounded-md"
-                                    >
-                                        Buscar doctores
+                                        Buscar veterinarias
                                     </Link>
                                 </div>
                             </div>
@@ -999,7 +991,7 @@ export const Home: React.FC = () => {
                                     Conocé nuestra tecnología
                                 </h3>
                                 <p className="text-gray-500 mt-1 text-sm">
-                                    Si representás una empresa, obra social o institución y querés integrar o administrar afiliados con Gimed, dejá tus datos y te contactamos.
+                                    Si representás una empresa, obra social o institución y querés integrar o administrar afiliados con Vetfind, dejá tus datos y te contactamos.
                                 </p>
                             </div>
 
@@ -1175,13 +1167,13 @@ export const Home: React.FC = () => {
                 <div className="container mx-auto px-4 py-10">
                     <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <h4 className="font-bold text-lg">Gimed</h4>
+                            <h4 className="font-bold text-lg">Vetfind</h4>
                             <p className="text-sm text-slate-500 mt-2">
-                                Plataforma para encontrar farmacias y gestionar
+                                Plataforma para encontrar veterinarias y gestionar
                                 información de salud.
                             </p>
                             <p className="text-xs text-slate-500 mt-4">
-                                © {new Date().getFullYear()} Gimed. Todos los
+                                © {new Date().getFullYear()} Vetfind. Todos los
                                 derechos reservados.
                             </p>
                         </div>
@@ -1190,18 +1182,10 @@ export const Home: React.FC = () => {
                             <ul className="mt-3 space-y-2 text-sm text-slate-600">
                                 <li>
                                     <Link
-                                        to="/pharmacies"
+                                        to="/veterinarias"
                                         className="hover:underline"
                                     >
-                                        Encuentra Farmacias
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link
-                                        to="/doctors"
-                                        className="hover:underline"
-                                    >
-                                        Encuentra Doctores
+                                        Encuentra Veterinarias
                                     </Link>
                                 </li>
                                 <li>
@@ -1225,7 +1209,7 @@ export const Home: React.FC = () => {
                         <div>
                             <h5 className="font-medium">Contacto</h5>
                             <p className="text-sm text-slate-500 mt-3">
-                                soporte@gimed.app
+                                soporte@vetfind.app
                             </p>
                             <p className="text-sm text-slate-500 mt-1">
                                 (+54) 9 3512 30-9838

@@ -43,7 +43,7 @@ const FALLBACK_INSURANCE_PRODUCTS: InsuranceProduct[] = [
             "Complementos medicos esenciales para cuidar tu bienestar y el de tu familia.",
         infoPath: "/insurance/salud",
         features: [
-            "Descuentos en farmacias (40%)",
+            "Descuentos en veterinarias (40%)",
             "Reintegros en consultas medicas",
             "Telemedicina gratuita",
             "Protesis y ortopedia",

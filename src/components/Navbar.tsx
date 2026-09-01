@@ -108,19 +108,17 @@ export const Navbar: React.FC = () => {
     const userInsurerId = getId(user?.insurerId ?? user?.entityId);
     const displayInsurerName =
         isAuthenticated && (user?.role === null || user?.role === "user")
-            ? insurerName || (!userInsurerId ? "Gimed" : "")
+            ? insurerName || (!userInsurerId ? "Vetfind" : "")
             : "";
     const displayPlanName =
         isAuthenticated && (user?.role === null || user?.role === "user")
-            ? planName || (!userInsurerId ? "Base Gimed" : "")
+            ? planName || (!userInsurerId ? "Base Vetfind" : "")
             : "";
     const homePath =
         user?.role === "admin"
             ? "/admin"
-            : user?.role === "pharmacy"
-            ? "/pharmacy/requests"
-            : user?.role === "doctor"
-            ? "/doctor/requests"
+            : user?.role === "veterinaria"
+            ? "/veterinaria/requests"
             : user?.role === "emergency"
             ? "/emergency/requests"
             : isAuthenticated
@@ -149,7 +147,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex justify-between items-center h-16">
                     <Link to={homePath} className="flex items-center gap-3">
                         <span className="text-xl font-bold tracking-tight">
-                            Gimed
+                            Vetfind
                         </span>
                         <span className="inline-flex items-center justify-center w-7 h-7 bg-white/20 rounded-full text-sm font-bold">
                             +
@@ -189,10 +187,10 @@ export const Navbar: React.FC = () => {
                             </>
                         )}
 
-                        {isAuthenticated && user?.role === "pharmacy" && (
+                        {isAuthenticated && user?.role === "veterinaria" && (
                             <>
                                 <Link
-                                    to="/pharmacy/requests"
+                                    to="/veterinaria/requests"
                                     className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
                                 >
                                     <UserGroupIcon className="w-5 h-5" />
@@ -212,28 +210,6 @@ export const Navbar: React.FC = () => {
                             </>
                         )}
 
-                        {isAuthenticated && user?.role === "doctor" && (
-                            <>
-                                <Link
-                                    to="/doctor/requests"
-                                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
-                                >
-                                    <CalendarIcon className="w-5 h-5" />
-                                    <span className="hidden md:inline">
-                                        Citas
-                                    </span>
-                                </Link>
-                                <Link
-                                    to="/profile"
-                                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
-                                >
-                                    <UserCircleIcon className="w-5 h-5" />
-                                    <span className="hidden md:inline">
-                                        Perfil
-                                    </span>
-                                </Link>
-                            </>
-                        )}
 
                         {isAuthenticated && user?.role === "emergency" && (
                             <>
@@ -262,50 +238,14 @@ export const Navbar: React.FC = () => {
                             (user?.role === null || user?.role === "user") && (
                                 <>
                                     <Link
-                                        to="/pharmacies"
+                                        to="/veterinarias"
                                         className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
                                     >
                                         <MapPinIcon className="w-5 h-5" />
                                         <span className="hidden md:inline">
-                                            Farmacias
+                                            Veterinarias
                                         </span>
                                     </Link>
-                                    <Link
-                                        to="/doctors"
-                                        className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
-                                        title="Doctores"
-                                    >
-                                        {/* simple icon kept as svg for medical briefcase */}
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            className="lucide lucide-briefcase-medical"
-                                        >
-                                            <path d="M12 11v4" />
-                                            <path d="M14 13h-4" />
-                                            <path d="M16 6V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
-                                            <path d="M18 6v14" />
-                                            <path d="M6 6v14" />
-                                            <rect
-                                                width="20"
-                                                height="14"
-                                                x="2"
-                                                y="6"
-                                                rx="2"
-                                            />
-                                        </svg>
-                                        <span className="hidden md:inline text-sm">
-                                            Doctores
-                                        </span>
-                                    </Link>
-
                                     <Link
                                         to="/emergencies"
                                         className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
@@ -361,17 +301,6 @@ export const Navbar: React.FC = () => {
                                         </span>
                                     </Link>
 
-                                    <Link
-                                        to="/audits"
-                                        className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
-                                        title="Auditorías médicas"
-                                    >
-                                        <ClipboardDocumentListIcon className="w-5 h-5" />
-                                        <span className="hidden md:inline text-sm">
-                                            Auditorías
-                                        </span>
-                                    </Link>
-
                                     {displayInsurerName && (
                                         <span className="hidden lg:inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-medium border border-emerald-200">
                                             Obra social: {displayInsurerName}
@@ -419,18 +348,8 @@ export const Navbar: React.FC = () => {
                                     </span>
                                 </Link>
 
-                                <Link
-                                    to="/admin/audits"
-                                    className="flex items-center gap-2 px-3 py-2 rounded hover:bg-white/10"
-                                >
-                                    <ClipboardDocumentListIcon className="w-5 h-5" />
-                                    <span className="hidden md:inline">
-                                        Auditorías
-                                    </span>
-                                </Link>
-
                                 {/* Agregá aquí más links de administración según necesites:
-                    /admin/pharmacies, /admin/doctors, /admin/settings, etc. */}
+                    /admin/veterinarias, /admin/settings, etc. */}
                             </>
                         )}
 
@@ -513,7 +432,7 @@ export const Navbar: React.FC = () => {
                         >
                             <div className="flex items-center justify-between mb-6">
                                 <Link to={homePath} className="flex items-center gap-3 text-lg font-bold tracking-tight">
-                                    <span>Gimed</span>
+                                    <span>Vetfind</span>
                                     <span className="inline-flex items-center justify-center w-7 h-7 bg-white/20 rounded-full text-sm font-bold">
                                         +
                                     </span>
@@ -557,7 +476,7 @@ export const Navbar: React.FC = () => {
                             ) : (
                                 <div className="rounded-3xl bg-white/10 border border-white/15 p-4 space-y-3">
                                     <p className="text-sm text-blue-50">
-                                        Accedé o registrate para usar todas las funciones de Gimed.
+                                        Accedé o registrate para usar todas las funciones de Vetfind.
                                     </p>
                                     <div className="grid grid-cols-2 gap-3">
                                         <Link
@@ -602,24 +521,11 @@ export const Navbar: React.FC = () => {
                                             </>
                                         )}
 
-                                        {isAuthenticated && user?.role === "pharmacy" && (
+                                        {isAuthenticated && user?.role === "veterinaria" && (
                                             <>
-                                                <Link to="/pharmacy/requests" className={getMobileLinkClass("/pharmacy/requests")}>
-                                                    <UserGroupIcon className={getMobileIconClass("/pharmacy/requests")} />
+                                                <Link to="/veterinaria/requests" className={getMobileLinkClass("/veterinaria/requests")}>
+                                                    <UserGroupIcon className={getMobileIconClass("/veterinaria/requests")} />
                                                     <span>Solicitudes</span>
-                                                </Link>
-                                                <Link to="/profile" className={getMobileLinkClass("/profile")}>
-                                                    <UserCircleIcon className={getMobileIconClass("/profile")} />
-                                                    <span>Perfil</span>
-                                                </Link>
-                                            </>
-                                        )}
-
-                                        {isAuthenticated && user?.role === "doctor" && (
-                                            <>
-                                                <Link to="/doctor/requests" className={getMobileLinkClass("/doctor/requests")}>
-                                                    <CalendarIcon className={getMobileIconClass("/doctor/requests")} />
-                                                    <span>Citas</span>
                                                 </Link>
                                                 <Link to="/profile" className={getMobileLinkClass("/profile")}>
                                                     <UserCircleIcon className={getMobileIconClass("/profile")} />
@@ -643,13 +549,9 @@ export const Navbar: React.FC = () => {
 
                                         {isAuthenticated && (user?.role === null || user?.role === "user") && (
                                             <>
-                                                <Link to="/pharmacies" className={getMobileLinkClass("/pharmacies")}>
-                                                    <MapPinIcon className={getMobileIconClass("/pharmacies")} />
-                                                    <span>Farmacias</span>
-                                                </Link>
-                                                <Link to="/doctors" className={getMobileLinkClass("/doctors")}>
-                                                    <UserGroupIcon className={getMobileIconClass("/doctors")} />
-                                                    <span>Doctores</span>
+                                                <Link to="/veterinarias" className={getMobileLinkClass("/veterinarias")}>
+                                                    <MapPinIcon className={getMobileIconClass("/veterinarias")} />
+                                                    <span>Veterinarias</span>
                                                 </Link>
                                                 <Link to="/emergencies" className={getMobileLinkClass("/emergencies")}>
                                                     <CalendarIcon className={getMobileIconClass("/emergencies")} />
@@ -658,10 +560,6 @@ export const Navbar: React.FC = () => {
                                                 <Link to="/requests" className={getMobileLinkClass("/requests")}>
                                                     <ClipboardDocumentListIcon className={getMobileIconClass("/requests")} />
                                                     <span>Solicitudes</span>
-                                                </Link>
-                                                <Link to="/audits" className={getMobileLinkClass("/audits")}>
-                                                    <ShieldCheckIcon className={getMobileIconClass("/audits")} />
-                                                    <span>Auditorías</span>
                                                 </Link>
                                                 <Link to="/profile" className={getMobileLinkClass("/profile")}>
                                                     <UserCircleIcon className={getMobileIconClass("/profile")} />
@@ -679,10 +577,6 @@ export const Navbar: React.FC = () => {
                                                 <Link to="/admin/users" className={getMobileLinkClass("/admin/users")}>
                                                     <UserGroupIcon className={getMobileIconClass("/admin/users")} />
                                                     <span>Usuarios</span>
-                                                </Link>
-                                                <Link to="/admin/audits" className={getMobileLinkClass("/admin/audits")}>
-                                                    <ClipboardDocumentListIcon className={getMobileIconClass("/admin/audits")} />
-                                                    <span>Auditorías</span>
                                                 </Link>
                                             </>
                                         )}

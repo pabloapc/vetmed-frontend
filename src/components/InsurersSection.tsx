@@ -100,7 +100,7 @@ export const InsurersSection: React.FC = () => {
                                 Obras Sociales y Prepagas
                             </h2>
                             <p className="text-gray-600 mt-2">
-                                Entidades de cobertura y servicios asociados en la red Gimed.
+                                Entidades de cobertura y servicios asociados en la red Vetfind.
                             </p>
                         </div>
                     </div>

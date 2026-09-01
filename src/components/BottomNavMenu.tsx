@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
     HomeIcon,
-    VideoCameraIcon,
     BuildingStorefrontIcon,
     ChatBubbleLeftIcon,
 } from "@heroicons/react/24/solid";
@@ -27,18 +26,11 @@ export const BottomNavMenu: React.FC = () => {
             path: "/welcome",
         },
         {
-            id: "telemedicine",
-            label: "Telemedicina",
-            icon: VideoCameraIcon,
-            gradient: "from-emerald-500 to-teal-500",
-            path: "/doctors",
-        },
-        {
-            id: "pharmacy",
-            label: "Farmacia",
+            id: "veterinaria",
+            label: "Veterinaria",
             icon: BuildingStorefrontIcon,
             gradient: "from-blue-500 to-cyan-500",
-            path: "/pharmacies",
+            path: "/veterinarias",
         },
     ];
 
@@ -46,7 +38,7 @@ export const BottomNavMenu: React.FC = () => {
         // Número de WhatsApp (reemplaza con el tuyo)
         const phoneNumber = "549351230838"; // +54 9 3512 30-0838
         const message = encodeURIComponent(
-            "Hola, tengo una consulta sobre los servicios de Gimed."
+            "Hola, tengo una consulta sobre los servicios de Vetfind."
         );
         window.open(
             `https://wa.me/${phoneNumber}?text=${message}`,

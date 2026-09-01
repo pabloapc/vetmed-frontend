@@ -12,7 +12,7 @@ export interface User {
         type: string;
         coordinates: [number, number]; // [longitude, latitude] in GeoJSON format
     };
-    role?: "user" | "pharmacy" | "doctor" | "emergency" | "admin" | null;
+    role?: "user" | "veterinaria" | "emergency" | "admin" | null;
     insurerId?: string | null;
     planId?: string | null;
     entityId?: string | null;
@@ -49,7 +49,7 @@ export interface RegisterRequest {
   ciudad?: string;
   provincia?: string;
   codigoPostal?: string;
-  role?: "user" | "pharmacy" | "doctor" | "emergency" | "admin" | null;
+  role?: "user" | "veterinaria" | "emergency" | "admin" | null;
   insurerId?: string | null;
   planId?: string | null;
   entityId?: string | null;

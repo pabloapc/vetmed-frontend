@@ -8,7 +8,6 @@ import {
     ArrowLeftIcon,
     ExclamationCircleIcon,
     BuildingStorefrontIcon,
-    UserCircleIcon,
     BoltIcon,
     MapPinIcon,
     LockClosedIcon,
@@ -17,20 +16,15 @@ import {
 } from "@heroicons/react/24/outline";
 
 const ROLE_META = {
-    pharmacy: {
-        label: "Farmacia",
+    veterinaria: {
+        label: "Veterinaria",
         icon: BuildingStorefrontIcon,
-        desc: "Registrá tu farmacia y conectate con miles de pacientes.",
-    },
-    doctor: {
-        label: "Profesional de salud",
-        icon: UserCircleIcon,
-        desc: "Publicá tu perfil y gestioná consultas desde Gimed.",
+        desc: "Registrá tu veterinaria, ofrecé videoconsultas y conectate con miles de dueños de mascotas.",
     },
     emergency: {
         label: "Servicio de emergencias",
         icon: BoltIcon,
-        desc: "Sumá tu servicio a la red de emergencias de Gimed.",
+        desc: "Sumá tu servicio a la red de emergencias de Vetfind.",
     },
 };
 
@@ -57,7 +51,7 @@ const STEPS = [
 
 export const RegisterEntity: React.FC = () => {
     const [step, setStep] = useState(1);
-    const [role, setRole] = useState<"pharmacy" | "doctor" | "emergency">("pharmacy");
+    const [role, setRole] = useState<"veterinaria" | "emergency">("veterinaria");
 
     const [formData, setFormData] = useState({
         name: "",
@@ -74,9 +68,6 @@ export const RegisterEntity: React.FC = () => {
         benefits: "",
         discount: "",
         openingHours: "",
-        specialty: "",
-        url: "",
-        horario: "",
     });
 
     const [error, setError] = useState("");
@@ -173,20 +164,13 @@ export const RegisterEntity: React.FC = () => {
                 role,
             };
 
-            if (role === "pharmacy") {
+            if (role === "veterinaria") {
                 payload.entityName = cleanString(formData.name);
                 payload.address = cleanString(formData.direccion);
                 payload.phone = cleanString(formData.telefono);
                 payload.benefits = cleanString(formData.benefits);
                 payload.discount = toNumberOrUndefined(formData.discount);
                 payload.openingHours = cleanString(formData.openingHours);
-            } else if (role === "doctor") {
-                payload.entityName = cleanString(formData.name);
-                payload.specialty = cleanString(formData.specialty);
-                payload.address = cleanString(formData.direccion);
-                payload.phone = cleanString(formData.telefono);
-                payload.url = cleanString(formData.url);
-                payload.horario = cleanString(formData.horario);
             } else if (role === "emergency") {
                 payload.entityName = cleanString(formData.name);
                 payload.address = cleanString(formData.direccion);
@@ -223,7 +207,7 @@ export const RegisterEntity: React.FC = () => {
                 {/* Logo */}
                 <div className="relative z-10">
                     <Link to="/" className="text-white text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                        Gimed
+                        Vetfind
                     </Link>
                 </div>
 
@@ -231,7 +215,7 @@ export const RegisterEntity: React.FC = () => {
                 <div className="relative z-10 space-y-8">
                     <div>
                         <h1 className="text-3xl font-bold text-white leading-snug mb-2">
-                            Súmate a la red <br />de salud Gimed.
+                            Súmate a la red <br />de salud Vetfind.
                         </h1>
                         <p className="text-emerald-100 text-sm">
                             Completá los pasos para registrar tu prestador.
@@ -306,7 +290,7 @@ export const RegisterEntity: React.FC = () => {
                 </div>
 
                 <div className="relative z-10 text-emerald-300 text-xs">
-                    © {new Date().getFullYear()} Gimed. Todos los derechos reservados.
+                    © {new Date().getFullYear()} Vetfind. Todos los derechos reservados.
                 </div>
             </div>
 
@@ -317,7 +301,7 @@ export const RegisterEntity: React.FC = () => {
                     {/* Mobile logo */}
                     <div className="lg:hidden mb-6 text-center">
                         <Link to="/" className="text-emerald-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                            Gimed
+                            Vetfind
                         </Link>
                     </div>
 
@@ -375,8 +359,8 @@ export const RegisterEntity: React.FC = () => {
                             <>
                                 <div>
                                     <label className={labelClass}>Tipo de entidad</label>
-                                    <div className="grid grid-cols-3 gap-2">
-                                        {(["pharmacy", "doctor", "emergency"] as const).map((r) => {
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {(["veterinaria", "emergency"] as const).map((r) => {
                                             const Icon = ROLE_META[r].icon;
                                             return (
                                                 <button
@@ -407,10 +391,8 @@ export const RegisterEntity: React.FC = () => {
                                         type="text"
                                         required
                                         placeholder={
-                                            role === "pharmacy"
-                                                ? "Farmacia El Sol"
-                                                : role === "doctor"
-                                                ? "Dr. Juan García"
+                                            role === "veterinaria"
+                                                ? "Veterinaria El Sol"
                                                 : "Emergencias del Norte"
                                         }
                                         className={inputClass}
@@ -545,10 +527,10 @@ export const RegisterEntity: React.FC = () => {
                                 </div>
 
                                 {/* Campos condicionales por rol */}
-                                {role === "pharmacy" && (
+                                {role === "veterinaria" && (
                                     <div className="space-y-5 pt-2 border-t border-gray-100">
                                         <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-1">
-                                            Datos de farmacia
+                                            Datos de veterinaria
                                         </p>
                                         <div>
                                             <label htmlFor="benefits" className={labelClass}>Beneficios</label>
@@ -584,52 +566,6 @@ export const RegisterEntity: React.FC = () => {
                                                     placeholder="Lun-Vie 8:00-20:00"
                                                     className={inputClass}
                                                     value={formData.openingHours}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {role === "doctor" && (
-                                    <div className="space-y-5 pt-2 border-t border-gray-100">
-                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide pt-1">
-                                            Datos del profesional
-                                        </p>
-                                        <div>
-                                            <label htmlFor="specialty" className={labelClass}>
-                                                Especialidad <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                id="specialty"
-                                                name="specialty"
-                                                placeholder="Cardiología, Clínica médica..."
-                                                className={inputClass}
-                                                value={formData.specialty}
-                                                onChange={handleChange}
-                                            />
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-4">
-                                            <div>
-                                                <label htmlFor="horario" className={labelClass}>Horario</label>
-                                                <input
-                                                    id="horario"
-                                                    name="horario"
-                                                    placeholder="Lun-Jue 9:00-17:00"
-                                                    className={inputClass}
-                                                    value={formData.horario}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div>
-                                                <label htmlFor="url" className={labelClass}>Instagram / Web</label>
-                                                <input
-                                                    id="url"
-                                                    name="url"
-                                                    type="url"
-                                                    placeholder="https://instagram.com/..."
-                                                    className={inputClass}
-                                                    value={formData.url}
                                                     onChange={handleChange}
                                                 />
                                             </div>

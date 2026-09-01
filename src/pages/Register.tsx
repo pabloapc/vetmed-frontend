@@ -264,7 +264,7 @@ export const Register: React.FC = () => {
 
                 <div className="relative z-10">
                     <Link to="/" className="text-white text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                        Gimed
+                        Vetfind
                     </Link>
                 </div>
 
@@ -276,7 +276,7 @@ export const Register: React.FC = () => {
                     <div>
                         <h1 className="text-4xl font-bold text-white leading-snug">
                             Bienvenido a <br />
-                            Gimed.
+                            Vetfind.
                         </h1>
                         <p className="text-blue-100 text-base leading-relaxed max-w-sm mt-2">
                             Un buen onboarding hace la diferencia: te guiamos paso a paso para que tu cuenta quede lista en minutos.
@@ -348,7 +348,7 @@ export const Register: React.FC = () => {
                 </div>
 
                 <div className="relative z-10 text-blue-300 text-xs">
-                    © {new Date().getFullYear()} Gimed. Todos los derechos reservados.
+                    © {new Date().getFullYear()} Vetfind. Todos los derechos reservados.
                 </div>
             </div>
 
@@ -357,7 +357,7 @@ export const Register: React.FC = () => {
                 <div className="w-full max-w-lg">
                     <div className="lg:hidden mb-6 text-center">
                         <Link to="/" className="text-blue-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                            Gimed
+                            Vetfind
                         </Link>
                     </div>
 
@@ -428,7 +428,7 @@ export const Register: React.FC = () => {
                                             }`}
                                         >
                                             <p className="text-sm font-semibold text-gray-900">Sin institución</p>
-                                            <p className="text-xs text-gray-500 mt-1">Cobertura con plan base de Gimed</p>
+                                            <p className="text-xs text-gray-500 mt-1">Cobertura con plan base de Vetfind</p>
                                         </button>
 
                                         <button
@@ -591,7 +591,7 @@ export const Register: React.FC = () => {
 
                                 {coverageType === "particular" && (
                                     <p className="text-xs text-gray-500">
-                                        Vas a continuar sin institución, con el plan base de Gimed. Si más adelante tenés cobertura, podés agregarla en tu perfil.
+                                        Vas a continuar sin institución, con el plan base de Vetfind. Si más adelante tenés cobertura, podés agregarla en tu perfil.
                                     </p>
                                 )}
                             </>
@@ -611,7 +611,7 @@ export const Register: React.FC = () => {
                                         {coverageType === "particular" && (
                                             <p className="text-sm text-gray-700">
                                                 <span className="font-medium">Plan:</span>{" "}
-                                                Plan base de Gimed
+                                                Plan base de Vetfind
                                             </p>
                                         )}
                                         {coverageType === "institucion" && (

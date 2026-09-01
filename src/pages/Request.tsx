@@ -7,7 +7,6 @@ import {
     XCircleIcon,
     LinkIcon,
     PhoneIcon,
-    UserCircleIcon,
     BuildingStorefrontIcon,
     BoltIcon,
     ListBulletIcon,
@@ -65,8 +64,7 @@ const statusConfig: Record<
 };
 
 const targetMeta = {
-    doctor: { label: "Doctor", Icon: UserCircleIcon, color: "text-sky-600", bg: "bg-sky-50" },
-    pharmacy: { label: "Farmacia", Icon: BuildingStorefrontIcon, color: "text-amber-600", bg: "bg-amber-50" },
+    veterinaria: { label: "Veterinaria", Icon: BuildingStorefrontIcon, color: "text-amber-600", bg: "bg-amber-50" },
     emergency: { label: "Emergencia", Icon: BoltIcon, color: "text-red-600", bg: "bg-red-50" },
 };
 
@@ -83,12 +81,11 @@ const actionTypeLabel = (actionType?: string) => {
     return at.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 };
 
-type FilterType = "all" | "doctor" | "pharmacy" | "emergency";
+type FilterType = "all" | "veterinaria" | "emergency";
 
 const TABS: { key: FilterType; label: string; Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; activeClass: string }[] = [
     { key: "all",       label: "Todas",      Icon: ListBulletIcon,          activeClass: "bg-gray-900 text-white" },
-    { key: "doctor",    label: "Doctores",   Icon: UserCircleIcon,          activeClass: "bg-sky-600 text-white" },
-    { key: "pharmacy",  label: "Farmacias",  Icon: BuildingStorefrontIcon,  activeClass: "bg-amber-500 text-white" },
+    { key: "veterinaria",  label: "Veterinarias",  Icon: BuildingStorefrontIcon,  activeClass: "bg-amber-500 text-white" },
     { key: "emergency", label: "Urgencias",  Icon: BoltIcon,                activeClass: "bg-red-600 text-white" },
 ];
 
@@ -118,12 +115,11 @@ export const Requests: React.FC = () => {
     useEffect(() => { load(); }, []);
 
     const counts = useMemo(() => {
-        const c = { all: 0, doctor: 0, pharmacy: 0, emergency: 0 } as Record<string, number>;
+        const c = { all: 0, veterinaria: 0, emergency: 0 } as Record<string, number>;
         requests.forEach((r) => {
             c.all += 1;
-            const t = r.targetType ?? (r.pharmacy ? "pharmacy" : r.doctor ? "doctor" : undefined);
-            if (t === "doctor") c.doctor += 1;
-            else if (t === "pharmacy") c.pharmacy += 1;
+            const t = r.targetType ?? (r.veterinaria ? "veterinaria" : undefined);
+            if (t === "veterinaria") c.veterinaria += 1;
             else if (t === "emergency") c.emergency += 1;
         });
         return c;
@@ -132,7 +128,7 @@ export const Requests: React.FC = () => {
     const filteredRequests = useMemo(() => {
         if (filter === "all") return requests;
         return requests.filter((r) => {
-            const t = r.targetType ?? (r.pharmacy ? "pharmacy" : r.doctor ? "doctor" : undefined);
+            const t = r.targetType ?? (r.veterinaria ? "veterinaria" : undefined);
             return t === filter;
         });
     }, [requests, filter]);
@@ -256,9 +252,9 @@ export const Requests: React.FC = () => {
             ) : (
                 <div className="space-y-3">
                     {filteredRequests.map((r) => {
-                        const target = r.target ?? r.pharmacy ?? r.doctor ?? null;
+                        const target = r.target ?? r.veterinaria ?? null;
                         const targetType: string | undefined =
-                            r.targetType ?? (r.pharmacy ? "pharmacy" : r.doctor ? "doctor" : undefined);
+                            r.targetType ?? (r.veterinaria ? "veterinaria" : undefined);
                         const tMeta = targetType && targetType in targetMeta
                             ? targetMeta[targetType as keyof typeof targetMeta]
                             : null;

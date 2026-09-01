@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { authService } from "../services/authService";
-import pharmacyService from "../services/pharmacyService";
-import doctorService from "../services/doctorService";
+import veterinariaService from "../services/veterinariaService";
 import emergencyService from "../services/emergencyService";
 import {
     CheckCircleIcon,
@@ -32,7 +31,7 @@ export const Profile: React.FC = () => {
     const [personalError, setPersonalError] = useState("");
     const [personalSuccess, setPersonalSuccess] = useState("");
 
-    // Entity form (pharmacy, doctor or emergency)
+    // Entity form (veterinaria or emergency)
     const [entity, setEntity] = useState<any>(null);
     const [entityEditing, setEntityEditing] = useState(false);
     const [entityLoading, setEntityLoading] = useState(false);
@@ -66,7 +65,7 @@ export const Profile: React.FC = () => {
         });
     }, [user]);
 
-    // load entity if role is pharmacy/doctor/emergency
+    // load entity if role is veterinaria/emergency
     useEffect(() => {
         const loadEntity = async () => {
             if (!user) return;
@@ -77,11 +76,11 @@ export const Profile: React.FC = () => {
                 setEntityError("");
                 setEntity(null);
 
-                if (user.role === "pharmacy") {
-                    const res: any = await pharmacyService.getById(
+                if (user.role === "veterinaria") {
+                    const res: any = await veterinariaService.getById(
                         user.entityId
                     );
-                    const doc = res?.data?.pharmacy ?? res?.pharmacy ?? res;
+                    const doc = res?.data?.veterinaria ?? res?.veterinaria ?? res;
                     if (doc) {
                         setEntity({
                             id: doc.id ?? doc._id,
@@ -105,34 +104,8 @@ export const Profile: React.FC = () => {
                                     : true,
                         });
                     }
-                } else if (user.role === "doctor") {
-                    const res: any = await doctorService.getById(user.entityId);
-                    const doc = res?.data?.doctor ?? res?.doctor ?? res;
-                    if (doc) {
-                        setEntity({
-                            id: doc.id ?? doc._id,
-                            name: doc.name ?? "",
-                            specialty: doc.specialty ?? "",
-                            address: doc.address ?? "",
-                            phone: doc.phone ?? "",
-                            url: doc.url ?? "",
-                            horario: doc.horario ?? doc.openingHours ?? "",
-                            latitude:
-                                doc.coordinates?.latitude ??
-                                doc.location?.coordinates?.[1] ??
-                                "",
-                            longitude:
-                                doc.coordinates?.longitude ??
-                                doc.location?.coordinates?.[0] ??
-                                "",
-                            isActive:
-                                typeof doc.isActive !== "undefined"
-                                    ? !!doc.isActive
-                                    : true,
-                        });
-                    }
                 } else if (user.role === "emergency") {
-                    // Emergency entity: load similarly to pharmacy/doctor
+                    // Emergency entity: load similarly to veterinaria
                     // Uses emergencyService.getEmergency(id) — adapt if your service uses a different method
                     const res: any = await emergencyService.getById(
                         user.entityId
@@ -338,19 +311,13 @@ export const Profile: React.FC = () => {
                 payload.isActive = !!entity.isActive;
 
             // role specific
-            if (user.role === "pharmacy") {
+            if (user.role === "veterinaria") {
                 if (typeof entity.benefits !== "undefined")
                     payload.benefits = entity.benefits;
                 if (typeof entity.discount !== "undefined")
                     payload.discount = entity.discount;
                 if (typeof entity.openingHours !== "undefined")
                     payload.openingHours = entity.openingHours;
-            } else if (user.role === "doctor") {
-                if (typeof entity.specialty !== "undefined")
-                    payload.specialty = entity.specialty;
-                if (typeof entity.url !== "undefined") payload.url = entity.url;
-                if (typeof entity.horario !== "undefined")
-                    payload.horario = entity.horario;
             } else if (user.role === "emergency") {
                 // emergency-specific fields (example)
                 if (typeof entity.serviceType !== "undefined")
@@ -384,10 +351,8 @@ export const Profile: React.FC = () => {
             }
 
             // call proper service
-            if (user.role === "pharmacy") {
-                await pharmacyService.update(user.entityId, payload);
-            } else if (user.role === "doctor") {
-                await doctorService.update(user.entityId, payload);
+            if (user.role === "veterinaria") {
+                await veterinariaService.update(user.entityId, payload);
             } else if (user.role === "emergency") {
                 // emergencyService.update assumed — adapt if your service uses a different method
                 await emergencyService.update(user.entityId, payload);
@@ -399,9 +364,9 @@ export const Profile: React.FC = () => {
             setEntityEditing(false);
             // refresh entity data
             // re-fetch
-            if (user.role === "pharmacy") {
-                const res: any = await pharmacyService.getById(user.entityId);
-                const doc = res?.data?.pharmacy ?? res?.pharmacy ?? res;
+            if (user.role === "veterinaria") {
+                const res: any = await veterinariaService.getById(user.entityId);
+                const doc = res?.data?.veterinaria ?? res?.veterinaria ?? res;
                 setEntity({
                     id: doc.id ?? doc._id,
                     name: doc.name ?? "",
@@ -410,30 +375,6 @@ export const Profile: React.FC = () => {
                     benefits: doc.benefits ?? "",
                     discount: doc.discount ?? "",
                     openingHours: doc.openingHours ?? doc.horario ?? "",
-                    latitude:
-                        doc.coordinates?.latitude ??
-                        doc.location?.coordinates?.[1] ??
-                        "",
-                    longitude:
-                        doc.coordinates?.longitude ??
-                        doc.location?.coordinates?.[0] ??
-                        "",
-                    isActive:
-                        typeof doc.isActive !== "undefined"
-                            ? !!doc.isActive
-                            : true,
-                });
-            } else if (user.role === "doctor") {
-                const res: any = await doctorService.getById(user.entityId);
-                const doc = res?.data?.doctor ?? res?.doctor ?? res;
-                setEntity({
-                    id: doc.id ?? doc._id,
-                    name: doc.name ?? "",
-                    specialty: doc.specialty ?? "",
-                    address: doc.address ?? "",
-                    phone: doc.phone ?? "",
-                    url: doc.url ?? "",
-                    horario: doc.horario ?? doc.openingHours ?? "",
                     latitude:
                         doc.coordinates?.latitude ??
                         doc.location?.coordinates?.[1] ??
@@ -487,8 +428,7 @@ export const Profile: React.FC = () => {
 
     const roleLabels: Record<string, string> = {
         admin: "Administrador",
-        pharmacy: "Farmacia",
-        doctor: "Doctor",
+        veterinaria: "Veterinaria",
         emergency: "Emergencias",
         user: "Paciente",
     };
@@ -735,9 +675,8 @@ export const Profile: React.FC = () => {
                     </form>
                 </div>
 
-                {/* Entity panel (pharmacy | doctor | emergency) */}
-                {(user.role === "pharmacy" ||
-                    user.role === "doctor" ||
+                {/* Entity panel (veterinaria | emergency) */}
+                {(user.role === "veterinaria" ||
                     user.role === "emergency") && (
                     <div className="rounded-[1.75rem] border border-gray-100 bg-white p-5 shadow-sm sm:p-6">
                         <div className="mb-5 flex items-center justify-between gap-3">
@@ -800,27 +739,6 @@ export const Profile: React.FC = () => {
                                         />
                                     </div>
 
-                                    {user.role === "doctor" && (
-                                        <>
-                                            <div className="sm:col-span-2">
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Especialidad
-                                                </label>
-                                                <input
-                                                    name="specialty"
-                                                    value={entity.specialty}
-                                                    onChange={
-                                                        handleEntityChange
-                                                    }
-                                                    disabled={!entityEditing}
-                                                    className={inputClass}
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-
-                                   
-
                                     <div className="sm:col-span-2">
                                         <label className="block text-sm font-medium text-gray-700">
                                             Dirección
@@ -847,7 +765,7 @@ export const Profile: React.FC = () => {
                                         />
                                     </div>
 
-                                    {user.role === "pharmacy" && (
+                                    {user.role === "veterinaria" && (
                                         <>
                                             <div className="sm:col-span-2">
                                                 <label className="block text-sm font-medium text-gray-700">
@@ -888,40 +806,6 @@ export const Profile: React.FC = () => {
                                                 <input
                                                     name="openingHours"
                                                     value={entity.openingHours}
-                                                    onChange={
-                                                        handleEntityChange
-                                                    }
-                                                    disabled={!entityEditing}
-                                                    className={inputClass}
-                                                />
-                                            </div>
-                                        </>
-                                    )}
-
-                                    {user.role === "doctor" && (
-                                        <>
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    URL / Link
-                                                </label>
-                                                <input
-                                                    name="url"
-                                                    value={entity.url}
-                                                    onChange={
-                                                        handleEntityChange
-                                                    }
-                                                    disabled={!entityEditing}
-                                                    className={inputClass}
-                                                />
-                                            </div>
-
-                                            <div>
-                                                <label className="block text-sm font-medium text-gray-700">
-                                                    Horario
-                                                </label>
-                                                <input
-                                                    name="horario"
-                                                    value={entity.horario}
                                                     onChange={
                                                         handleEntityChange
                                                     }

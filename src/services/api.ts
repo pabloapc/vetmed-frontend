@@ -1,21 +1,6 @@
 import axios from 'axios';
-import { Capacitor } from '@capacitor/core';
 
-function getApiBaseUrl(): string {
-  const webApiUrl = import.meta.env.VITE_API_URL;
-  const androidApiUrl = import.meta.env.VITE_ANDROID_API_URL;
-
-  // Native Android may need a different host than web (emulator vs device vs remote).
-  if (Capacitor.isNativePlatform() && Capacitor.getPlatform() === 'android') {
-    return androidApiUrl || 'http://10.0.2.2:3001/api';
-  }
-
-  if (webApiUrl) return webApiUrl;
-
-  return 'http://localhost:3001/api';
-}
-
-const API_BASE_URL = getApiBaseUrl();
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,

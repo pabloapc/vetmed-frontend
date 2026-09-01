@@ -4,7 +4,6 @@ import adminService from "../../services/adminService";
 import {
     UserGroupIcon,
     BuildingStorefrontIcon,
-    UserCircleIcon,
     ChartBarIcon,
     ClockIcon,
     CheckCircleIcon,
@@ -83,8 +82,7 @@ const MiniSparkline: React.FC<{ data: number[]; color?: string }> = ({
 
 const labelForTargetType = (t?: string) => {
     if (!t) return "Destino";
-    if (t === "pharmacy") return "Farmacia";
-    if (t === "doctor") return "Doctor";
+    if (t === "veterinaria") return "Veterinaria";
     if (t === "emergency") return "Emergencia";
     return t.charAt(0).toUpperCase() + t.slice(1);
 };
@@ -119,7 +117,7 @@ export const AdminDashboard: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [recentTargetFilter, setRecentTargetFilter] = useState<
-        "all" | "pharmacy" | "doctor" | "emergency"
+        "all" | "veterinaria" | "emergency"
     >("all");
 
     const load = async () => {
@@ -169,7 +167,7 @@ export const AdminDashboard: React.FC = () => {
             </h1>
 
             {/* top stat cards - expanded to include Emergencies */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                 <StatCard
                     title="Solicitudes totales"
                     value={metrics.totalRequests ?? 0}
@@ -177,22 +175,13 @@ export const AdminDashboard: React.FC = () => {
                     icon={RectangleStackIcon}
                     colorBg="bg-violet-50"
                 />
-                <Link to="/admin/requests?target=pharmacy">
+                <Link to="/admin/requests?target=veterinaria">
                     <StatCard
-                        title="Farmacias (solicitudes)"
-                        value={metrics.targetCounts?.pharmacy ?? 0}
-                        subtitle="Solicitudes dirigidas a farmacias"
+                        title="Veterinarias (solicitudes)"
+                        value={metrics.targetCounts?.veterinaria ?? 0}
+                        subtitle="Solicitudes dirigidas a veterinarias"
                         icon={BuildingStorefrontIcon}
                         colorBg="bg-amber-50"
-                    />
-                </Link>
-                <Link to="/admin/requests?target=doctor">
-                    <StatCard
-                        title="Doctores (solicitudes)"
-                        value={metrics.targetCounts?.doctor ?? 0}
-                        subtitle="Solicitudes dirigidas a doctores"
-                        icon={UserCircleIcon}
-                        colorBg="bg-green-50"
                     />
                 </Link>
                 <Link to="/admin/requests?target=emergency">
@@ -284,8 +273,7 @@ export const AdminDashboard: React.FC = () => {
                     <div className="mt-3 flex flex-wrap gap-2">
                         {[
                             { key: "all", label: "Todas" },
-                            { key: "pharmacy", label: "Farmacias" },
-                            { key: "doctor", label: "Doctores" },
+                            { key: "veterinaria", label: "Veterinarias" },
                             { key: "emergency", label: "Urgencias" },
                         ].map((opt) => (
                             <button
@@ -295,8 +283,7 @@ export const AdminDashboard: React.FC = () => {
                                     setRecentTargetFilter(
                                         opt.key as
                                             | "all"
-                                            | "pharmacy"
-                                            | "doctor"
+                                            | "veterinaria"
                                             | "emergency"
                                     )
                                 }
@@ -367,30 +354,15 @@ export const AdminDashboard: React.FC = () => {
                 </Link>
 
                 <Link
-                    to="/admin/pharmacies"
+                    to="/admin/veterinarias"
                     className="p-4 bg-white rounded shadow hover:shadow-md"
                 >
                     <div className="flex items-center gap-3">
                         <BuildingStorefrontIcon className="w-6 h-6 text-amber-600" />
                         <div>
-                            <div className="font-medium">Farmacias</div>
+                            <div className="font-medium">Veterinarias</div>
                             <div className="text-xs text-gray-500">
-                                Listar y administrar farmacias
-                            </div>
-                        </div>
-                    </div>
-                </Link>
-
-                <Link
-                    to="/admin/doctors"
-                    className="p-4 bg-white rounded shadow hover:shadow-md"
-                >
-                    <div className="flex items-center gap-3">
-                        <UserCircleIcon className="w-6 h-6 text-green-600" />
-                        <div>
-                            <div className="font-medium">Doctores</div>
-                            <div className="text-xs text-gray-500">
-                                Listar y administrar doctores
+                                Listar y administrar veterinarias
                             </div>
                         </div>
                     </div>

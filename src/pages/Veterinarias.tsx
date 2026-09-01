@@ -1,52 +1,44 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import emergencyService from "../services/emergencyService";
-import requestService from "../services/requestService";
+import React, { useState, useEffect, useMemo, useRef } from "react";
+import { veterinariaService } from "../services/veterinariaService";
+import { requestService } from "../services/requestService";
+import type { Veterinaria, BackendVeterinaria } from "../types/veterinaria";
 import { useAuth } from "../hooks/useAuth";
 import { BottomNavMenu } from "../components/BottomNavMenu";
+
 import {
     MagnifyingGlassIcon,
     MapPinIcon,
     MapIcon,
     ArrowPathIcon,
+    BuildingStorefrontIcon,
+    ChevronDownIcon,
+    InformationCircleIcon,
     PhoneIcon,
+    ClockIcon,
+    TagIcon,
+    XMarkIcon,
     KeyIcon,
     ClipboardDocumentIcon,
     CheckIcon,
-    ExclamationTriangleIcon,
     ExclamationCircleIcon,
-    XMarkIcon,
-    ChevronDownIcon,
-    LinkIcon,
 } from "@heroicons/react/24/outline";
 
 const PAGE_SIZE = 9;
-
-type EmergencyBackend = any;
-type Emergency = {
-    id: string;
-    nombre: string;
-    direccion?: string;
-    telefono?: string;
-    ciudad?: string;
-    provincia?: string;
-    latitud?: number;
-    longitud?: number;
-    distancia?: number; // meters
-    url?: string;
-};
+//const TOKEN_TTL_MS = 2 * 60 * 1000; // 2 minutes
 
 type TokenInfo = {
     code: string;
-    expiresAt: number;
+    expiresAt: number; // timestamp ms
 };
 
-export const Emergencies: React.FC = () => {
-    const [items, setItems] = useState<Emergency[]>([]);
+export const Veterinarias: React.FC = () => {
+    const [veterinarias, setVeterinarias] = useState<Veterinaria[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
     const [useLocation, setUseLocation] = useState<boolean>(() => {
         try {
-            return localStorage.getItem("emergencies_useLocation") === "true";
+            const raw = localStorage.getItem("veterinarias_useLocation");
+            return raw === "true";
         } catch {
             return false;
         }
@@ -57,24 +49,25 @@ export const Emergencies: React.FC = () => {
     const [copyFeedback, setCopyFeedback] = useState<Record<string, boolean>>(
         {}
     );
-
     const { user } = useAuth();
 
+    // tokens state: a mapping veterinariaId -> TokenInfo
     const [tokens, setTokens] = useState<Record<string, TokenInfo>>({});
+    // requestForms per veterinaria
+    const [requestForms, setRequestForms] = useState<
+        Record<string, { actionType: string; notes: string; loading?: boolean }>
+    >({});
+
+    // tick to force re-render every second while there are active tokens
     const [tick, setTick] = useState(0);
     const tickRef = useRef<number | null>(null);
-
-    // requestForms per emergency (only actionType & loading)
-    const [requestForms, setRequestForms] = useState<
-        Record<string, { actionType: string; loading?: boolean }>
-    >({});
 
     // pagination / lazy load
     const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
     const loadMoreRef = useRef<HTMLDivElement | null>(null);
     const observerRef = useRef<IntersectionObserver | null>(null);
 
-    // debounce search
+    // debounce search input (300ms)
     useEffect(() => {
         const t = window.setTimeout(() => {
             setDebouncedSearch(search.trim().toLowerCase());
@@ -83,16 +76,17 @@ export const Emergencies: React.FC = () => {
     }, [search]);
 
     useEffect(() => {
-        loadEmergencies();
+        loadVeterinarias();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [useLocation, user]);
 
     useEffect(() => {
         setVisibleCount(PAGE_SIZE);
-    }, [debouncedSearch, items]);
+    }, [debouncedSearch, veterinarias]);
 
     useEffect(
         () => {
+            // intersection observer to auto load more when sentinel visible
             if (observerRef.current) {
                 observerRef.current.disconnect();
                 observerRef.current = null;
@@ -109,31 +103,37 @@ export const Emergencies: React.FC = () => {
                         }
                     });
                 },
-                { root: null, rootMargin: "200px", threshold: 0.1 }
+                {
+                    root: null,
+                    rootMargin: "200px",
+                    threshold: 0.1,
+                }
             );
             observerRef.current.observe(loadMoreRef.current);
-            return () => observerRef.current?.disconnect();
+            return () => {
+                observerRef.current?.disconnect();
+            };
             // eslint-disable-next-line react-hooks/exhaustive-deps
         },
         [
-            /* filtered triggers later */
+            /* trigger after filtered recalculated */
         ]
     );
 
-    // manage tick for tokens
+    // manage global tick interval when there are tokens present
     useEffect(() => {
-        const hasActive = Object.keys(tokens).length > 0;
-        if (hasActive && tickRef.current === null) {
-            tickRef.current = window.setInterval(
-                () => setTick((t) => t + 1),
-                1000
-            );
+        const hasActiveTokens = Object.keys(tokens).length > 0;
+        if (hasActiveTokens && tickRef.current === null) {
+            tickRef.current = window.setInterval(() => {
+                setTick((t) => t + 1);
+            }, 1000);
         }
-        if (!hasActive && tickRef.current !== null) {
+        if (!hasActiveTokens && tickRef.current !== null) {
             window.clearInterval(tickRef.current);
             tickRef.current = null;
             setTick(0);
         }
+
         return () => {
             if (tickRef.current !== null) {
                 window.clearInterval(tickRef.current);
@@ -142,6 +142,7 @@ export const Emergencies: React.FC = () => {
         };
     }, [tokens]);
 
+    // regenerate expired tokens on each tick (local fallback)
     useEffect(() => {
         if (Object.keys(tokens).length === 0) return;
         const now = Date.now();
@@ -149,81 +150,106 @@ export const Emergencies: React.FC = () => {
         const next = { ...tokens };
         Object.entries(next).forEach(([id, info]) => {
             if (info.expiresAt <= now) {
+                // expire locally - remove
                 delete next[id];
                 changed = true;
             }
         });
-        if (changed) setTokens(next);
+        if (changed) {
+            setTokens(next);
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tick]);
 
-    const mapEmergency = (e: EmergencyBackend): Emergency => {
+    const mapVeterinaria = (p: BackendVeterinaria): Veterinaria => {
+        const horarios = p.openingHours?.split(",")[0] ?? "";
+        const apertura = horarios.includes(":")
+            ? horarios.split(" ")[1]?.split("-")[0]
+            : "";
+        const cierre = horarios.includes(":")
+            ? horarios.split(" ")[1]?.split("-")[1]
+            : "";
+
         return {
-            id: e.id ?? e._id ?? String(Math.random()),
-            nombre: e.name ?? e.title ?? "Servicio",
-            direccion: e.address ?? e.location_text ?? "",
-            telefono: e.phone ?? e.telefono ?? "",
-            ciudad: e.city ?? "",
-            provincia: e.province ?? "",
-            latitud:
-                e.coordinates?.latitude ?? e.location?.coordinates?.[1] ?? 0,
-            longitud:
-                e.coordinates?.longitude ?? e.location?.coordinates?.[0] ?? 0,
-            distancia: e.distance ?? undefined,
-            url: e.url ?? "",
+            id: p.id,
+            nombre: p.name,
+            direccion: p.address,
+            telefono: p.phone,
+            ciudad: p.city ?? "",
+            provincia: p.province ?? "",
+            latitud: p.coordinates?.latitude ?? 0,
+            longitud: p.coordinates?.longitude ?? 0,
+            horarioApertura: apertura ?? "",
+            horarioCierre: cierre ?? "",
+            distancia: p.distance ?? undefined,
+            beneficios: p.benefits ?? "",
+            descuento: p.discount ?? undefined,
         };
     };
 
-    const normalizeResponseToArray = (raw: any): EmergencyBackend[] => {
+    const normalizeResponseToArray = (raw: any): BackendVeterinaria[] => {
         if (!raw) return [];
-        if (Array.isArray(raw)) return raw as EmergencyBackend[];
-        if (Array.isArray(raw.emergencies))
-            return raw.emergencies as EmergencyBackend[];
+        if (Array.isArray(raw)) return raw as BackendVeterinaria[];
+        if (Array.isArray(raw.veterinarias))
+            return raw.veterinarias as BackendVeterinaria[];
         if (raw.data) {
-            if (Array.isArray(raw.data)) return raw.data as EmergencyBackend[];
-            if (Array.isArray(raw.data.emergencies))
-                return raw.data.emergencies as EmergencyBackend[];
+            if (Array.isArray(raw.data)) return raw.data as BackendVeterinaria[];
+            if (Array.isArray(raw.data.veterinarias))
+                return raw.data.veterinarias as BackendVeterinaria[];
             if (Array.isArray(raw.data.data))
-                return raw.data.data as EmergencyBackend[];
+                return raw.data.data as BackendVeterinaria[];
         }
         const possible =
-            raw.emergencies ??
+            raw.veterinarias ??
             raw.data ??
-            raw.data?.emergencies ??
+            raw.data?.veterinarias ??
             raw.data?.data ??
             null;
-        if (Array.isArray(possible)) return possible as EmergencyBackend[];
+        if (Array.isArray(possible)) return possible as BackendVeterinaria[];
         return [];
     };
 
-    const loadEmergencies = async () => {
+    const loadVeterinarias = async () => {
         setIsLoading(true);
         setError("");
+
         try {
             let raw: any;
+
             if (
                 useLocation &&
                 user?.location?.coordinates &&
                 user.location.coordinates.length === 2
             ) {
                 const [longitude, latitude] = user.location.coordinates;
-                raw = await emergencyService.getNearbyEmergencies(
+                raw = await veterinariaService.getNearbyVeterinarias(
                     latitude,
                     longitude
                 );
             } else {
-                raw = await emergencyService.getAllEmergencies();
+                raw = await veterinariaService.getAllVeterinarias();
             }
-            const arr = normalizeResponseToArray(raw);
-            const mapped = arr.map(mapEmergency);
-            setItems(mapped);
-        } catch (err: any) {
+
+            const dataArray = normalizeResponseToArray(raw);
+            if (!Array.isArray(dataArray)) {
+                throw new Error(
+                    "El endpoint no devolvió un array de veterinarias"
+                );
+            }
+
+            const mapped = dataArray.map(mapVeterinaria);
+            setVeterinarias(mapped);
+        } catch (err) {
+            const errorObj = err as {
+                response?: { data?: { message?: string } };
+                message?: string;
+            };
             const msg =
-                err?.response?.data?.message ||
-                err?.message ||
-                "Error al cargar emergencias";
+                errorObj.response?.data?.message ||
+                errorObj.message ||
+                "Error al cargar veterinarias";
             setError(msg);
-            setItems([]);
+            setVeterinarias([]);
         } finally {
             setIsLoading(false);
         }
@@ -243,18 +269,110 @@ export const Emergencies: React.FC = () => {
         const next = !useLocation;
         setUseLocation(next);
         try {
-            localStorage.setItem("emergencies_useLocation", String(next));
-        } catch {}
+            localStorage.setItem("veterinarias_useLocation", String(next));
+        } catch {
+            // ignore
+        }
     };
 
-    const toggleExpand = (id: string) =>
-        setExpandedIds((p) => ({ ...p, [id]: !p[id] }));
+    const toggleExpand = (id: string) => {
+        setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    const openDetailsAndRequest = (id: string) => {
+        setExpandedIds((prev) => ({ ...prev, [id]: true }));
+        window.setTimeout(() => {
+            const details = document.getElementById(`details-${id}`);
+            details?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 120);
+    };
+
+    // function generate6Digit() {
+    //     return Math.floor(100000 + Math.random() * 900000).toString();
+    // }
+
+    // Create request (calls backend). Supports anonymous users: provide userSnapshot in payload.
+    const handleCreateRequest = async (veterinariaId: string) => {
+        // form for this veterinaria
+        const form = requestForms[veterinariaId] || {
+            actionType: "medicamento",
+            notes: "",
+        };
+        setRequestForms((s) => ({
+            ...s,
+            [veterinariaId]: { ...(s[veterinariaId] || {}), loading: true },
+        }));
+        try {
+            // ... dentro handleCreateRequest for veterinaria
+            const payload: any = {
+                targetType: "veterinaria",
+                targetId: veterinariaId,
+                actionType: form.actionType,
+                notes: form.notes,
+                metadata: {}, // opcional
+            };
+            // attach userSnapshot as before
+
+            // if logged in attach nothing (server will read req.user) otherwise attach userSnapshot
+            if (!user) {
+                // For anonymous, demand a short name/email - here we try to pull from localStorage or ask user
+                payload.userSnapshot = {
+                    name: localStorage.getItem("anon_name") || "Invitado",
+                    email: localStorage.getItem("anon_email") || "",
+                    telefono: "",
+                };
+            }
+
+            const res = await requestService.createRequest(payload);
+            const created = res?.data?.request ?? res?.request ?? res;
+
+            // set token in local state so user sees it
+            if (created?.token && created?.expiresAt) {
+                setTokens((t) => ({
+                    ...t,
+                    [veterinariaId]: {
+                        code: created.token,
+                        expiresAt: new Date(created.expiresAt).getTime(),
+                    },
+                }));
+            }
+
+            // Optionally show a success toast (not implemented here)
+        } catch (err: any) {
+            console.error("createRequest error", err);
+            setError(
+                err?.response?.data?.message ||
+                    err.message ||
+                    "Error al crear solicitud"
+            );
+        } finally {
+            setRequestForms((s) => ({
+                ...s,
+                [veterinariaId]: { ...(s[veterinariaId] || {}), loading: false },
+            }));
+        }
+    };
+
+    const handleRequestFormChange = (
+        veterinariaId: string,
+        field: "actionType" | "notes",
+        value: string
+    ) => {
+        setRequestForms((s) => ({
+            ...s,
+            [veterinariaId]: {
+                ...(s[veterinariaId] || { actionType: "medicamento", notes: "" }),
+                [field]: value,
+            },
+        }));
+    };
 
     const getRemainingMs = (id: string) => {
-        const t = tokens[id];
-        if (!t) return 0;
-        return Math.max(0, t.expiresAt - Date.now());
+        const info = tokens[id];
+        if (!info) return 0;
+        return Math.max(0, info.expiresAt - Date.now());
     };
+
     const formatMsToMMSS = (ms: number) => {
         const totalSec = Math.ceil(ms / 1000);
         const mm = Math.floor(totalSec / 60)
@@ -266,112 +384,19 @@ export const Emergencies: React.FC = () => {
         return `${mm}:${ss}`;
     };
 
- 
-
-    // Create request for emergency (mirrors Veterinarias logic)
-    const handleCreateRequest = async (emergencyId: string) => {
-        const form = requestForms[emergencyId] || {
-            actionType: "consulta_medica",
-            notes: "",
-        };
-        setRequestForms((s) => ({
-            ...s,
-            [emergencyId]: { ...(s[emergencyId] || {}), loading: true },
-        }));
-        try {
-            const payload: any = {
-                targetType: "emergency",
-                targetId: emergencyId,
-                actionType: form.actionType,
-                metadata: {},
-                userSnapshot: user
-                    ? {
-                          name: user.name,
-                          email: user.email,
-                          telefono: user.telefono || "",
-                      }
-                    : {
-                          name: localStorage.getItem("anon_name") || "Invitado",
-                          email: localStorage.getItem("anon_email") || "",
-                          telefono: "",
-                      },
-            };
-
-            // Attach emergency target field so backend can adapt (if you implemented targetType/targetId)
-            payload.emergencyId = emergencyId;
-
-            // Include userSnapshot for anonymous users; server will resolve req.user if Authorization header present
-            if (user) {
-                payload.userSnapshot = {
-                    name: user.name,
-                    email: user.email,
-                    telefono: (user as any).telefono || "",
-                };
-            } else {
-                payload.userSnapshot = {
-                    name: localStorage.getItem("anon_name") || "Invitado",
-                    email: localStorage.getItem("anon_email") || "",
-                    telefono: "",
-                };
-            }
-
-            // Call unified createRequest endpoint
-            const res = await requestService.createRequest(payload);
-            const created = res?.data?.request ?? res?.request ?? res;
-
-            if (created?.token && created?.expiresAt) {
-                setTokens((t) => ({
-                    ...t,
-                    [emergencyId]: {
-                        code: created.token,
-                        expiresAt: new Date(created.expiresAt).getTime(),
-                    },
-                }));
-            }
-        } catch (err: any) {
-            console.error("createRequest (emergency) error", err);
-            setError(
-                err?.response?.data?.message ||
-                    err.message ||
-                    "Error al crear solicitud"
-            );
-        } finally {
-            setRequestForms((s) => ({
-                ...s,
-                [emergencyId]: { ...(s[emergencyId] || {}), loading: false },
-            }));
-        }
-    };
-
-    const handleRequestFormChange = (
-        emergencyId: string,
-        field: "actionType" | "notes",
-        value: string
-    ) => {
-        setRequestForms((s) => ({
-            ...s,
-            [emergencyId]: {
-                ...(s[emergencyId] || {
-                    actionType: "consulta_medica",
-                    notes: "",
-                }),
-                [field]: value,
-            },
-        }));
-    };
-
+    // filter by debounced search
     const filtered = useMemo(() => {
         const q = debouncedSearch;
-        if (!q) return items;
-        return items.filter((it) => {
+        if (!q) return veterinarias;
+        return veterinarias.filter((p) => {
             return (
-                it.nombre?.toLowerCase().includes(q) ||
-                (it.direccion ?? "").toLowerCase().includes(q) ||
-                (it.ciudad ?? "").toLowerCase().includes(q)
+                p.nombre.toLowerCase().includes(q) ||
+                (p.beneficios || "").toLowerCase().includes(q)
             );
         });
-    }, [items, debouncedSearch]);
+    }, [veterinarias, debouncedSearch]);
 
+    // displayed slice for pagination
     const displayed = useMemo(
         () => filtered.slice(0, visibleCount),
         [filtered, visibleCount]
@@ -383,13 +408,12 @@ export const Emergencies: React.FC = () => {
 
     if (isLoading) {
         return (
-            <div className="max-w-6xl mx-auto pb-safe">
-                <div className="bg-gradient-to-br from-rose-700 via-red-600 to-orange-700 px-4 pt-6 pb-5 sm:mx-4 sm:mt-6 sm:rounded-[2rem] sm:shadow-xl sm:p-8 animate-pulse">
-                    <div className="h-6 w-36 bg-white/30 rounded-xl mb-2" />
-                    <div className="h-4 w-24 bg-white/20 rounded mb-4" />
-                    <div className="h-10 bg-white/20 rounded-2xl" />
+            <div className="max-w-6xl mx-auto px-4 py-10">
+                <div className="mb-8">
+                    <div className="h-8 w-48 bg-gray-200 rounded-lg animate-pulse mb-2" />
+                    <div className="h-4 w-72 bg-gray-100 rounded animate-pulse" />
                 </div>
-                <div className="px-4 pt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {Array.from({ length: PAGE_SIZE }).map((_, i) => (
                         <div key={i} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 animate-pulse">
                             <div className="flex items-start gap-3 mb-4">
@@ -398,6 +422,10 @@ export const Emergencies: React.FC = () => {
                                     <div className="h-4 bg-gray-200 rounded w-3/4 mb-2" />
                                     <div className="h-3 bg-gray-100 rounded w-full" />
                                 </div>
+                            </div>
+                            <div className="flex gap-2 mb-4">
+                                <div className="h-6 w-16 bg-gray-100 rounded-full" />
+                                <div className="h-6 w-20 bg-gray-100 rounded-full" />
                             </div>
                             <div className="h-9 bg-gray-100 rounded-lg" />
                         </div>
@@ -410,17 +438,17 @@ export const Emergencies: React.FC = () => {
     return (
         <div className="max-w-6xl mx-auto pb-safe">
 
-            {/* Hero — card in mobile, full-bleed on sm+ */}
+            {/* App Hero — card in mobile, full-bleed on sm+ */}
             <div className="px-4 py-6 sm:px-4 sm:py-0">
-            <div className="bg-gradient-to-br from-rose-700 via-red-600 to-orange-700 px-4 pt-6 pb-5 rounded-[2rem] sm:rounded-[2rem] sm:shadow-xl sm:p-8">
+            <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 px-4 pt-6 pb-5 rounded-[2rem] sm:rounded-[2rem] sm:shadow-xl sm:p-8">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center">
-                            <ExclamationTriangleIcon className="w-5 h-5 text-white" />
+                            <BuildingStorefrontIcon className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-lg font-bold text-white leading-tight">Emergencias</h1>
-                            <p className="text-xs text-rose-100">{filtered.length} disponibles</p>
+                            <h1 className="text-lg font-bold text-white leading-tight">Veterinarias</h1>
+                            <p className="text-xs text-blue-100">{filtered.length} disponibles</p>
                         </div>
                     </div>
                     <button
@@ -428,7 +456,7 @@ export const Emergencies: React.FC = () => {
                         aria-pressed={useLocation}
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
                             useLocation
-                                ? "bg-white text-rose-700"
+                                ? "bg-white text-blue-700"
                                 : "bg-white/15 text-white border border-white/30"
                         }`}
                     >
@@ -437,17 +465,17 @@ export const Emergencies: React.FC = () => {
                     </button>
                 </div>
 
-                {/* Search */}
+                {/* Sticky search */}
                 <div className="relative">
                     <MagnifyingGlassIcon className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                     <input
-                        id="emergency-search"
+                        id="veterinaria-search"
                         type="text"
-                        placeholder="Buscar por nombre o ciudad…"
+                        placeholder="Buscar por nombre o beneficio…"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-10 py-2.5 rounded-2xl text-sm bg-white border-0 focus:outline-none focus:ring-2 focus:ring-rose-400 shadow-sm"
-                        aria-label="Buscar emergencias"
+                        className="w-full pl-10 pr-10 py-2.5 rounded-2xl text-sm bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+                        aria-label="Buscar veterinarias"
                     />
                     {search ? (
                         <button
@@ -461,7 +489,7 @@ export const Emergencies: React.FC = () => {
                         <ArrowPathIcon className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 animate-spin" aria-hidden />
                     ) : null}
                 </div>
-            </div>{/* end gradient */}
+            </div>{/* end gradient hero */}
             </div>{/* end sm:px wrapper */}
 
             <div className="px-4 pt-4">
@@ -484,13 +512,13 @@ export const Emergencies: React.FC = () => {
             {filtered.length === 0 ? (
                 <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-14 flex flex-col items-center text-center">
                     <div className="w-14 h-14 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                        <ExclamationTriangleIcon className="w-7 h-7 text-gray-300" />
+                        <BuildingStorefrontIcon className="w-7 h-7 text-gray-300" />
                     </div>
                     <p className="text-gray-500 text-sm">
-                        {search ? `No encontramos servicios para "${search}".` : "No hay servicios de emergencia disponibles."}
+                        {search ? `No encontramos veterinarias para "${search}".` : "No hay veterinarias disponibles en este momento."}
                     </p>
                     {search && (
-                        <button onClick={() => setSearch("")} className="mt-3 text-xs text-rose-600 hover:underline">
+                        <button onClick={() => setSearch("")} className="mt-3 text-xs text-blue-600 hover:underline">
                             Limpiar búsqueda
                         </button>
                     )}
@@ -498,101 +526,130 @@ export const Emergencies: React.FC = () => {
             ) : (
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                        {displayed.map((it) => {
-                            const expanded = !!expandedIds[it.id];
-                            const tokenInfo = tokens[it.id];
-                            const remainingMs = getRemainingMs(it.id);
-                            const form = requestForms[it.id] || { actionType: "urgencia", loading: false };
+                        {displayed.map((veterinaria) => {
+                            const expanded = !!expandedIds[veterinaria.id];
+                            const tokenInfo = tokens[veterinaria.id];
+                            const remainingMs = getRemainingMs(veterinaria.id);
+                            const form = requestForms[veterinaria.id] || {
+                                actionType: "medicamento",
+                                notes: "",
+                                loading: false,
+                            };
                             const progressPct = tokenInfo
                                 ? Math.max(0, (remainingMs / (2 * 60 * 1000)) * 100)
                                 : 0;
 
                             return (
                                 <article
-                                    key={it.id}
+                                    key={veterinaria.id}
                                     className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col"
                                 >
                                     {/* Card header */}
                                     <div className="p-4 md:p-5 flex items-start gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
-                                            <ExclamationTriangleIcon className="w-5 h-5 text-rose-600" />
+                                        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
+                                            <BuildingStorefrontIcon className="w-5 h-5 text-amber-600" />
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-start justify-between gap-2">
                                                 <h3 className="font-semibold text-gray-900 text-sm leading-snug truncate">
-                                                    {it.nombre}
+                                                    {veterinaria.nombre}
                                                 </h3>
-                                                {it.distancia !== undefined && (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600 whitespace-nowrap shrink-0">
-                                                        <MapPinIcon className="w-3 h-3" />
-                                                        {(it.distancia / 1000).toFixed(1)} km
+                                                {veterinaria.descuento !== undefined && (
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 whitespace-nowrap shrink-0">
+                                                        <TagIcon className="w-3 h-3" />
+                                                        {veterinaria.descuento}% off
                                                     </span>
                                                 )}
                                             </div>
-                                            {it.direccion && (
-                                                <p className="text-xs text-gray-400 truncate mt-0.5" title={it.direccion}>
-                                                    {it.direccion}{it.ciudad ? `, ${it.ciudad}` : ""}
+                                            {veterinaria.direccion && (
+                                                <p className="text-xs text-gray-400 truncate mt-0.5" title={veterinaria.direccion}>
+                                                    {veterinaria.direccion}
+                                                    {veterinaria.ciudad ? `, ${veterinaria.ciudad}` : ""}
                                                 </p>
                                             )}
                                         </div>
                                     </div>
 
-                                    {/* Toggle buttons */}
+                                    {/* Badges row */}
+                                    <div className="px-4 md:px-5 pb-3 flex flex-wrap gap-1.5">
+                                        {veterinaria.distancia !== undefined && (
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
+                                                <MapPinIcon className="w-3 h-3" />
+                                                {(veterinaria.distancia / 1000).toFixed(1)} km
+                                            </span>
+                                        )}
+                                        {veterinaria.horarioApertura && (
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-gray-50 text-gray-500">
+                                                <ClockIcon className="w-3 h-3" />
+                                                {veterinaria.horarioApertura}
+                                                {veterinaria.horarioCierre ? ` - ${veterinaria.horarioCierre}` : ""}
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* Toggle button */}
                                     <div className="px-4 md:px-5 pb-4 md:pb-5 mt-auto">
                                         <div className="grid grid-cols-2 gap-2 md:hidden">
                                             <button
-                                                onClick={() => toggleExpand(it.id)}
+                                                onClick={() => toggleExpand(veterinaria.id)}
                                                 aria-expanded={expanded}
-                                                aria-controls={`details-${it.id}`}
+                                                aria-controls={`details-${veterinaria.id}`}
                                                 className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-700 bg-white active:scale-[0.99] transition"
                                             >
-                                                <ChevronDownIcon className={`w-4 h-4 text-rose-600 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+                                                <InformationCircleIcon className="w-4 h-4 text-blue-600" />
                                                 {expanded ? "Ocultar" : "Detalle"}
                                             </button>
+
                                             <button
-                                                onClick={() => {
-                                                    setExpandedIds((p) => ({ ...p, [it.id]: true }));
-                                                    setTimeout(() => {
-                                                        document.getElementById(`details-${it.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-                                                    }, 120);
-                                                }}
-                                                className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-medium text-white bg-rose-600 hover:bg-rose-700 active:scale-[0.99] transition"
+                                                onClick={() => openDetailsAndRequest(veterinaria.id)}
+                                                className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition"
                                             >
                                                 Solicitar
                                             </button>
                                         </div>
+
                                         <button
-                                            onClick={() => toggleExpand(it.id)}
+                                            onClick={() => toggleExpand(veterinaria.id)}
                                             aria-expanded={expanded}
-                                            aria-controls={`details-${it.id}`}
+                                            aria-controls={`details-${veterinaria.id}`}
                                             className="hidden md:flex w-full items-center justify-center gap-1.5 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition"
                                         >
                                             {expanded ? "Ocultar detalles" : "Ver detalles y solicitar"}
-                                            <ChevronDownIcon className={`w-4 h-4 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`} />
+                                            <ChevronDownIcon
+                                                className={`w-4 h-4 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+                                            />
                                         </button>
                                     </div>
 
-                                    {/* Expandable */}
+                                    {/* Expandable section */}
                                     <div
-                                        id={`details-${it.id}`}
-                                        className={`overflow-hidden transition-[max-height,opacity] duration-300 ${expanded ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"}`}
+                                        id={`details-${veterinaria.id}`}
+                                        className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
+                                            expanded ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"
+                                        }`}
                                     >
                                         <div className="border-t border-gray-100 mx-5" />
-                                        <div className="px-5 py-4 space-y-3">
+                                        <div className="px-5 py-4 space-y-3 text-sm text-gray-700">
+                                            {veterinaria.beneficios && (
+                                                <div className="bg-amber-50 rounded-lg px-3 py-2 text-xs text-amber-800">
+                                                    <span className="font-semibold">Beneficios: </span>
+                                                    {veterinaria.beneficios}
+                                                </div>
+                                            )}
                                             {/* Big tap-friendly action buttons */}
                                             <div className="grid grid-cols-2 gap-2">
-                                                {it.telefono && (
+                                                {veterinaria.telefono && (
                                                     <a
-                                                        href={`tel:${it.telefono}`}
+                                                        href={`tel:${veterinaria.telefono}`}
                                                         className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <PhoneIcon className="w-4 h-4" />
                                                         Llamar
                                                     </a>
                                                 )}
-                                                {it.latitud && it.longitud ? (
+                                                {veterinaria.latitud && veterinaria.longitud ? (
                                                     <a
-                                                        href={`https://www.google.com/maps/search/?api=1&query=${it.latitud},${it.longitud}`}
+                                                        href={`https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-blue-50 text-blue-700 text-sm font-semibold active:scale-95 transition"
@@ -600,28 +657,23 @@ export const Emergencies: React.FC = () => {
                                                         <MapIcon className="w-4 h-4" />
                                                         Cómo llegar
                                                     </a>
-                                                ) : it.telefono ? null : <div />}
+                                                ) : veterinaria.telefono ? null : (
+                                                    <div />
+                                                )}
                                             </div>
-                                            {it.url && (
-                                                <a
-                                                    href={it.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center justify-center gap-2 py-2.5 rounded-2xl bg-gray-50 text-gray-700 text-sm font-medium active:scale-95 transition"
-                                                >
-                                                    <LinkIcon className="w-4 h-4" />
-                                                    Ver enlace
-                                                </a>
-                                            )}
                                         </div>
 
                                         {/* Request section */}
-                                        {user?.role !== "emergency" && (
+                                        {user?.role !== "veterinaria" && (
                                             <div className="px-5 pb-5">
                                                 <div className="border-t border-gray-100 mb-4" />
+
                                                 {tokenInfo ? (
+                                                    /* Token display */
                                                     <div className="space-y-3">
-                                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Código de solicitud</p>
+                                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                                                            Código de solicitud
+                                                        </p>
                                                         <div className="flex items-center gap-2 bg-gray-50 border border-gray-100 rounded-lg px-3 py-2">
                                                             <KeyIcon className="w-4 h-4 text-gray-400 shrink-0" />
                                                             <code className="flex-1 text-sm font-mono font-semibold text-gray-800">
@@ -630,19 +682,20 @@ export const Emergencies: React.FC = () => {
                                                             <button
                                                                 onClick={() =>
                                                                     navigator.clipboard?.writeText(tokenInfo.code).then(() => {
-                                                                        setCopyFeedback((s) => ({ ...s, [it.id]: true }));
-                                                                        setTimeout(() => setCopyFeedback((s) => ({ ...s, [it.id]: false })), 1600);
+                                                                        setCopyFeedback((s) => ({ ...s, [veterinaria.id]: true }));
+                                                                        setTimeout(() => setCopyFeedback((s) => ({ ...s, [veterinaria.id]: false })), 1600);
                                                                     })
                                                                 }
                                                                 className="text-gray-400 hover:text-gray-700 transition"
                                                                 title="Copiar código"
                                                             >
-                                                                {copyFeedback[it.id]
+                                                                {copyFeedback[veterinaria.id]
                                                                     ? <CheckIcon className="w-4 h-4 text-emerald-500" />
                                                                     : <ClipboardDocumentIcon className="w-4 h-4" />
                                                                 }
                                                             </button>
                                                         </div>
+                                                        {/* Countdown progress */}
                                                         <div>
                                                             <div className="flex justify-between text-xs text-gray-400 mb-1">
                                                                 <span>Expira en</span>
@@ -661,24 +714,43 @@ export const Emergencies: React.FC = () => {
                                                         </div>
                                                     </div>
                                                 ) : (
+                                                    /* Request form */
                                                     <div className="space-y-3">
-                                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Solicitar asistencia</p>
+                                                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                                                            Realizar solicitud
+                                                        </p>
                                                         <div>
-                                                            <label className="block text-xs font-medium text-gray-600 mb-1.5">Tipo de pedido</label>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                                                Tipo de solicitud
+                                                            </label>
                                                             <select
                                                                 value={form.actionType}
-                                                                onChange={(e) => handleRequestFormChange(it.id, "actionType", e.target.value)}
-                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-rose-500 focus:border-transparent transition"
+                                                                onChange={(e) =>
+                                                                    handleRequestFormChange(veterinaria.id, "actionType", e.target.value)
+                                                                }
+                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
                                                             >
-                                                                <option value="urgencia">Urgencia</option>
-                                                                <option value="emergencia">Emergencia</option>
-                                                                <option value="consulta">Consulta</option>
+                                                                <option value="medicamento">Medicamento</option>
+                                                                <option value="pedido_medico">Pedido médico</option>
                                                             </select>
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                                                Observaciones
+                                                            </label>
+                                                            <input
+                                                                value={form.notes}
+                                                                onChange={(e) =>
+                                                                    handleRequestFormChange(veterinaria.id, "notes", e.target.value)
+                                                                }
+                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-gray-400"
+                                                                placeholder="Detalles, receta, preferencia..."
+                                                            />
                                                         </div>
                                                         <button
                                                             disabled={form.loading}
-                                                            onClick={() => handleCreateRequest(it.id)}
-                                                            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-rose-600 hover:bg-rose-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-2xl active:scale-[0.98] transition"
+                                                            onClick={() => handleCreateRequest(veterinaria.id)}
+                                                            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-2xl active:scale-[0.98] transition"
                                                         >
                                                             {form.loading ? (
                                                                 <>
@@ -686,9 +758,11 @@ export const Emergencies: React.FC = () => {
                                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                                                                     </svg>
-                                                                    Enviando…
+                                                                    Enviando...
                                                                 </>
-                                                            ) : "Solicitar ayuda"}
+                                                            ) : (
+                                                                "Realizar pedido"
+                                                            )}
                                                         </button>
                                                     </div>
                                                 )}
@@ -706,9 +780,9 @@ export const Emergencies: React.FC = () => {
                             <>
                                 <button
                                     onClick={() => setVisibleCount((c) => Math.min(filtered.length, c + PAGE_SIZE))}
-                                    className="px-6 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-rose-400 hover:text-rose-600 hover:bg-rose-50 transition"
+                                    className="px-6 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition"
                                 >
-                                    Cargar más servicios
+                                    Cargar más veterinarias
                                 </button>
                                 <p className="text-xs text-gray-400">
                                     Mostrando {displayed.length} de {filtered.length}
@@ -717,16 +791,11 @@ export const Emergencies: React.FC = () => {
                             </>
                         ) : (
                             <p className="text-xs text-gray-400">
-                                {filtered.length > 0 ? `Mostrando los ${filtered.length} servicios disponibles` : ""}
+                                {filtered.length > 0 ? `Mostrando las ${filtered.length} veterinarias disponibles` : ""}
                             </p>
                         )}
                     </div>
                 </>
-            )}
-            </div>{/* end inner px-4 */}
-            <BottomNavMenu />
-        </div>
+            )}            </div>{/* end inner px-4 */}            <BottomNavMenu />        </div>
     );
 };
-
-export default Emergencies;

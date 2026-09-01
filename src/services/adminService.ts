@@ -33,68 +33,41 @@ export const adminService = {
         return res.data;
     },
 
-    // Pharmacies
-    async listPharmacies(params?: {
+    // Veterinarias
+    async listVeterinarias(params?: {
         page?: number;
         limit?: number;
         q?: string;
         unassigned?: boolean;
     }) {
-        const res = await api.get(`${base}/pharmacies`, { params });
+        const res = await api.get(`${base}/veterinarias`, { params });
         return res.data;
     },
-    async getPharmacy(id: string) {
-        const res = await api.get(`${base}/pharmacies/${id}`);
+    async getVeterinaria(id: string) {
+        const res = await api.get(`${base}/veterinarias/${id}`);
         return res.data;
     },
-    async updatePharmacy(id: string, payload: any) {
-        const res = await api.put(`${base}/pharmacies/${id}`, payload);
+    async updateVeterinaria(id: string, payload: any) {
+        const res = await api.put(`${base}/veterinarias/${id}`, payload);
         return res.data;
     },
-    async uploadPharmacyVademecumFile(id: string, file: File) {
+    async uploadVeterinariaVademecumFile(id: string, file: File) {
         const formData = new FormData();
         formData.append("vademecumFile", file);
         
-        const res = await api.patch(`${base}/pharmacies/${id}/vademecum`, formData, {
+        const res = await api.patch(`${base}/veterinarias/${id}/vademecum`, formData, {
             headers: {
                 "Content-Type": "multipart/form-data",
             },
         });
         return res.data;
     },
-    async deletePharmacy(id: string) {
-        const res = await api.delete(`${base}/pharmacies/${id}`);
+    async deleteVeterinaria(id: string) {
+        const res = await api.delete(`${base}/veterinarias/${id}`);
         return res.data;
     },
-    async createPharmacy(payload: any) {
-        const res = await api.post(`${base}/pharmacies`, payload);
-        return res.data;
-    },
-
-    // Doctors
-    async listDoctors(params?: {
-        page?: number;
-        limit?: number;
-        q?: string;
-        unassigned?: boolean;
-    }) {
-        const res = await api.get(`${base}/doctors`, { params });
-        return res.data;
-    },
-    async getDoctor(id: string) {
-        const res = await api.get(`${base}/doctors/${id}`);
-        return res.data;
-    },
-    async updateDoctor(id: string, payload: any) {
-        const res = await api.put(`${base}/doctors/${id}`, payload);
-        return res.data;
-    },
-    async deleteDoctor(id: string) {
-        const res = await api.delete(`${base}/doctors/${id}`);
-        return res.data;
-    },
-    async createDoctor(payload: any) {
-        const res = await api.post(`${base}/doctors`, payload);
+    async createVeterinaria(payload: any) {
+        const res = await api.post(`${base}/veterinarias`, payload);
         return res.data;
     },
 
@@ -134,7 +107,7 @@ export const adminService = {
         page?: number;
         limit?: number;
         q?: string;
-        targetType?: "pharmacy" | "doctor" | "emergency";
+        targetType?: "veterinaria" | "emergency";
         status?: "pending" | "accepted" | "fulfilled" | "cancelled";
     }) {
         const res = await api.get(`/requests`, { params });
@@ -157,58 +130,6 @@ export const adminService = {
     },
     async deleteLead(id: string) {
         const res = await api.delete(`${base}/leads/${id}`);
-        return res.data;
-    },
-
-    // Medical audits
-    async listAudits(params?: {
-        page?: number;
-        limit?: number;
-        q?: string;
-        status?: string;
-        caseStatus?: string;
-    }) {
-        const res = await api.get(`${base}/audits`, { params });
-        return res.data;
-    },
-    async validateAudit(
-        id: string,
-        payload: {
-            status: "pending" | "in_review" | "validated" | "rejected" | "requires_more";
-            notes?: string;
-        }
-    ) {
-        const mappedStatus =
-            payload.status === "requires_more"
-                ? "requires_more"
-                : payload.status;
-
-        // Compat: algunos backends esperan `auditStatus` en vez de `status`.
-        const requestBody = {
-            ...payload,
-            status: mappedStatus,
-            auditStatus: mappedStatus,
-        };
-
-        const res = await api.patch(
-            `${base}/audits/${id}/validate`,
-            requestBody
-        );
-        return res.data;
-    },
-    async closeAudit(id: string, payload?: { reason?: string }) {
-        const res = await api.patch(`${base}/audits/${id}/close`, payload ?? {});
-        return res.data;
-    },
-    async registerAuditContact(
-        id: string,
-        payload: { channel: string; notes?: string }
-    ) {
-        const res = await api.post(`/audits/${id}/contact`, payload);
-        return res.data;
-    },
-    async getAuditById(id: string) {
-        const res = await api.get(`/audits/${id}`);
         return res.data;
     },
 

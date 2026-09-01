@@ -40,7 +40,7 @@ export const OrganizacionesLanding: React.FC = () => {
             >
                 <div className="flex items-center gap-1">
                     <span className="text-2xl font-extrabold tracking-tight text-[#0D0028]">
-                        GIMED
+                        VETFIND
                     </span>
                     <span className="text-3xl font-extrabold text-[#5C16D4] leading-none">
                         +
@@ -125,7 +125,7 @@ export const OrganizacionesLanding: React.FC = () => {
                                 className="w-2 h-2 rounded-full bg-[#00DDB0]"
                                 style={{
                                     animation:
-                                        "gimedPulse 2.2s ease-in-out infinite",
+                                        "vetfindPulse 2.2s ease-in-out infinite",
                                 }}
                             />
                             <span className="text-xs font-semibold text-[#5C16D4] tracking-wide">
@@ -159,7 +159,7 @@ export const OrganizacionesLanding: React.FC = () => {
                             className="text-[1.05rem] text-[#7A6DA0] leading-[1.8] max-w-[480px] mb-10"
                         >
                             <strong className="font-extrabold text-[#4400B8]">
-                                GIMED+
+                                VETFIND+
                             </strong>{" "}
                             conecta organizaciones con prestadores de salud en
                             tiempo real. Menos burocracia, menos costo y mejor
@@ -248,7 +248,7 @@ export const OrganizacionesLanding: React.FC = () => {
                         >
                             <div className="flex items-center justify-between mb-5">
                                 <span className="text-base font-extrabold text-white tracking-tight">
-                                    GIMED
+                                    VETFIND
                                     <span style={{ color: "#3BEED1" }}>+</span>
                                 </span>
                                 <div
@@ -284,13 +284,13 @@ export const OrganizacionesLanding: React.FC = () => {
                                     $4.380
                                 </div>
                                 <div className="text-[0.67rem] text-white/50 mt-1">
-                                    Red de farmacias GIMED · 12 operaciones
+                                    Red de veterinarias VETFIND · 12 operaciones
                                 </div>
                             </div>
                         </div>
                         <div className="p-5 flex flex-col gap-2.5">
                             <div className="flex gap-2 flex-wrap mb-1">
-                                {["Telemedicina", "Farmacias", "Auditoría"].map(
+                                {["Telemedicina", "Veterinarias"].map(
                                     (p, i) => (
                                         <span
                                             key={p}
@@ -330,18 +330,8 @@ export const OrganizacionesLanding: React.FC = () => {
                                 {
                                     dot: "#C4A8FF",
                                     title: "Receta cargada",
-                                    sub: "Ayer · Farmacia Norte",
+                                    sub: "Ayer · Veterinaria Norte",
                                     badge: "OK",
-                                    bStyle: {
-                                        background: "#F4EEFF",
-                                        color: "#5C16D4",
-                                    },
-                                },
-                                {
-                                    dot: "#C4A8FF",
-                                    title: "Carpeta médica",
-                                    sub: "En auditoría",
-                                    badge: "Rev.",
                                     bStyle: {
                                         background: "#F4EEFF",
                                         color: "#5C16D4",
@@ -414,7 +404,7 @@ export const OrganizacionesLanding: React.FC = () => {
                         >
                             Una plataforma unificada que cubre todo el ciclo de
                             salud de tus colaboradores, desde la consulta hasta
-                            el seguimiento y la auditoría.
+                            el seguimiento.
                         </motion.p>
                     </div>
 
@@ -423,7 +413,7 @@ export const OrganizacionesLanding: React.FC = () => {
                             {
                                 n: "01",
                                 title: "Cobertura en Medicamentos",
-                                desc: "Hasta 50% de ahorro en nuestra red de farmacias adheridas. Acceso inmediato sin trámites adicionales, directo desde la app.",
+                                desc: "Hasta 50% de ahorro en nuestra red de veterinarias adheridas. Acceso inmediato sin trámites adicionales, directo desde la app.",
                                 icon: (
                                     <svg
                                         width="24"
@@ -470,7 +460,7 @@ export const OrganizacionesLanding: React.FC = () => {
                             {
                                 n: "03",
                                 title: "Red de Prestadores",
-                                desc: "Farmacias, médicos y especialistas en una sola red unificada. Una plataforma, cero intermediaciones operativas.",
+                                desc: "Veterinarias, médicos y especialistas en una sola red unificada. Una plataforma, cero intermediaciones operativas.",
                                 icon: (
                                     <svg
                                         width="24"
@@ -575,163 +565,6 @@ export const OrganizacionesLanding: React.FC = () => {
 
             <div className="h-px bg-[#E0D6F5]" />
 
-            {/* ── PROCESO ──────────────────────────────────────── */}
-            <section
-                id="como"
-                className="py-24"
-                style={{ background: "#F0EBFF" }}
-            >
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="text-center max-w-xl mx-auto mb-14">
-                        <motion.div
-                            {...reveal()}
-                            className="flex items-center justify-center gap-2 text-xs font-bold text-[#7B3FF5] uppercase tracking-widest mb-4"
-                        >
-                            <span className="w-5 h-0.5 bg-[#00DDB0] rounded-full" />
-                            Proceso
-                        </motion.div>
-                        <motion.h2
-                            {...reveal(0.08)}
-                            className="font-extrabold leading-[1.1] tracking-tight text-[#0D0028] mb-4"
-                            style={{
-                                fontSize: "clamp(1.9rem,3.2vw,2.6rem)",
-                            }}
-                        >
-                            Auditoría de{" "}
-                            <span className="text-[#5C16D4]">
-                                carpeta médica
-                            </span>
-                        </motion.h2>
-                        <motion.p
-                            {...reveal(0.16)}
-                            className="text-base text-[#7A6DA0] leading-[1.8]"
-                        >
-                            Sin intermediación operativa. En cuatro pasos, tu
-                            organización accede a un sistema de salud digital
-                            completo y auditable.
-                        </motion.p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
-                        {/* connector line */}
-                        <div
-                            className="hidden md:block absolute top-8 h-px opacity-60"
-                            style={{
-                                left: "calc(12.5% + 32px)",
-                                right: "calc(12.5% + 32px)",
-                                background:
-                                    "linear-gradient(90deg,#C4A8FF,#3BEED1,#C4A8FF)",
-                            }}
-                        />
-                        {[
-                            {
-                                title: "Diagnóstico",
-                                desc: "El empleado recibe su diagnóstico médico y los días de reposo indicados.",
-                                icon: (
-                                    <svg
-                                        width="26"
-                                        height="26"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#fff"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
-                                        <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
-                                        <circle cx="20" cy="10" r="2" />
-                                    </svg>
-                                ),
-                            },
-                            {
-                                title: "Carga digital",
-                                desc: "Sube la receta a la app en segundos desde su teléfono.",
-                                icon: (
-                                    <svg
-                                        width="26"
-                                        height="26"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#fff"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                        <polyline points="17 8 12 3 7 8" />
-                                        <line x1="12" x2="12" y1="3" y2="15" />
-                                    </svg>
-                                ),
-                            },
-                            {
-                                title: "Auditoría",
-                                desc: "El sistema valida automáticamente la autenticidad de la información cargada.",
-                                icon: (
-                                    <svg
-                                        width="26"
-                                        height="26"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#fff"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                        <path d="m9 12 2 2 4-4" />
-                                    </svg>
-                                ),
-                            },
-                            {
-                                title: "Seguimiento",
-                                desc: "Control en tiempo real con geolocalización GPS y contacto activo.",
-                                icon: (
-                                    <svg
-                                        width="26"
-                                        height="26"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="#fff"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-                                    </svg>
-                                ),
-                            },
-                        ].map(({ title, desc, icon }, i) => (
-                            <motion.div
-                                key={title}
-                                {...reveal(i * 0.08)}
-                                className="text-center relative"
-                            >
-                                <div
-                                    className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-5 relative z-10"
-                                    style={{
-                                        background:
-                                            "linear-gradient(135deg,#5C16D4 0%,#4400B8 100%)",
-                                        border: "3px solid #fff",
-                                        boxShadow:
-                                            "0 0 0 2px #C4A8FF, 0 4px 16px rgba(92,22,212,.2)",
-                                    }}
-                                >
-                                    {icon}
-                                </div>
-                                <div className="text-base font-bold text-[#0D0028] mb-2">
-                                    {title}
-                                </div>
-                                <div className="text-sm text-[#7A6DA0] leading-[1.6]">
-                                    {desc}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <div className="h-px bg-[#E0D6F5]" />
 
             {/* ── IMPACTO ───────────────────────────────────────── */}
             <section id="impacto" className="py-24 bg-white">
@@ -762,7 +595,7 @@ export const OrganizacionesLanding: React.FC = () => {
                                 className="text-base text-[#7A6DA0] leading-[1.8] mb-8"
                             >
                                 <strong className="font-extrabold text-[#4400B8]">
-                                    GIMED
+                                    VETFIND
                                 </strong>{" "}
                                 no solo mejora el bienestar de tus colaboradores
                                 — genera métricas claras de retorno sobre la
@@ -800,7 +633,7 @@ export const OrganizacionesLanding: React.FC = () => {
                                 {
                                     big: "−50%",
                                     title: "Costo en medicamentos",
-                                    desc: "Acceso directo a la red de farmacias sin intermediarios, con ahorro mensual sostenido y medible.",
+                                    desc: "Acceso directo a la red de veterinarias sin intermediarios, con ahorro mensual sostenido y medible.",
                                     icon: (
                                         <svg
                                             width="24"
@@ -820,7 +653,7 @@ export const OrganizacionesLanding: React.FC = () => {
                                 {
                                     big: "↓ Ausentismo",
                                     title: "Menor ausentismo laboral",
-                                    desc: "La auditoría activa reduce el uso indebido de licencias con datos verificables y trazables.",
+                                    desc: "El seguimiento activo reduce el uso indebido de licencias con datos verificables y trazables.",
                                     icon: (
                                         <svg
                                             width="24"
@@ -928,7 +761,7 @@ export const OrganizacionesLanding: React.FC = () => {
                             className="text-base text-[#7A6DA0] leading-[1.8] pt-6"
                         >
                             <strong className="font-extrabold text-[#4400B8]">
-                                GIMED
+                                VETFIND
                             </strong>{" "}
                             se implementa sin infraestructura propia y se
                             integra a cualquier estructura organizacional en
@@ -1084,99 +917,6 @@ export const OrganizacionesLanding: React.FC = () => {
 
             <div className="h-px bg-[#E0D6F5]" />
 
-            {/* ── AUDITORÍA — dark ──────────────────────────────── */}
-            <section className="py-24" style={{ background: "#1A0060" }}>
-                <div className="max-w-6xl mx-auto px-6">
-                    <div className="text-center max-w-xl mx-auto mb-14">
-                        <motion.div
-                            {...reveal()}
-                            className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-widest mb-4"
-                            style={{ color: "#3BEED1" }}
-                        >
-                            <span
-                                className="w-5 h-0.5 rounded-full"
-                                style={{ background: "#3BEED1" }}
-                            />
-                            Control total
-                        </motion.div>
-                        <motion.h2
-                            {...reveal(0.08)}
-                            className="font-extrabold leading-[1.1] tracking-tight text-white mb-4"
-                            style={{
-                                fontSize: "clamp(1.9rem,3.2vw,2.6rem)",
-                            }}
-                        >
-                            Auditoría de carpetas{" "}
-                            <span style={{ color: "#3BEED1" }}>médicas</span>
-                        </motion.h2>
-                        <motion.p
-                            {...reveal(0.16)}
-                            className="text-base leading-[1.8]"
-                            style={{ color: "rgba(255,255,255,.6)" }}
-                        >
-                            Trazabilidad completa de cada licencia médica con
-                            cuatro pasos que eliminan el uso indebido.
-                        </motion.p>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                        {[
-                            {
-                                step: "Paso 01",
-                                title: "Diagnóstico médico",
-                                desc: "El empleado asiste al médico y recibe su diagnóstico con los días de reposo indicados para su cuadro clínico.",
-                            },
-                            {
-                                step: "Paso 02",
-                                title: "Carga en la app",
-                                desc: "Carga la receta médica en la app GIMED en menos de dos minutos. Sin papeles, sin traslados ni ventanillas.",
-                            },
-                            {
-                                step: "Paso 03",
-                                title: "Auditoría automática",
-                                desc: "El sistema activa automáticamente un proceso de validación que verifica la autenticidad de cada información.",
-                            },
-                            {
-                                step: "Paso 04",
-                                title: "Seguimiento digital",
-                                desc: "Control continuo durante la licencia con geolocalización GPS y contacto activo en distintos momentos del día.",
-                            },
-                        ].map(({ step, title, desc }, i) => (
-                            <motion.div
-                                key={step}
-                                {...reveal(i * 0.08)}
-                                className="rounded-[20px] p-7 transition-all"
-                                style={{
-                                    background: "rgba(255,255,255,.08)",
-                                    border: "1px solid rgba(255,255,255,.14)",
-                                }}
-                            >
-                                <div
-                                    className="inline-block text-[0.68rem] font-bold tracking-widest uppercase px-3 py-1 rounded-full mb-4"
-                                    style={{
-                                        background: "rgba(0,221,176,.15)",
-                                        border: "1px solid rgba(0,221,176,.3)",
-                                        color: "#3BEED1",
-                                    }}
-                                >
-                                    {step}
-                                </div>
-                                <div className="text-base font-bold text-white mb-2">
-                                    {title}
-                                </div>
-                                <div
-                                    className="text-sm leading-[1.65]"
-                                    style={{ color: "rgba(255,255,255,.65)" }}
-                                >
-                                    {desc}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            <div className="h-px bg-[#E0D6F5]" />
 
             {/* ── SEGUIMIENTO ───────────────────────────────────── */}
             <section className="py-24" style={{ background: "#EAF9F6" }}>
@@ -1213,11 +953,11 @@ export const OrganizacionesLanding: React.FC = () => {
                         {[
                             {
                                 title: "Geolocalización GPS",
-                                desc: "Verificación del reposo en domicilio mediante geolocalización vía app GIMED en tiempo real, de manera transparente.",
+                                desc: "Verificación del reposo en domicilio mediante geolocalización vía app VETFIND en tiempo real, de manera transparente.",
                             },
                             {
                                 title: "Seguimiento remoto",
-                                desc: "El equipo médico GIMED realiza seguimiento activo al empleado durante todo el período de licencia indicado.",
+                                desc: "El equipo médico VETFIND realiza seguimiento activo al empleado durante todo el período de licencia indicado.",
                             },
                             {
                                 title: "Validación continua",
@@ -1297,7 +1037,7 @@ export const OrganizacionesLanding: React.FC = () => {
                         className="text-[0.72rem] font-semibold uppercase tracking-[3px] mb-5"
                         style={{ color: "rgba(255,255,255,.5)" }}
                     >
-                        GIMED+ Assistance
+                        VETFIND+ Assistance
                     </motion.div>
                     <motion.h2
                         {...reveal(0.08)}
@@ -1405,7 +1145,7 @@ export const OrganizacionesLanding: React.FC = () => {
                                 Nuestro equipo está disponible para responder
                                 tus preguntas y mostrarte cómo{" "}
                                 <strong className="font-extrabold text-[#4400B8]">
-                                    GIMED+
+                                    VETFIND+
                                 </strong>{" "}
                                 se adapta puntualmente a tu organización.
                             </motion.p>
@@ -1414,9 +1154,9 @@ export const OrganizacionesLanding: React.FC = () => {
                         <div className="flex flex-col gap-3">
                             {[
                                 {
-                                    href: "mailto:soporte@gimed.app",
+                                    href: "mailto:soporte@vetfind.app",
                                     label: "Email",
-                                    val: "soporte@gimed.app",
+                                    val: "soporte@vetfind.app",
                                     icon: (
                                         <svg
                                             width="20"
@@ -1459,9 +1199,9 @@ export const OrganizacionesLanding: React.FC = () => {
                                     ),
                                 },
                                 {
-                                    href: "https://instagram.com/gimed.salud",
+                                    href: "https://instagram.com/vetfind.salud",
                                     label: "Instagram",
-                                    val: "@gimed.salud",
+                                    val: "@vetfind.salud",
                                     icon: (
                                         <svg
                                             width="20"
@@ -1543,13 +1283,13 @@ export const OrganizacionesLanding: React.FC = () => {
                 style={{ background: "#0D0028" }}
             >
                 <div className="text-[1.1rem] font-extrabold text-white tracking-tight">
-                    GIMED<span style={{ color: "#00DDB0" }}>+</span>
+                    VETFIND<span style={{ color: "#00DDB0" }}>+</span>
                 </div>
                 <p
                     className="text-[0.8rem]"
                     style={{ color: "rgba(255,255,255,.3)" }}
                 >
-                    © {new Date().getFullYear()} Gimed. Todos los derechos
+                    © {new Date().getFullYear()} Vetfind. Todos los derechos
                     reservados.
                 </p>
                 <Link
@@ -1563,7 +1303,7 @@ export const OrganizacionesLanding: React.FC = () => {
 
             {/* pulse keyframe */}
             <style>{`
-                @keyframes gimedPulse {
+                @keyframes vetfindPulse {
                     0%, 100% { box-shadow: 0 0 0 0 rgba(0,221,176,.4); }
                     50%       { box-shadow: 0 0 0 6px rgba(0,221,176,0); }
                 }
