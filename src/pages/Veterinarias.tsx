@@ -534,61 +534,47 @@ export const Veterinarias: React.FC = () => {
                                     className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow flex flex-col"
                                 >
                                     {/* Card header */}
-                                    <div className="p-4 md:p-5 flex items-start gap-3">
-                                        <div className="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
-                                            <BuildingStorefrontIcon className="w-5 h-5 text-amber-600" />
-                                        </div>
-                                        <div className="flex-1 min-w-0">
-                                            <div className="flex items-start justify-between gap-2">
-                                                <h3 className="font-semibold text-gray-900 text-sm leading-snug truncate">
-                                                    {veterinaria.nombre}
-                                                </h3>
-                                                <div className="flex items-center gap-1.5 shrink-0">
-                                                    {veterinaria.isClaimed && veterinaria.descuento !== undefined && (
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 whitespace-nowrap">
-                                                            <TagIcon className="w-3 h-3" />
-                                                            {veterinaria.descuento}% off
-                                                        </span>
-                                                    )}
-                                                    <Link
-                                                        to={`/veterinarias/${veterinaria.id}`}
-                                                        title="Ver ficha completa"
-                                                        className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-600 hover:bg-brand-50 transition"
-                                                    >
-                                                        <PlusIcon className="w-3.5 h-3.5" />
-                                                    </Link>
-                                                </div>
-                                            </div>
-                                            {veterinaria.direccion && (
-                                                <p className="text-xs text-gray-400 truncate mt-0.5" title={veterinaria.direccion}>
-                                                    {veterinaria.direccion}
-                                                    {veterinaria.ciudad ? `, ${veterinaria.ciudad}` : ""}
-                                                    {veterinaria.provincia ? `, ${veterinaria.provincia}` : ""}
-                                                </p>
-                                            )}
-                                            {!veterinaria.isClaimed && (
-                                                <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
-                                                    No registrada en VetFind
+                                    <div className="p-4 md:p-5">
+                                        <div className="flex items-start justify-between gap-2">
+                                            <h3 className="font-semibold text-gray-900 text-lg leading-snug truncate">
+                                                {veterinaria.nombre}
+                                            </h3>
+                                            {veterinaria.isClaimed && veterinaria.descuento !== undefined && (
+                                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 whitespace-nowrap shrink-0">
+                                                    <TagIcon className="w-3 h-3" />
+                                                    {veterinaria.descuento}% off
                                                 </span>
                                             )}
                                         </div>
+                                        {veterinaria.direccion && (
+                                            <p className="text-xs text-gray-400 truncate mt-0.5" title={veterinaria.direccion}>
+                                                {veterinaria.direccion}
+                                                {veterinaria.ciudad ? `, ${veterinaria.ciudad}` : ""}
+                                                {veterinaria.provincia ? `, ${veterinaria.provincia}` : ""}
+                                            </p>
+                                        )}
+                                        {!veterinaria.isClaimed && (
+                                            <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
+                                                No registrada en VetFind
+                                            </span>
+                                        )}
                                     </div>
 
                                     {!veterinaria.isClaimed ? (
                                         /* Unclaimed listing: just an indexed reference, nobody manages requests here yet */
                                         <div className="mt-auto px-4 md:px-5 pb-4 md:pb-5">
                                             <div className="border-t border-gray-100 mb-4" />
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <div className="flex items-center gap-2">
                                                 {veterinaria.telefono ? (
                                                     <a
                                                         href={`tel:${veterinaria.telefono}`}
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <PhoneIcon className="w-4 h-4" />
                                                         Llamar
                                                     </a>
                                                 ) : (
-                                                    <p className="text-xs text-gray-400 flex items-center justify-center">
+                                                    <p className="flex-1 text-xs text-gray-400 flex items-center justify-center">
                                                         Sin teléfono
                                                     </p>
                                                 )}
@@ -597,15 +583,29 @@ export const Veterinarias: React.FC = () => {
                                                         href={`https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex-1 flex flex-col items-center justify-center gap-0.5 py-2.5 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
                                                         title="Ver ubicación"
                                                     >
-                                                        <MapPinIcon className="w-4 h-4" />
-                                                        Ubicación
+                                                        <span className="inline-flex items-center gap-2">
+                                                            <MapPinIcon className="w-4 h-4" />
+                                                            Ubicación
+                                                        </span>
+                                                        {veterinaria.distancia !== undefined && (
+                                                            <span className="text-[11px] font-normal text-brand-600">
+                                                                {(veterinaria.distancia / 1000).toFixed(1)} km
+                                                            </span>
+                                                        )}
                                                     </a>
                                                 ) : (
-                                                    <div />
+                                                    <div className="flex-1" />
                                                 )}
+                                                <Link
+                                                    to={`/veterinarias/${veterinaria.id}`}
+                                                    title="Ver ficha completa"
+                                                    className="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:scale-95 transition"
+                                                >
+                                                    <PlusIcon className="w-4 h-4" />
+                                                </Link>
                                             </div>
                                         </div>
                                     ) : (
@@ -638,11 +638,11 @@ export const Veterinarias: React.FC = () => {
                                                 </div>
                                             )}
                                             {/* Big tap-friendly action buttons */}
-                                            <div className="grid grid-cols-2 gap-2">
+                                            <div className="flex items-center gap-2">
                                                 {veterinaria.telefono && (
                                                     <a
                                                         href={`tel:${veterinaria.telefono}`}
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <PhoneIcon className="w-4 h-4" />
                                                         Llamar
@@ -653,14 +653,21 @@ export const Veterinarias: React.FC = () => {
                                                         href={`https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex-1 flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <MapIcon className="w-4 h-4" />
                                                         Cómo llegar
                                                     </a>
                                                 ) : veterinaria.telefono ? null : (
-                                                    <div />
+                                                    <div className="flex-1" />
                                                 )}
+                                                <Link
+                                                    to={`/veterinarias/${veterinaria.id}`}
+                                                    title="Ver ficha completa"
+                                                    className="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:scale-95 transition"
+                                                >
+                                                    <PlusIcon className="w-4 h-4" />
+                                                </Link>
                                             </div>
                                         </div>
 
@@ -721,9 +728,6 @@ export const Veterinarias: React.FC = () => {
                                                             Realizar solicitud
                                                         </p>
                                                         <div>
-                                                            <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                                                Tipo de solicitud
-                                                            </label>
                                                             <div className="grid grid-cols-2 gap-2">
                                                                 {VETERINARIA_ACTION_TYPES.map((at) => {
                                                                     const selected = form.actionType === at.value;

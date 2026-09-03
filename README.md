@@ -340,7 +340,7 @@ Hoy el sistema de salud está fragmentado. Un afiliado no sabe qué cobertura ti
 ✅ Búsqueda de veterinarias por cercanía con descuentos
 ✅ Telemedicina / consultas médicas con turno digital
 ✅ Urgencias médicas con georreferencia
-✅ Obras sociales y prepagas con planes y coberturas detalladas
+✅ prepagas con planes y coberturas detalladas
 ✅ Panel de administración completo (usuarios, entidades, movimientos)
 ✅ Módulo de solicitudes y tokens de validación
 ✅ Prestaciones médicas navegables
