@@ -251,7 +251,7 @@ export const InsurerDetail: React.FC = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center py-24">
-                <ArrowPathIcon className="w-8 h-8 animate-spin text-blue-500" />
+                <ArrowPathIcon className="w-8 h-8 animate-spin text-brand-500" />
             </div>
         );
     }
@@ -268,7 +268,7 @@ export const InsurerDetail: React.FC = () => {
                 </p>
                 <button
                     onClick={() => navigate(-1)}
-                    className="px-5 py-2.5 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                    className="px-5 py-2.5 rounded-lg bg-brand-600 text-white hover:bg-brand-700"
                 >
                     Volver
                 </button>
@@ -339,7 +339,7 @@ export const InsurerDetail: React.FC = () => {
 
             <section className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 md:p-8 mb-8">
                 <div className="flex flex-col md:flex-row md:items-start gap-5">
-                    <div className="p-3 rounded-xl bg-blue-50 text-blue-600 w-fit">
+                    <div className="p-3 rounded-xl bg-brand-50 text-brand-600 w-fit">
                         <BuildingLibraryIcon className="w-8 h-8" />
                     </div>
 
@@ -349,7 +349,7 @@ export const InsurerDetail: React.FC = () => {
                                 {insurerName}
                             </h1>
                             {insurerKind ? (
-                                <span className="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium">
+                                <span className="text-xs bg-brand-50 text-brand-700 px-2.5 py-1 rounded-full font-medium">
                                     {insurerKind}
                                 </span>
                             ) : null}
@@ -364,7 +364,7 @@ export const InsurerDetail: React.FC = () => {
                             {insurerPhone ? (
                                 <a
                                     href={`tel:${insurerPhone}`}
-                                    className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-blue-700"
+                                    className="inline-flex items-center gap-2 text-sm text-gray-700 hover:text-brand-700"
                                 >
                                     <PhoneIcon className="w-4 h-4" />
                                     {insurerPhone}
@@ -376,7 +376,7 @@ export const InsurerDetail: React.FC = () => {
                                     href={websiteUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 text-sm text-blue-700 hover:text-blue-900 font-medium"
+                                    className="inline-flex items-center gap-2 text-sm text-brand-700 hover:text-brand-900 font-medium"
                                 >
                                     <GlobeAltIcon className="w-4 h-4" />
                                     Sitio oficial
@@ -405,7 +405,7 @@ export const InsurerDetail: React.FC = () => {
                             value={q}
                             onChange={(e) => setQ(e.target.value)}
                             placeholder="Buscar plan u oferta..."
-                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                            className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none"
                         />
                     </div>
                 </div>
@@ -473,7 +473,7 @@ export const InsurerDetail: React.FC = () => {
 
                                     <div className="mt-4 pt-4 border-t border-gray-100">
                                         <h4 className="text-sm font-semibold text-gray-800 inline-flex items-center gap-2 mb-2">
-                                            <ClipboardDocumentListIcon className="w-4 h-4 text-blue-600" />
+                                            <ClipboardDocumentListIcon className="w-4 h-4 text-brand-600" />
                                             Ofertas vinculadas
                                         </h4>
                                         {planOffers.length > 0 ? (
@@ -502,7 +502,7 @@ export const InsurerDetail: React.FC = () => {
 
             <div className="mt-8 text-sm text-gray-500">
                 ¿Sos parte de esta institución y querés sumar o actualizar planes? Visitá
-                <Link to="/organizaciones" className="text-blue-700 hover:underline ml-1">
+                <Link to="/organizaciones" className="text-brand-700 hover:underline ml-1">
                     organizaciones
                 </Link>
                 .

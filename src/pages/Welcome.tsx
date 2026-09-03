@@ -18,7 +18,7 @@ import { BottomNavMenu } from "../components/BottomNavMenu";
 const statusStyles: Record<string, { label: string; className: string }> = {
     pending: { label: "Pendiente", className: "bg-amber-100 text-amber-700" },
     accepted: { label: "Aceptada", className: "bg-emerald-100 text-emerald-700" },
-    fulfilled: { label: "Cumplida", className: "bg-blue-100 text-blue-700" },
+    fulfilled: { label: "Cumplida", className: "bg-brand-100 text-brand-700" },
     cancelled: { label: "Cancelada", className: "bg-red-100 text-red-700" },
 };
 
@@ -115,7 +115,7 @@ export const Welcome: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6 pb-28">
-                <section className="relative overflow-hidden rounded-[2rem] mx-4 my-6 sm:mx-0 sm:my-0 bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 p-6 sm:p-8 text-white shadow-xl">
+                <section className="relative overflow-hidden rounded-[2rem] mx-4 my-6 sm:mx-0 sm:my-0 bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 p-6 sm:p-8 text-white shadow-xl">
                      <div className="absolute -bottom-20 right-0 h-56 w-56 rounded-full bg-white/10" />
 
                     <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
@@ -142,19 +142,19 @@ export const Welcome: React.FC = () => {
 
                         <div className="grid grid-cols-2 gap-3 w-full lg:w-auto lg:min-w-[320px]">
                             <div className="rounded-3xl bg-white/10 border border-white/10 px-4 py-4 backdrop-blur-sm">
-                                <p className="text-xs text-blue-100">Solicitudes totales</p>
+                                <p className="text-xs text-brand-100">Solicitudes totales</p>
                                 <p className="mt-1 text-3xl font-bold">{requests.length}</p>
                             </div>
                             <div className="rounded-3xl bg-white/10 border border-white/10 px-4 py-4 backdrop-blur-sm">
-                                <p className="text-xs text-blue-100">Pendientes</p>
+                                <p className="text-xs text-brand-100">Pendientes</p>
                                 <p className="mt-1 text-3xl font-bold">{pendingCount}</p>
                             </div>
                             <div className="rounded-3xl bg-white/10 border border-white/10 px-4 py-4 backdrop-blur-sm">
-                                <p className="text-xs text-blue-100">Aceptadas</p>
+                                <p className="text-xs text-brand-100">Aceptadas</p>
                                 <p className="mt-1 text-3xl font-bold">{acceptedCount}</p>
                             </div>
                             <div className="rounded-3xl bg-white/10 border border-white/10 px-4 py-4 backdrop-blur-sm">
-                                <p className="text-xs text-blue-100">Plan actual</p>
+                                <p className="text-xs text-brand-100">Plan actual</p>
                                 <p className="mt-1 text-lg font-semibold truncate">{planName}</p>
                             </div>
                         </div>
@@ -255,7 +255,7 @@ export const Welcome: React.FC = () => {
 
                     <div className="rounded-[2rem] border border-gray-100 bg-white p-5 sm:p-6 shadow-sm">
                         <div className="flex items-center gap-2 mb-5">
-                            <CalendarDaysIcon className="w-5 h-5 text-blue-600" />
+                            <CalendarDaysIcon className="w-5 h-5 text-brand-600" />
                             <h2 className="text-xl font-bold text-gray-900">Accesos principales</h2>
                         </div>
 
@@ -283,9 +283,9 @@ export const Welcome: React.FC = () => {
                             ))}
                         </div>
 
-                        <div className="mt-5 rounded-3xl border border-blue-100 bg-blue-50 px-4 py-4">
+                        <div className="mt-5 rounded-3xl border border-brand-100 bg-brand-50 px-4 py-4">
                             <div className="flex items-start gap-3">
-                                <CheckCircleIcon className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                                <CheckCircleIcon className="w-5 h-5 text-brand-600 shrink-0 mt-0.5" />
                                 <div>
                                     <p className="text-sm font-semibold text-gray-900">Tu cobertura ya está lista</p>
                                     <p className="text-sm text-gray-600 mt-1">
@@ -293,7 +293,7 @@ export const Welcome: React.FC = () => {
                                     </p>
                                     <Link
                                         to="/profile"
-                                        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-blue-700 hover:text-blue-800"
+                                        className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-brand-700 hover:text-brand-800"
                                     >
                                         Ir a mi perfil
                                         <ArrowRightIcon className="w-4 h-4" />

@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { authService } from "../services/authService";
 import adminService from "../services/adminService";
 import PasswordInput from "../components/PasswordInput";
+import { BrandLogo } from "../components/BrandLogo";
 import {
     ShieldCheckIcon,
     UserPlusIcon,
@@ -244,7 +245,7 @@ export const Register: React.FC = () => {
     };
 
     const inputClass =
-        "w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition";
+        "w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition";
     const labelClass = "block text-sm font-medium text-gray-700 mb-1.5";
     const selectedInsurer = insurers.find((i) => i.id === formData.insurerId);
     const selectedPlan = plans.find((p) => p.id === formData.planId);
@@ -258,14 +259,12 @@ export const Register: React.FC = () => {
     return (
         <div className="min-h-screen flex">
             {/* Left panel — bienvenida + stepper */}
-            <div className="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 flex-col justify-between p-12 relative overflow-hidden">
+            <div className="hidden lg:flex lg:w-5/12 bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 flex-col justify-between p-12 relative overflow-hidden">
                 <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full" />
                 <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3" />
 
                 <div className="relative z-10">
-                    <Link to="/" className="text-white text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                        Vetfind
-                    </Link>
+                    <BrandLogo variant="onDark" size="lg" />
                 </div>
 
                 <div className="relative z-10 space-y-8">
@@ -278,7 +277,7 @@ export const Register: React.FC = () => {
                             Bienvenido a <br />
                             Vetfind.
                         </h1>
-                        <p className="text-blue-100 text-base leading-relaxed max-w-sm mt-2">
+                        <p className="text-brand-100 text-base leading-relaxed max-w-sm mt-2">
                             Un buen onboarding hace la diferencia: te guiamos paso a paso para que tu cuenta quede lista en minutos.
                         </p>
                     </div>
@@ -296,7 +295,7 @@ export const Register: React.FC = () => {
                                         <div
                                             className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 transition-all duration-300 ${
                                                 isCompleted
-                                                    ? "bg-white text-blue-700"
+                                                    ? "bg-white text-brand-700"
                                                     : isCurrent
                                                     ? "bg-white/20 border-2 border-white text-white"
                                                     : "bg-white/10 border border-white/20 text-white/40"
@@ -332,7 +331,7 @@ export const Register: React.FC = () => {
                                         <p
                                             className={`text-xs mt-0.5 transition-all duration-300 ${
                                                 isCurrent
-                                                    ? "text-blue-100"
+                                                    ? "text-brand-100"
                                                     : isCompleted
                                                     ? "text-white/50"
                                                     : "text-white/25"
@@ -347,7 +346,7 @@ export const Register: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="relative z-10 text-blue-300 text-xs">
+                <div className="relative z-10 text-brand-300 text-xs">
                     © {new Date().getFullYear()} Vetfind. Todos los derechos reservados.
                 </div>
             </div>
@@ -355,10 +354,8 @@ export const Register: React.FC = () => {
             {/* Right panel — onboarding */}
             <div className="flex-1 flex items-start justify-center bg-gray-50 px-6 py-12 overflow-y-auto">
                 <div className="w-full max-w-lg">
-                    <div className="lg:hidden mb-6 text-center">
-                        <Link to="/" className="text-blue-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                            Vetfind
-                        </Link>
+                    <div className="lg:hidden mb-6 flex justify-center">
+                        <BrandLogo variant="onLight" size="lg" />
                     </div>
 
                     <div className="lg:hidden flex items-center justify-center gap-2 mb-8">
@@ -367,9 +364,9 @@ export const Register: React.FC = () => {
                                 key={s.number}
                                 className={`h-2 rounded-full transition-all duration-300 ${
                                     step === s.number
-                                        ? "w-6 bg-blue-600"
+                                        ? "w-6 bg-brand-600"
                                         : step > s.number
-                                        ? "w-2 bg-blue-400"
+                                        ? "w-2 bg-brand-400"
                                         : "w-2 bg-gray-300"
                                 }`}
                             />
@@ -378,18 +375,18 @@ export const Register: React.FC = () => {
 
                     <div className="mb-8">
                         <div className="flex items-start justify-between mb-4">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50">
-                                <UserPlusIcon className="w-6 h-6 text-blue-600" />
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-50">
+                                <UserPlusIcon className="w-6 h-6 text-brand-600" />
                             </div>
                             <Link
                                 to="/"
-                                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition"
+                                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-brand-600 transition"
                             >
                                 <ArrowRightIcon className="w-3.5 h-3.5 rotate-180" />
                                 Volver al inicio
                             </Link>
                         </div>
-                        <p className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-1">
+                        <p className="text-xs font-semibold text-brand-600 uppercase tracking-widest mb-1">
                             Paso {step} de {STEPS.length}
                         </p>
                         <h2 className="text-2xl font-bold text-gray-900">{STEPS[step - 1].title}</h2>
@@ -423,8 +420,8 @@ export const Register: React.FC = () => {
                                             }}
                                             className={`text-left rounded-xl border p-4 transition ${
                                                 coverageType === "particular"
-                                                    ? "border-blue-500 bg-blue-50"
-                                                    : "border-gray-200 bg-white hover:border-blue-300"
+                                                    ? "border-brand-500 bg-brand-50"
+                                                    : "border-gray-200 bg-white hover:border-brand-300"
                                             }`}
                                         >
                                             <p className="text-sm font-semibold text-gray-900">Sin institución</p>
@@ -440,8 +437,8 @@ export const Register: React.FC = () => {
                                             }}
                                             className={`text-left rounded-xl border p-4 transition ${
                                                 coverageType === "institucion"
-                                                    ? "border-blue-500 bg-blue-50"
-                                                    : "border-gray-200 bg-white hover:border-blue-300"
+                                                    ? "border-brand-500 bg-brand-50"
+                                                    : "border-gray-200 bg-white hover:border-brand-300"
                                             }`}
                                         >
                                             <p className="text-sm font-semibold text-gray-900">Cobertura</p>
@@ -457,7 +454,7 @@ export const Register: React.FC = () => {
                                             <button
                                                 type="button"
                                                 onClick={() => setShowInsurerPicker((s) => !s)}
-                                                className="w-full text-left px-4 py-2.5 bg-white hover:bg-blue-50 text-gray-700 text-sm rounded-lg border border-gray-300 transition"
+                                                className="w-full text-left px-4 py-2.5 bg-white hover:bg-brand-50 text-gray-700 text-sm rounded-lg border border-gray-300 transition"
                                             >
                                                 {selectedInsurer
                                                     ? selectedInsurer.name
@@ -505,7 +502,7 @@ export const Register: React.FC = () => {
                                                                         }}
                                                                         className={`px-3 py-1.5 rounded-full text-xs border transition ${
                                                                             active
-                                                                                ? "bg-blue-600 text-white border-blue-600"
+                                                                                ? "bg-brand-600 text-white border-brand-600"
                                                                                 : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
                                                                         }`}
                                                                     >
@@ -524,7 +521,7 @@ export const Register: React.FC = () => {
                                                 type="button"
                                                 onClick={() => setShowPlanPicker((s) => !s)}
                                                 disabled={!formData.insurerId}
-                                                className="w-full text-left px-4 py-2.5 bg-white hover:bg-blue-50 disabled:bg-gray-100 disabled:text-gray-400 text-gray-700 text-sm rounded-lg border border-gray-300 transition"
+                                                className="w-full text-left px-4 py-2.5 bg-white hover:bg-brand-50 disabled:bg-gray-100 disabled:text-gray-400 text-gray-700 text-sm rounded-lg border border-gray-300 transition"
                                             >
                                                 {selectedPlan
                                                     ? selectedPlan.name
@@ -570,7 +567,7 @@ export const Register: React.FC = () => {
                                                                         }}
                                                                         className={`px-3 py-1.5 rounded-full text-xs border transition ${
                                                                             active
-                                                                                ? "bg-blue-600 text-white border-blue-600"
+                                                                                ? "bg-brand-600 text-white border-brand-600"
                                                                                 : "bg-gray-50 text-gray-700 border-gray-300 hover:bg-gray-100"
                                                                         }`}
                                                                     >
@@ -599,8 +596,8 @@ export const Register: React.FC = () => {
 
                         {step === 2 && (
                             <>
-                                <div className="rounded-xl border border-blue-100 bg-blue-50/70 px-4 py-3">
-                                    <p className="text-[11px] uppercase tracking-widest font-semibold text-blue-700 mb-2">
+                                <div className="rounded-xl border border-brand-100 bg-brand-50/70 px-4 py-3">
+                                    <p className="text-[11px] uppercase tracking-widest font-semibold text-brand-700 mb-2">
                                         Resumen de cobertura
                                     </p>
                                     <div className="space-y-1">
@@ -675,7 +672,7 @@ export const Register: React.FC = () => {
                                             required
                                             autoComplete="new-password"
                                             placeholder="••••••••"
-                                            className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-blue-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
+                                            className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-brand-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
                                         />
                                     </div>
                                     <div>
@@ -690,7 +687,7 @@ export const Register: React.FC = () => {
                                             required
                                             autoComplete="new-password"
                                             placeholder="••••••••"
-                                            className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-blue-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
+                                            className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-brand-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
                                         />
                                     </div>
                                 </div>
@@ -702,7 +699,7 @@ export const Register: React.FC = () => {
                                 <button
                                     type="button"
                                     onClick={handleBack}
-                                    className="flex items-center justify-center gap-2 border border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-medium py-2.5 px-5 rounded-lg text-sm transition"
+                                    className="flex items-center justify-center gap-2 border border-gray-300 hover:border-brand-400 hover:bg-brand-50 text-gray-700 hover:text-brand-700 font-medium py-2.5 px-5 rounded-lg text-sm transition"
                                 >
                                     <ArrowLeftIcon className="w-4 h-4" />
                                     Anterior
@@ -711,7 +708,7 @@ export const Register: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                className="flex-1 flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
                             >
                                 {step < STEPS.length ? (
                                     <>
@@ -745,7 +742,7 @@ export const Register: React.FC = () => {
 
                     <Link
                         to="/login"
-                        className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-medium py-2.5 px-4 rounded-lg text-sm transition"
+                        className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:border-brand-400 hover:bg-brand-50 text-gray-700 hover:text-brand-700 font-medium py-2.5 px-4 rounded-lg text-sm transition"
                     >
                         Iniciar sesión
                     </Link>
@@ -772,7 +769,7 @@ export const Register: React.FC = () => {
                         </p>
                         <button
                             onClick={closeModal}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg text-sm transition"
+                            className="w-full bg-brand-600 hover:bg-brand-700 text-white font-semibold py-2.5 rounded-lg text-sm transition"
                         >
                             Ir a iniciar sesión
                         </button>

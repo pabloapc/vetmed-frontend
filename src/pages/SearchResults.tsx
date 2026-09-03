@@ -61,7 +61,7 @@ export const SearchResults: React.FC = () => {
                                 className="block p-3 bg-white rounded shadow hover:shadow-md"
                             >
                                 <div className="flex items-start gap-3">
-                                    <MapPinIcon className="w-6 h-6 text-blue-600" />
+                                    <MapPinIcon className="w-6 h-6 text-brand-600" />
                                     <div>
                                         <div className="font-medium text-gray-900">
                                             {p.name}

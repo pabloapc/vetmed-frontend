@@ -164,7 +164,7 @@ export const EmergencyRequests: React.FC = () => {
                                             href={callUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 px-3 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 text-sm"
+                                            className="inline-flex items-center gap-2 px-3 py-1 bg-brand-600 text-white rounded hover:bg-brand-700 text-sm"
                                         >
                                             Ir a la videollamada
                                         </a>
@@ -227,7 +227,7 @@ export const EmergencyRequests: React.FC = () => {
                                         className={`px-3 py-1 rounded text-sm ${
                                             r.status === "llego_destino"
                                                 ? "bg-gray-200 text-gray-600"
-                                                : "bg-blue-600 text-white hover:bg-blue-700"
+                                                : "bg-brand-600 text-white hover:bg-brand-700"
                                         }`}
                                     >
                                         {loadingForThis &&

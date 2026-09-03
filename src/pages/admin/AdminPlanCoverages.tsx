@@ -212,11 +212,11 @@ export const AdminPlanCoverages: React.FC = () => {
                 <div className="flex items-center gap-2">
                     <button
                         onClick={() => setShowCreate(true)}
-                        className="px-3 py-1 bg-blue-600 text-white rounded"
+                        className="px-3 py-1 bg-brand-600 text-white rounded"
                     >
                         Nueva cobertura
                     </button>
-                    <Link to="/admin" className="text-sm text-blue-600 hover:underline">
+                    <Link to="/admin" className="text-sm text-brand-600 hover:underline">
                         Volver
                     </Link>
                 </div>
@@ -231,7 +231,7 @@ export const AdminPlanCoverages: React.FC = () => {
                 />
                 <button
                     type="submit"
-                    className="bg-blue-600 text-white px-3 py-2 rounded"
+                    className="bg-brand-600 text-white px-3 py-2 rounded"
                 >
                     Buscar
                 </button>
@@ -458,7 +458,7 @@ export const AdminPlanCoverages: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                                    className="px-4 py-2 bg-brand-600 text-white rounded"
                                 >
                                     {saving ? "Guardando..." : "Crear cobertura"}
                                 </button>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import requestService from "../services/requestService";
 import { useAuth } from "../hooks/useAuth";
+import { veterinariaActionTypeLabel } from "../constants/veterinariaActionTypes";
 import { CheckIcon } from "@heroicons/react/24/outline";
 
 type RequestType = any;
@@ -347,7 +348,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
 
             <div className="mt-2 text-sm text-gray-700">
                 <div>
-                    <strong>Tipo:</strong> {r.actionType}
+                    <strong>Tipo:</strong> {veterinariaActionTypeLabel(r.actionType)}
                 </div>
                 {r.notes && (
                     <div>
@@ -371,7 +372,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
                             href={r.metadata.callUrl}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-blue-600 underline"
+                            className="text-brand-600 underline"
                         >
                             {r.metadata.callUrl}
                         </a>
@@ -448,7 +449,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
                                 <button
                                     onClick={handleMarkFulfilled}
                                     disabled={loadingFulfill}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                                    className="px-3 py-1 bg-brand-600 text-white rounded"
                                 >
                                     {loadingFulfill
                                         ? "Guardando..."
@@ -508,7 +509,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
                                 onClick={() =>
                                     setShowPrescriptionEditor((s) => !s)
                                 }
-                                className="px-3 py-1 bg-indigo-600 text-white rounded"
+                                className="px-3 py-1 bg-brand-600 text-white rounded"
                             >
                                 {showPrescriptionEditor
                                     ? "Cerrar receta"
@@ -620,7 +621,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
                                 <button
                                     onClick={handleAcceptWithSchedule}
                                     disabled={loadingAccept}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                                    className="px-3 py-1 bg-brand-600 text-white rounded"
                                 >
                                     {loadingAccept
                                         ? "Guardando..."
@@ -630,7 +631,7 @@ export const RequestRow: React.FC<Props> = ({ r, onRefresh }) => {
                                 <button
                                     onClick={handleUpdateMetadata}
                                     disabled={loadingMetadataUpdate}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                                    className="px-3 py-1 bg-brand-600 text-white rounded"
                                 >
                                     {loadingMetadataUpdate
                                         ? "Guardando..."

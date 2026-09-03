@@ -63,7 +63,7 @@ const ResendVerification: React.FC = () => {
                     <button
                         type="submit"
                         disabled={status === "loading"}
-                        className="bg-blue-600 text-white px-4 py-2 rounded"
+                        className="bg-brand-600 text-white px-4 py-2 rounded"
                     >
                         {status === "loading"
                             ? "Enviando..."
@@ -71,7 +71,7 @@ const ResendVerification: React.FC = () => {
                     </button>
                     <Link
                         to="/login"
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-brand-600 hover:underline"
                     >
                         Volver a login
                     </Link>

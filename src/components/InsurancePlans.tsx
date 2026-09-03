@@ -85,19 +85,19 @@ export const InsurancePlans: React.FC<InsurancePlansProps> = ({
             const palette =
                 plan.id === "sepelio"
                     ? {
-                          accentClass: "bg-blue-500",
-                          badgeClass: "text-blue-600 bg-blue-50",
-                          iconWrapClass: "bg-blue-50",
-                          iconClass: "text-blue-600",
-                          ctaClass: "bg-blue-600 hover:bg-blue-700",
+                          accentClass: "bg-brand-500",
+                          badgeClass: "text-brand-600 bg-brand-50",
+                          iconWrapClass: "bg-brand-50",
+                          iconClass: "text-brand-600",
+                          ctaClass: "bg-brand-600 hover:bg-brand-700",
                       }
                     : plan.id === "vida"
                       ? {
-                            accentClass: "bg-indigo-500",
-                            badgeClass: "text-indigo-600 bg-indigo-50",
-                            iconWrapClass: "bg-indigo-50",
-                            iconClass: "text-indigo-600",
-                            ctaClass: "bg-indigo-600 hover:bg-indigo-700",
+                            accentClass: "bg-brand-500",
+                            badgeClass: "text-brand-600 bg-brand-50",
+                            iconWrapClass: "bg-brand-50",
+                            iconClass: "text-brand-600",
+                            ctaClass: "bg-brand-600 hover:bg-brand-700",
                         }
                       : {
                             accentClass: "bg-emerald-500",
@@ -126,7 +126,7 @@ export const InsurancePlans: React.FC<InsurancePlansProps> = ({
                     </h3>
                     <Link
                         to="/insurance"
-                        className="text-sm text-blue-600 hover:underline font-medium"
+                        className="text-sm text-brand-600 hover:underline font-medium"
                     >
                         Comparar planes {"->"}
                     </Link>
@@ -142,14 +142,14 @@ export const InsurancePlans: React.FC<InsurancePlansProps> = ({
                         value={q}
                         onChange={(e) => handleSearchChange(e.target.value)}
                         placeholder="Buscar planes o coberturas..."
-                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                        className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition"
                     />
                 </div>
             </div>
 
             {loading ? (
                 <div className="flex justify-center py-10">
-                    <ArrowPathIcon className="w-6 h-6 animate-spin text-blue-500" />
+                    <ArrowPathIcon className="w-6 h-6 animate-spin text-brand-500" />
                 </div>
             ) : null}
 
@@ -183,7 +183,7 @@ export const InsurancePlans: React.FC<InsurancePlansProps> = ({
                             <ul className="text-sm text-gray-700 space-y-2 mb-6">
                                 {plan.features.map((feature) => (
                                     <li key={feature} className="flex items-start gap-2">
-                                        <span className="text-blue-600">✓</span>
+                                        <span className="text-brand-600">✓</span>
                                         {feature}
                                     </li>
                                 ))}

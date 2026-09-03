@@ -84,7 +84,7 @@ export const InsurersSection: React.FC = () => {
         return (
             <section className="py-12 px-4">
                 <div className="flex justify-center">
-                    <ArrowPathIcon className="w-8 h-8 animate-spin text-blue-600" />
+                    <ArrowPathIcon className="w-8 h-8 animate-spin text-brand-600" />
                 </div>
             </section>
         );
@@ -96,11 +96,11 @@ export const InsurersSection: React.FC = () => {
                 <div className="mb-8">
                     <div className="flex items-center justify-between mb-4">
                         <div>
-                            <h2 className="text-3xl font-bold text-gray-900">
-                                Obras Sociales y Prepagas
+                            <h2 className="text-2xl font-bold text-gray-900">
+                                Entidades de cobertura y servicios asociados en la red Vetfind
                             </h2>
                             <p className="text-gray-600 mt-2">
-                                Entidades de cobertura y servicios asociados en la red Vetfind.
+                               
                             </p>
                         </div>
                     </div>
@@ -112,7 +112,7 @@ export const InsurersSection: React.FC = () => {
                             value={q}
                             onChange={handleSearch}
                             placeholder="Buscar por nombre o código..."
-                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                            className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent outline-none transition"
                         />
                     </div>
                 </div>
@@ -149,7 +149,7 @@ export const InsurersSection: React.FC = () => {
                                         }
                                     }}
                                 >
-                                    <div className="p-3 rounded-md bg-blue-50 text-blue-600 w-fit">
+                                    <div className="p-3 rounded-md bg-brand-50 text-brand-600 w-fit">
                                         <BuildingLibraryIcon className="w-6 h-6" />
                                     </div>
 
@@ -166,7 +166,7 @@ export const InsurersSection: React.FC = () => {
                                     <div className="pt-4 border-t border-gray-100">
                                         <div className="flex items-center justify-between text-sm">
                                             {insurance.kind || insurance.category ? (
-                                                <span className="inline-block bg-blue-50 text-blue-700 px-2 py-1 rounded text-xs font-medium">
+                                                <span className="inline-block bg-brand-50 text-brand-700 px-2 py-1 rounded text-xs font-medium">
                                                     {insurance.kind || insurance.category}
                                                 </span>
                                             ) : null}
@@ -191,7 +191,7 @@ export const InsurersSection: React.FC = () => {
 
                                     <div className="mt-auto pt-2">
                                         {canOpenDetail ? (
-                                            <span className="inline-flex items-center gap-1.5 text-sm text-blue-700 font-medium">
+                                            <span className="inline-flex items-center gap-1.5 text-sm text-brand-700 font-medium">
                                                 Ver planes y ofertas
                                                 <ArrowTopRightOnSquareIcon className="w-4 h-4" />
                                             </span>

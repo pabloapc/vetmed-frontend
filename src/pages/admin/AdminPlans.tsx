@@ -148,7 +148,7 @@ export const AdminPlans: React.FC = () => {
                 <h2 className="text-xl font-semibold">Planes</h2>
                 <button
                     onClick={() => setShowCreate(true)}
-                    className="px-3 py-1 bg-blue-600 text-white rounded"
+                    className="px-3 py-1 bg-brand-600 text-white rounded"
                 >
                     Nuevo plan
                 </button>
@@ -174,7 +174,7 @@ export const AdminPlans: React.FC = () => {
                     placeholder="Buscar por nombre o código"
                     className="border px-3 py-2 rounded w-full"
                 />
-                <button type="submit" className="bg-blue-600 text-white px-3 py-2 rounded">
+                <button type="submit" className="bg-brand-600 text-white px-3 py-2 rounded">
                     Buscar
                 </button>
             </form>
@@ -345,7 +345,7 @@ export const AdminPlans: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded"
+                                    className="px-4 py-2 bg-brand-600 text-white rounded"
                                 >
                                     {saving ? "Guardando..." : "Crear plan"}
                                 </button>

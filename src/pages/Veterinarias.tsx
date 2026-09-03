@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { veterinariaService } from "../services/veterinariaService";
 import { requestService } from "../services/requestService";
 import type { Veterinaria, BackendVeterinaria } from "../types/veterinaria";
 import { useAuth } from "../hooks/useAuth";
 import { BottomNavMenu } from "../components/BottomNavMenu";
+import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
 
 import {
     MagnifyingGlassIcon,
@@ -11,8 +13,6 @@ import {
     MapIcon,
     ArrowPathIcon,
     BuildingStorefrontIcon,
-    ChevronDownIcon,
-    InformationCircleIcon,
     PhoneIcon,
     ClockIcon,
     TagIcon,
@@ -21,6 +21,7 @@ import {
     ClipboardDocumentIcon,
     CheckIcon,
     ExclamationCircleIcon,
+    PlusIcon,
 } from "@heroicons/react/24/outline";
 
 const PAGE_SIZE = 9;
@@ -45,11 +46,11 @@ export const Veterinarias: React.FC = () => {
     });
     const [search, setSearch] = useState("");
     const [debouncedSearch, setDebouncedSearch] = useState("");
-    const [expandedIds, setExpandedIds] = useState<Record<string, boolean>>({});
     const [copyFeedback, setCopyFeedback] = useState<Record<string, boolean>>(
         {}
     );
     const { user } = useAuth();
+    const navigate = useNavigate();
 
     // tokens state: a mapping veterinariaId -> TokenInfo
     const [tokens, setTokens] = useState<Record<string, TokenInfo>>({});
@@ -184,6 +185,7 @@ export const Veterinarias: React.FC = () => {
             distancia: p.distance ?? undefined,
             beneficios: p.benefits ?? "",
             descuento: p.discount ?? undefined,
+            isClaimed: p.isClaimed ?? false,
         };
     };
 
@@ -275,18 +277,6 @@ export const Veterinarias: React.FC = () => {
         }
     };
 
-    const toggleExpand = (id: string) => {
-        setExpandedIds((prev) => ({ ...prev, [id]: !prev[id] }));
-    };
-
-    const openDetailsAndRequest = (id: string) => {
-        setExpandedIds((prev) => ({ ...prev, [id]: true }));
-        window.setTimeout(() => {
-            const details = document.getElementById(`details-${id}`);
-            details?.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 120);
-    };
-
     // function generate6Digit() {
     //     return Math.floor(100000 + Math.random() * 900000).toString();
     // }
@@ -295,7 +285,7 @@ export const Veterinarias: React.FC = () => {
     const handleCreateRequest = async (veterinariaId: string) => {
         // form for this veterinaria
         const form = requestForms[veterinariaId] || {
-            actionType: "medicamento",
+            actionType: "consulta_medica",
             notes: "",
         };
         setRequestForms((s) => ({
@@ -361,7 +351,7 @@ export const Veterinarias: React.FC = () => {
         setRequestForms((s) => ({
             ...s,
             [veterinariaId]: {
-                ...(s[veterinariaId] || { actionType: "medicamento", notes: "" }),
+                ...(s[veterinariaId] || { actionType: "consulta_medica", notes: "" }),
                 [field]: value,
             },
         }));
@@ -440,7 +430,7 @@ export const Veterinarias: React.FC = () => {
 
             {/* App Hero — card in mobile, full-bleed on sm+ */}
             <div className="px-4 py-6 sm:px-4 sm:py-0">
-            <div className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 px-4 pt-6 pb-5 rounded-[2rem] sm:rounded-[2rem] sm:shadow-xl sm:p-8">
+            <div className="bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 px-4 pt-6 pb-5 rounded-[2rem] sm:rounded-[2rem] sm:shadow-xl sm:p-8">
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-2xl bg-white/15 flex items-center justify-center">
@@ -448,7 +438,7 @@ export const Veterinarias: React.FC = () => {
                         </div>
                         <div>
                             <h1 className="text-lg font-bold text-white leading-tight">Veterinarias</h1>
-                            <p className="text-xs text-blue-100">{filtered.length} disponibles</p>
+                            <p className="text-xs text-brand-100">{filtered.length} disponibles</p>
                         </div>
                     </div>
                     <button
@@ -456,7 +446,7 @@ export const Veterinarias: React.FC = () => {
                         aria-pressed={useLocation}
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
                             useLocation
-                                ? "bg-white text-blue-700"
+                                ? "bg-white text-brand-700"
                                 : "bg-white/15 text-white border border-white/30"
                         }`}
                     >
@@ -474,7 +464,7 @@ export const Veterinarias: React.FC = () => {
                         placeholder="Buscar por nombre o beneficio…"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        className="w-full pl-10 pr-10 py-2.5 rounded-2xl text-sm bg-white border-0 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-sm"
+                        className="w-full pl-10 pr-10 py-2.5 rounded-2xl text-sm bg-white border-0 focus:outline-none focus:ring-2 focus:ring-brand-400 shadow-sm"
                         aria-label="Buscar veterinarias"
                     />
                     {search ? (
@@ -518,7 +508,7 @@ export const Veterinarias: React.FC = () => {
                         {search ? `No encontramos veterinarias para "${search}".` : "No hay veterinarias disponibles en este momento."}
                     </p>
                     {search && (
-                        <button onClick={() => setSearch("")} className="mt-3 text-xs text-blue-600 hover:underline">
+                        <button onClick={() => setSearch("")} className="mt-3 text-xs text-brand-600 hover:underline">
                             Limpiar búsqueda
                         </button>
                     )}
@@ -527,11 +517,10 @@ export const Veterinarias: React.FC = () => {
                 <>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                         {displayed.map((veterinaria) => {
-                            const expanded = !!expandedIds[veterinaria.id];
                             const tokenInfo = tokens[veterinaria.id];
                             const remainingMs = getRemainingMs(veterinaria.id);
                             const form = requestForms[veterinaria.id] || {
-                                actionType: "medicamento",
+                                actionType: "consulta_medica",
                                 notes: "",
                                 loading: false,
                             };
@@ -554,26 +543,77 @@ export const Veterinarias: React.FC = () => {
                                                 <h3 className="font-semibold text-gray-900 text-sm leading-snug truncate">
                                                     {veterinaria.nombre}
                                                 </h3>
-                                                {veterinaria.descuento !== undefined && (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 whitespace-nowrap shrink-0">
-                                                        <TagIcon className="w-3 h-3" />
-                                                        {veterinaria.descuento}% off
-                                                    </span>
-                                                )}
+                                                <div className="flex items-center gap-1.5 shrink-0">
+                                                    {veterinaria.isClaimed && veterinaria.descuento !== undefined && (
+                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 whitespace-nowrap">
+                                                            <TagIcon className="w-3 h-3" />
+                                                            {veterinaria.descuento}% off
+                                                        </span>
+                                                    )}
+                                                    <Link
+                                                        to={`/veterinarias/${veterinaria.id}`}
+                                                        title="Ver ficha completa"
+                                                        className="inline-flex items-center justify-center w-6 h-6 rounded-full border border-gray-200 text-gray-500 hover:border-brand-300 hover:text-brand-600 hover:bg-brand-50 transition"
+                                                    >
+                                                        <PlusIcon className="w-3.5 h-3.5" />
+                                                    </Link>
+                                                </div>
                                             </div>
                                             {veterinaria.direccion && (
                                                 <p className="text-xs text-gray-400 truncate mt-0.5" title={veterinaria.direccion}>
                                                     {veterinaria.direccion}
                                                     {veterinaria.ciudad ? `, ${veterinaria.ciudad}` : ""}
+                                                    {veterinaria.provincia ? `, ${veterinaria.provincia}` : ""}
                                                 </p>
+                                            )}
+                                            {!veterinaria.isClaimed && (
+                                                <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
+                                                    No registrada en VetFind
+                                                </span>
                                             )}
                                         </div>
                                     </div>
 
+                                    {!veterinaria.isClaimed ? (
+                                        /* Unclaimed listing: just an indexed reference, nobody manages requests here yet */
+                                        <div className="mt-auto px-4 md:px-5 pb-4 md:pb-5">
+                                            <div className="border-t border-gray-100 mb-4" />
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {veterinaria.telefono ? (
+                                                    <a
+                                                        href={`tel:${veterinaria.telefono}`}
+                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-emerald-50 text-emerald-700 text-sm font-semibold active:scale-95 transition"
+                                                    >
+                                                        <PhoneIcon className="w-4 h-4" />
+                                                        Llamar
+                                                    </a>
+                                                ) : (
+                                                    <p className="text-xs text-gray-400 flex items-center justify-center">
+                                                        Sin teléfono
+                                                    </p>
+                                                )}
+                                                {veterinaria.latitud && veterinaria.longitud ? (
+                                                    <a
+                                                        href={`https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
+                                                        title="Ver ubicación"
+                                                    >
+                                                        <MapPinIcon className="w-4 h-4" />
+                                                        Ubicación
+                                                    </a>
+                                                ) : (
+                                                    <div />
+                                                )}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                    <>
                                     {/* Badges row */}
                                     <div className="px-4 md:px-5 pb-3 flex flex-wrap gap-1.5">
                                         {veterinaria.distancia !== undefined && (
-                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
+                                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-brand-50 text-brand-600">
                                                 <MapPinIcon className="w-3 h-3" />
                                                 {(veterinaria.distancia / 1000).toFixed(1)} km
                                             </span>
@@ -587,47 +627,8 @@ export const Veterinarias: React.FC = () => {
                                         )}
                                     </div>
 
-                                    {/* Toggle button */}
-                                    <div className="px-4 md:px-5 pb-4 md:pb-5 mt-auto">
-                                        <div className="grid grid-cols-2 gap-2 md:hidden">
-                                            <button
-                                                onClick={() => toggleExpand(veterinaria.id)}
-                                                aria-expanded={expanded}
-                                                aria-controls={`details-${veterinaria.id}`}
-                                                className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-700 bg-white active:scale-[0.99] transition"
-                                            >
-                                                <InformationCircleIcon className="w-4 h-4 text-blue-600" />
-                                                {expanded ? "Ocultar" : "Detalle"}
-                                            </button>
-
-                                            <button
-                                                onClick={() => openDetailsAndRequest(veterinaria.id)}
-                                                className="w-full inline-flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 active:scale-[0.99] transition"
-                                            >
-                                                Solicitar
-                                            </button>
-                                        </div>
-
-                                        <button
-                                            onClick={() => toggleExpand(veterinaria.id)}
-                                            aria-expanded={expanded}
-                                            aria-controls={`details-${veterinaria.id}`}
-                                            className="hidden md:flex w-full items-center justify-center gap-1.5 py-2 rounded-lg border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition"
-                                        >
-                                            {expanded ? "Ocultar detalles" : "Ver detalles y solicitar"}
-                                            <ChevronDownIcon
-                                                className={`w-4 h-4 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
-                                            />
-                                        </button>
-                                    </div>
-
-                                    {/* Expandable section */}
-                                    <div
-                                        id={`details-${veterinaria.id}`}
-                                        className={`overflow-hidden transition-[max-height,opacity] duration-300 ${
-                                            expanded ? "max-h-[700px] opacity-100" : "max-h-0 opacity-0"
-                                        }`}
-                                    >
+                                    {/* Details */}
+                                    <div className="mt-auto">
                                         <div className="border-t border-gray-100 mx-5" />
                                         <div className="px-5 py-4 space-y-3 text-sm text-gray-700">
                                             {veterinaria.beneficios && (
@@ -652,7 +653,7 @@ export const Veterinarias: React.FC = () => {
                                                         href={`https://www.google.com/maps/search/?api=1&query=${veterinaria.latitud},${veterinaria.longitud}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-blue-50 text-blue-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <MapIcon className="w-4 h-4" />
                                                         Cómo llegar
@@ -723,16 +724,30 @@ export const Veterinarias: React.FC = () => {
                                                             <label className="block text-xs font-medium text-gray-600 mb-1.5">
                                                                 Tipo de solicitud
                                                             </label>
-                                                            <select
-                                                                value={form.actionType}
-                                                                onChange={(e) =>
-                                                                    handleRequestFormChange(veterinaria.id, "actionType", e.target.value)
-                                                                }
-                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
-                                                            >
-                                                                <option value="medicamento">Medicamento</option>
-                                                                <option value="pedido_medico">Pedido médico</option>
-                                                            </select>
+                                                            <div className="grid grid-cols-2 gap-2">
+                                                                {VETERINARIA_ACTION_TYPES.map((at) => {
+                                                                    const selected = form.actionType === at.value;
+                                                                    return (
+                                                                        <button
+                                                                            key={at.value}
+                                                                            type="button"
+                                                                            disabled={!user}
+                                                                            onClick={() =>
+                                                                                handleRequestFormChange(veterinaria.id, "actionType", at.value)
+                                                                            }
+                                                                            aria-pressed={selected}
+                                                                            className={`flex flex-col items-center justify-center gap-1.5 rounded-xl border-2 px-3 py-3 text-xs font-medium transition disabled:opacity-50 disabled:cursor-not-allowed ${
+                                                                                selected
+                                                                                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                                                                                    : "border-gray-200 bg-white text-gray-600 hover:border-brand-300 hover:bg-brand-50/50"
+                                                                            }`}
+                                                                        >
+                                                                            <at.Icon className="w-5 h-5" />
+                                                                            {at.label}
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
                                                         </div>
                                                         <div>
                                                             <label className="block text-xs font-medium text-gray-600 mb-1.5">
@@ -743,32 +758,45 @@ export const Veterinarias: React.FC = () => {
                                                                 onChange={(e) =>
                                                                     handleRequestFormChange(veterinaria.id, "notes", e.target.value)
                                                                 }
-                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition placeholder-gray-400"
+                                                                disabled={!user}
+                                                                className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition placeholder-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
                                                                 placeholder="Detalles, receta, preferencia..."
                                                             />
                                                         </div>
-                                                        <button
-                                                            disabled={form.loading}
-                                                            onClick={() => handleCreateRequest(veterinaria.id)}
-                                                            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-2xl active:scale-[0.98] transition"
-                                                        >
-                                                            {form.loading ? (
-                                                                <>
-                                                                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                                                                    </svg>
-                                                                    Enviando...
-                                                                </>
-                                                            ) : (
-                                                                "Realizar pedido"
-                                                            )}
-                                                        </button>
+                                                        {user ? (
+                                                            <button
+                                                                disabled={form.loading}
+                                                                onClick={() => handleCreateRequest(veterinaria.id)}
+                                                                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-2xl active:scale-[0.98] transition"
+                                                            >
+                                                                {form.loading ? (
+                                                                    <>
+                                                                        <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                                                                        </svg>
+                                                                        Enviando...
+                                                                    </>
+                                                                ) : (
+                                                                    "Realizar pedido"
+                                                                )}
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => navigate("/login")}
+                                                                className="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-2xl active:scale-[0.98] transition"
+                                                            >
+                                                                Iniciá sesión para solicitar
+                                                            </button>
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
                                         )}
                                     </div>
+                                    </>
+                                    )}
                                 </article>
                             );
                         })}
@@ -780,7 +808,7 @@ export const Veterinarias: React.FC = () => {
                             <>
                                 <button
                                     onClick={() => setVisibleCount((c) => Math.min(filtered.length, c + PAGE_SIZE))}
-                                    className="px-6 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-blue-400 hover:text-blue-600 hover:bg-blue-50 transition"
+                                    className="px-6 py-2 bg-white border border-gray-200 rounded-full text-sm text-gray-600 hover:border-brand-400 hover:text-brand-600 hover:bg-brand-50 transition"
                                 >
                                     Cargar más veterinarias
                                 </button>

@@ -6,12 +6,15 @@ import {
     MapPinIcon,
     UserCircleIcon,
     SparklesIcon,
-    StarIcon,
     BuildingStorefrontIcon,
     LinkIcon,
     ArrowPathIcon,
     ArrowRightCircleIcon,
     ClipboardDocumentListIcon,
+    ShieldCheckIcon,
+    VideoCameraIcon,
+    BoltIcon,
+    TagIcon,
 } from "@heroicons/react/24/outline";
  
 import { motion } from "framer-motion";
@@ -20,6 +23,27 @@ import searchService from "../services/searchService";
 import adminService from "../services/adminService";
 //import { InsurancePlans } from "../components/InsurancePlans";
 import { InsurersSection } from "../components/InsurersSection";
+import { BrandLogo } from "../components/BrandLogo";
+
+const PawPrint: React.FC<{
+    x: number;
+    y: number;
+    scale?: number;
+    rotate?: number;
+    opacity?: number;
+}> = ({ x, y, scale = 1, rotate = 0, opacity = 0.12 }) => (
+    <g
+        transform={`translate(${x} ${y}) rotate(${rotate}) scale(${scale})`}
+        opacity={opacity}
+        fill="white"
+    >
+        <ellipse cx="0" cy="15" rx="14" ry="11" />
+        <ellipse cx="-15" cy="-6" rx="6" ry="7.5" transform="rotate(-20 -15 -6)" />
+        <ellipse cx="-5.5" cy="-15" rx="6" ry="8" transform="rotate(-7 -5.5 -15)" />
+        <ellipse cx="5.5" cy="-15" rx="6" ry="8" transform="rotate(7 5.5 -15)" />
+        <ellipse cx="15" cy="-6" rx="6" ry="7.5" transform="rotate(20 15 -6)" />
+    </g>
+);
 
 export const Home: React.FC = () => {
     const { isAuthenticated } = useAuth();
@@ -465,30 +489,30 @@ export const Home: React.FC = () => {
         return `${d.toFixed(1)} km`;
     };
 
-    // rest of UI constants (testimonials, animations) unchanged...
-    const testimonials = [
-        {
-            id: "t1",
-            name: "María López",
-            role: "Paciente",
-            quote: "Encontré la veterinaria que necesitaba en segundos. Muy fácil de usar.",
-            rating: 5,
-        },
-        {
-            id: "t2",
-            name: "Carlos Ruiz",
-            role: "Profesional de salud",
-            quote: "La geolocalización y la información de descuentos son súper útiles.",
-            rating: 4,
-        },
-        {
-            id: "t3",
-            name: "Lucía Gómez",
-            role: "Usuario",
-            quote: "Interfaz clara y rápida — todo lo que esperaba.",
-            rating: 5,
-        },
-    ];
+    // Testimonials section is temporarily disabled below (see "Testimonials" comment) — data kept for when it's re-enabled.
+    // const testimonials = [
+    //     {
+    //         id: "t1",
+    //         name: "María López",
+    //         role: "Paciente",
+    //         quote: "Encontré la veterinaria que necesitaba en segundos. Muy fácil de usar.",
+    //         rating: 5,
+    //     },
+    //     {
+    //         id: "t2",
+    //         name: "Carlos Ruiz",
+    //         role: "Profesional de salud",
+    //         quote: "La geolocalización y la información de descuentos son súper útiles.",
+    //         rating: 4,
+    //     },
+    //     {
+    //         id: "t3",
+    //         name: "Lucía Gómez",
+    //         role: "Usuario",
+    //         quote: "Interfaz clara y rápida — todo lo que esperaba.",
+    //         rating: 5,
+    //     },
+    // ];
 
     const containerVariants = {
         hidden: { opacity: 0, y: 8 },
@@ -502,8 +526,8 @@ export const Home: React.FC = () => {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
-            <header className="w-full bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 relative overflow-hidden">
-                {/* Network vector pattern */}
+            <header className="w-full bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 relative overflow-hidden">
+                {/* Paw print pattern */}
                 <svg
                     className="absolute inset-0 w-full h-full pointer-events-none"
                     xmlns="http://www.w3.org/2000/svg"
@@ -511,38 +535,24 @@ export const Home: React.FC = () => {
                     viewBox="0 0 1200 400"
                     aria-hidden="true"
                 >
-                    {/* edges */}
-                    <line x1="60"  y1="60"  x2="220" y2="140" stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="220" y1="140" x2="420" y2="80"  stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="420" y1="80"  x2="580" y2="200" stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="580" y1="200" x2="760" y2="100" stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="760" y1="100" x2="940" y2="180" stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="940" y1="180" x2="1100" y2="60" stroke="white" strokeOpacity="0.12" strokeWidth="1"/>
-                    <line x1="1100" y1="60"  x2="1160" y2="250" stroke="white" strokeOpacity="0.10" strokeWidth="1"/>
-                    <line x1="220" y1="140" x2="340" y2="300" stroke="white" strokeOpacity="0.10" strokeWidth="1"/>
-                    <line x1="340" y1="300" x2="580" y2="200" stroke="white" strokeOpacity="0.10" strokeWidth="1"/>
-                    <line x1="340" y1="300" x2="520" y2="360" stroke="white" strokeOpacity="0.08" strokeWidth="1"/>
-                    <line x1="520" y1="360" x2="760" y2="100" stroke="white" strokeOpacity="0.07" strokeWidth="1"/>
-                    <line x1="760" y1="100" x2="860" y2="320" stroke="white" strokeOpacity="0.10" strokeWidth="1"/>
-                    <line x1="860" y1="320" x2="1100" y2="60"  stroke="white" strokeOpacity="0.08" strokeWidth="1"/>
-                    <line x1="60"   y1="60"  x2="340" y2="300" stroke="white" strokeOpacity="0.06" strokeWidth="1"/>
-                    <line x1="420" y1="80"  x2="340" y2="300" stroke="white" strokeOpacity="0.08" strokeWidth="1"/>
-                    <line x1="940" y1="180" x2="860" y2="320" stroke="white" strokeOpacity="0.10" strokeWidth="1"/>
-                    <line x1="1160" y1="250" x2="860" y2="320" stroke="white" strokeOpacity="0.08" strokeWidth="1"/>
-                    <line x1="60"   y1="60"  x2="420" y2="80"  stroke="white" strokeOpacity="0.07" strokeWidth="1"/>
-                    {/* nodes */}
-                    <circle cx="60"   cy="60"  r="3" fill="white" fillOpacity="0.25"/>
-                    <circle cx="220"  cy="140" r="3" fill="white" fillOpacity="0.20"/>
-                    <circle cx="420"  cy="80"  r="3" fill="white" fillOpacity="0.22"/>
-                    <circle cx="580"  cy="200" r="4" fill="white" fillOpacity="0.18"/>
-                    <circle cx="760"  cy="100" r="3" fill="white" fillOpacity="0.22"/>
-                    <circle cx="940"  cy="180" r="3" fill="white" fillOpacity="0.20"/>
-                    <circle cx="1100" cy="60"  r="3" fill="white" fillOpacity="0.25"/>
-                    <circle cx="1160" cy="250" r="2.5" fill="white" fillOpacity="0.15"/>
-                    <circle cx="340"  cy="300" r="3" fill="white" fillOpacity="0.15"/>
-                    <circle cx="520"  cy="360" r="2.5" fill="white" fillOpacity="0.12"/>
-                    <circle cx="860"  cy="320" r="3" fill="white" fillOpacity="0.15"/>
+                    <PawPrint x={70} y={70} scale={1.3} rotate={-18} opacity={0.14} />
+                    <PawPrint x={190} y={230} scale={0.9} rotate={24} opacity={0.09} />
+                    <PawPrint x={330} y={90} scale={1.1} rotate={8} opacity={0.11} />
+                    <PawPrint x={470} y={280} scale={1.5} rotate={-10} opacity={0.08} />
+                    <PawPrint x={600} y={130} scale={0.8} rotate={30} opacity={0.12} />
+                    <PawPrint x={730} y={330} scale={1.2} rotate={-25} opacity={0.09} />
+                    <PawPrint x={860} y={80} scale={1} rotate={15} opacity={0.13} />
+                    <PawPrint x={980} y={260} scale={1.4} rotate={-6} opacity={0.08} />
+                    <PawPrint x={1110} y={110} scale={0.9} rotate={20} opacity={0.11} />
+                    <PawPrint x={1150} y={320} scale={1.1} rotate={-30} opacity={0.1} />
+                    <PawPrint x={40} y={330} scale={1} rotate={12} opacity={0.09} />
                 </svg>
+                <img
+                    src="/mascota-04.png"
+                    alt=""
+                    aria-hidden="true"
+                    className="hidden xl:block absolute bottom-0 right-6 w-72 pointer-events-none select-none drop-shadow-2xl"
+                />
                 <div className="container mx-auto px-8 py-20 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 8 }}
@@ -550,11 +560,11 @@ export const Home: React.FC = () => {
                     >
                         <div className="text-center">
                             <motion.h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                                Vetfind, tu salud cerca tuyo
+                                Vetfind, cerca de tu mascota
                             </motion.h1>
-                            <motion.p className="text-lg md:text-xl text-blue-100 mb-6 max-w-3xl mx-auto">
-                                Encontrá veterinarias y profesionales, reservá
-                                videollamadas y gestioná afiliaciones desde una
+                            <motion.p className="text-lg md:text-xl text-brand-100 mb-6 max-w-3xl mx-auto">
+                                Encontrá veterinarias para tu mascota, reservá
+                                videollamadas o atención presencial y gestioná turnos,  desde una
                                 sola plataforma.
                             </motion.p>
                             <div className="mt-6 max-w-2xl mx-auto relative">
@@ -572,7 +582,7 @@ export const Home: React.FC = () => {
                                                     setShowSuggestions(true);
                                             }}
                                             placeholder="Buscar veterinaria o dirección..."
-                                            className="w-full border-0 rounded-full px-5 py-3.5 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+                                            className="w-full border-0 rounded-full px-5 py-3.5 bg-white text-gray-900 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-300"
                                             aria-autocomplete="list"
                                             aria-controls="search-suggestions"
                                             aria-expanded={showSuggestions}
@@ -611,7 +621,7 @@ export const Home: React.FC = () => {
                                                                 <div className="mt-0.5">
                                                                     {s.type ===
                                                                     "veterinaria" ? (
-                                                                        <MapPinIcon className="w-5 h-5 text-blue-600" />
+                                                                        <MapPinIcon className="w-5 h-5 text-brand-600" />
                                                                     ) : (
                                                                         <UserCircleIcon className="w-5 h-5 text-green-600" />
                                                                     )}
@@ -698,7 +708,7 @@ export const Home: React.FC = () => {
                                                             onClick={() =>
                                                                 handleSubmitSearch()
                                                             }
-                                                            className="text-blue-600 hover:underline text-sm"
+                                                            className="text-brand-600 hover:underline text-sm"
                                                         >
                                                             Buscar
                                                         </button>
@@ -709,7 +719,7 @@ export const Home: React.FC = () => {
                                     <div className="shrink-0">
                                         <button
                                             onClick={handleSubmitSearch}
-                                            className="bg-white hover:bg-gray-50 text-blue-700 font-semibold px-6 py-3.5 rounded-full transition shadow-sm"
+                                            className="bg-white hover:bg-gray-50 text-brand-700 font-semibold px-6 py-3.5 rounded-full transition shadow-sm"
                                         >
                                             Buscar
                                         </button>
@@ -735,7 +745,7 @@ export const Home: React.FC = () => {
                                 >
                                     <Link
                                         to="/register"
-                                        className="bg-white hover:bg-gray-50 text-blue-700 font-semibold px-7 py-3 rounded-full transition shadow-sm inline-flex items-center gap-2"
+                                        className="bg-white hover:bg-gray-50 text-brand-700 font-semibold px-7 py-3 rounded-full transition shadow-sm inline-flex items-center gap-2"
                                     >
                                         <ArrowRightCircleIcon className="w-5 h-5" />
                                         <span>Registrarse</span>
@@ -756,13 +766,33 @@ export const Home: React.FC = () => {
                                 // >
                                 //     <Link
                                 //         to="/veterinarias"
-                                //         className="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg text-lg font-medium"
+                                //         className="inline-block bg-brand-600 hover:bg-brand-700 text-white px-8 py-3 rounded-lg text-lg font-medium"
                                 //     >
                                 //         Ver Veterinarias
                                 //     </Link>
                                 // </motion.div>
                                 <></>
                             )}
+
+                            <motion.div
+                                className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-brand-100"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                            >
+                                <span className="inline-flex items-center gap-1.5">
+                                    <ShieldCheckIcon className="w-4 h-4" />
+                                    Veterinarias verificadas
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <VideoCameraIcon className="w-4 h-4" />
+                                    Presencial o videollamada
+                                </span>
+                                <span className="inline-flex items-center gap-1.5">
+                                    <BoltIcon className="w-4 h-4" />
+                                    Turno en segundos, sin llamados
+                                </span>
+                            </motion.div>
                         </div>
                     </motion.div>
                 </div>
@@ -772,331 +802,230 @@ export const Home: React.FC = () => {
             <main className="w-full">
                 <div className="mx-auto mt-8 px-4 pb-16 w-full">
                     <div className="max-w-6xl mx-auto">
-                        <div className="mb-8">
-                            <h3 className="text-2xl font-bold text-gray-900">Nuestros Servicios</h3>
-                            <p className="text-sm text-gray-500 mt-1">
-                                Emergencias médicas, telemedicina, asistencias de salud y más.
-                            </p>
-                        </div>
-                        <motion.div
-                            className="grid grid-cols-1 md:grid-cols-3 gap-5"
-                            initial="hidden"
-                            animate="show"
-                            variants={containerVariants}
-                        >
-                            <motion.div
-                                variants={cardVariant}
-                                whileHover="hover"
-                                className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-4"
-                            >
-                                <div className="w-11 h-11 rounded-xl bg-blue-50 flex items-center justify-center">
-                                    <MapPinIcon className="w-5 h-5 text-blue-600" />
-                                </div>
-                                <div>
-                                    <h3 className="text-base font-semibold text-gray-900">Para pacientes</h3>
-                                    <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                                        Buscá veterinarias, compará descuentos y reservá consultas con profesionales.
+
+                        {/* ¿Por qué elegir Vetfind? */}
+                        <section className="mb-16">
+                            <div className="mb-8 flex flex-col md:flex-row items-center gap-6 md:gap-10">
+                                <div className="flex-1 text-center md:text-left">
+                                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-700 bg-brand-50 px-3 py-1 rounded-full mb-3">
+                                        <SparklesIcon className="w-3.5 h-3.5" />
+                                        Beneficios
+                                    </div>
+                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                        ¿Por qué elegir Vetfind para tu mascota?
+                                    </h2>
+                                    <p className="text-sm text-gray-500 mt-2 max-w-lg">
+                                        Cuidar a tu mascota no debería significar horas buscando turno o esperando en la sala de espera.
                                     </p>
                                 </div>
+                                {/* <img
+                                    src="/mascota-01.png"
+                                    alt="Perrito esperando su turno en Vetfind"
+                                    className="hidden md:block w-36 lg:w-44 shrink-0"
+                                /> */}
+                            </div>
+                            <motion.div
+                                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"
+                                initial="hidden"
+                                animate="show"
+                                variants={containerVariants}
+                            >
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-3"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center">
+                                        <ShieldCheckIcon className="w-5 h-5 text-brand-600" />
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Red verificada</h3>
+                                    <p className="text-sm text-gray-500 leading-relaxed">
+                                        Veterinarias evaluadas y verificadas, cerca tuyo.
+                                    </p>
+                                </motion.div>
+
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-3"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center">
+                                        <VideoCameraIcon className="w-5 h-5 text-brand-600" />
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Presencial o videollamada</h3>
+                                    <p className="text-sm text-gray-500 leading-relaxed">
+                                        Elegí cómo atenderte: en el consultorio o desde tu casa.
+                                    </p>
+                                </motion.div>
+
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-3"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center">
+                                        <BoltIcon className="w-5 h-5 text-brand-600" />
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Turno en segundos</h3>
+                                    <p className="text-sm text-gray-500 leading-relaxed">
+                                        Sin llamados ni esperas: pedí tu turno online y recibí un código al instante.
+                                    </p>
+                                </motion.div>
+
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-3"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center">
+                                        <TagIcon className="w-5 h-5 text-brand-600" />
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Beneficios exclusivos</h3>
+                                    <p className="text-sm text-gray-500 leading-relaxed">
+                                        Descuentos en consultas, medicamentos y productos para tu mascota.
+                                    </p>
+                                </motion.div>
+                            </motion.div>
+                        </section>
+
+
+
+                        {/* Cómo funciona */}
+                        <section className="mb-16">
+                            <div className="mb-8 text-center max-w-2xl mx-auto">
+                                <img
+                                    src="/mascota-03.png"
+                                    alt=""
+                                    aria-hidden="true"
+                                    className="w-20 h-20 object-contain mx-auto mb-3"
+                                />
+                                <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                    ¿Cómo funciona?
+                                </h2>
+                                <p className="text-sm text-gray-500 mt-2">
+                                    Pedí tu atención veterinaria en 3 pasos.
+                                </p>
+                            </div>
+                            <motion.div
+                                className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                                initial="hidden"
+                                animate="show"
+                                variants={containerVariants}
+                            >
+                                <motion.div variants={cardVariant} className="text-center">
+                                    <div className="w-10 h-10 mx-auto rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-4">
+                                        1
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Buscá tu veterinaria</h3>
+                                    <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">
+                                        Por ubicación, nombre o dirección, cerca tuyo.
+                                    </p>
+                                </motion.div>
+                                <motion.div variants={cardVariant} className="text-center">
+                                    <div className="w-10 h-10 mx-auto rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-4">
+                                        2
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Elegí el tipo de atención</h3>
+                                    <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">
+                                        Presencial o videollamada, con una nota para el profesional si hace falta.
+                                    </p>
+                                </motion.div>
+                                <motion.div variants={cardVariant} className="text-center">
+                                    <div className="w-10 h-10 mx-auto rounded-full bg-brand-600 text-white font-bold flex items-center justify-center mb-4">
+                                        3
+                                    </div>
+                                    <h3 className="text-base font-semibold text-gray-900">Recibí tu código</h3>
+                                    <p className="text-sm text-gray-500 mt-1.5 leading-relaxed">
+                                        Te llega un código de solicitud para coordinar la atención.
+                                    </p>
+                                </motion.div>
+                            </motion.div>
+                            <div className="mt-8 text-center">
                                 <Link
                                     to="/veterinarias"
-                                    className="mt-auto text-sm text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-1.5"
+                                    className="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-semibold px-6 py-3 rounded-full transition"
                                 >
                                     Buscar veterinarias
                                     <ArrowRightCircleIcon className="w-4 h-4" />
                                 </Link>
-                            </motion.div>
+                            </div>
+                        </section>
 
-                            <motion.div
-                                variants={cardVariant}
-                                whileHover="hover"
-                                className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-4"
-                            >
-                                <div className="w-11 h-11 rounded-xl bg-sky-50 flex items-center justify-center">
-                                    <UserCircleIcon className="w-5 h-5 text-sky-600" />
-                                </div>
-                                <div>
-                                    <h3 className="text-base font-semibold text-gray-900">Para veterinarias</h3>
-                                    <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                                        Gestioná turnos, atendé videollamadas y conectate con dueños de mascotas de tu zona.
+
+                                                {/* Tipos de atención */}
+                        <section className="mb-16">
+                            <div className="mb-8 flex flex-col md:flex-row-reverse items-center gap-6 md:gap-10">
+                                <div className="flex-1 text-center md:text-left">
+                                    <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                                        Encontrá la atención que tu mascota necesita
+                                    </h2>
+                                    <p className="text-sm text-gray-500 mt-2 max-w-lg md:mx-0 mx-auto">
+                                        Consultas de rutina, videollamadas o una urgencia: elegí cómo querés que te atiendan.
                                     </p>
                                 </div>
-                                <Link
-                                    to="/register-entity"
-                                    className="mt-auto text-sm text-sky-600 hover:text-sky-700 font-medium inline-flex items-center gap-1.5"
-                                >
-                                    Sumar mi veterinaria
-                                    <ArrowRightCircleIcon className="w-4 h-4" />
-                                </Link>
-                            </motion.div>
-
+                                <img
+                                    src="/mascota-02.png"
+                                    alt="Perrito feliz esperando su consulta"
+                                    className="hidden md:block w-36 lg:w-44 shrink-0"
+                                />
+                            </div>
                             <motion.div
-                                variants={cardVariant}
-                                whileHover="hover"
-                                className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-4"
+                                className="grid grid-cols-1 md:grid-cols-3 gap-5"
+                                initial="hidden"
+                                animate="show"
+                                variants={containerVariants}
                             >
-                                <div className="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center">
-                                    <BuildingStorefrontIcon className="w-5 h-5 text-indigo-600" />
-                                </div>
-                                <div>
-                                    <h3 className="text-base font-semibold text-gray-900">Para instituciones</h3>
-                                    <p className="text-sm text-gray-500 mt-1 leading-relaxed">
-                                        Obras sociales y empresas gestionan afiliados, descuentos y reportes.
-                                    </p>
-                                </div>
-                                <Link
-                                    to="/admin"
-                                    className="mt-auto text-sm text-indigo-600 hover:text-indigo-700 font-medium inline-flex items-center gap-1.5"
-                                >
-                                    Conocer soluciones
-                                    <ArrowRightCircleIcon className="w-4 h-4" />
-                                </Link>
-                            </motion.div>
-                        </motion.div>
-
-                        {/* Promo banner */}
-
-                        <motion.section
-                            className="mt-12 bg-linear-to-r from-sky-600 to-indigo-600 rounded-xl text-white p-8 flex flex-col md:flex-row items-center gap-6"
-                            initial={{ opacity: 0, x: -12 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.6 }}
-                        >
-                            <div className="md:flex-1">
-                                <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                                    Impulsamos la atención desde la comunidad
-                                </h2>
-                                <p className="text-sm md:text-base opacity-90 mb-3">
-                                    Vetfind conecta usuarios, veterinarias,
-                                    profesionales y organizaciones para
-                                    facilitar cuidados, descuentos y gestión de
-                                    afiliados.
-                                </p>
-                                <div className="mt-3 flex gap-3">
+                                <motion.div variants={cardVariant} whileHover="hover">
                                     <Link
                                         to="/veterinarias"
-                                        className="bg-white text-sky-700 px-4 py-2 rounded-md font-medium"
+                                        className="block h-full bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-brand-200 transition"
                                     >
-                                        Buscar veterinarias
-                                    </Link>
-                                </div>
-                            </div>
-
-                            <div className="md:w-1/3 bg-white/10 p-4 rounded-lg">
-                                <p className="inline-flex items-center gap-2 bg-white/10 px-3 py-2 rounded-md text-sm">
-                                    <SparklesIcon className="w-5 h-5 text-white" />{" "}
-                                    Innovación, transparencia y cercanía
-                                </p>
-                            </div>
-                        </motion.section>
-
-                        {/* Nuestros Seguros */}
-                        {/* <InsurancePlans
-                            onQuote={openLeadModal}
-                            onMoreInfo={(path) => navigate(path)}
-                        /> */}
-
-                        <InsurersSection />
-
-                        {/* Prestaciones */}
-                        {(prestationsLoading || prestations.length > 0) && (
-                            <section className="mt-12">
-                                <div className="flex items-center justify-between mb-4">
-                                    <div>
-                                        <h3 className="text-2xl font-bold text-gray-900">
-                                            Prestaciones disponibles
-                                        </h3>
-                                        <p className="text-sm text-gray-500">
-                                            Servicios y coberturas que estamos incorporando a la plataforma.
+                                        <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center mb-4">
+                                            <BuildingStorefrontIcon className="w-5 h-5 text-brand-600" />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-900">Consulta presencial</h3>
+                                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                            Buscá una veterinaria cerca tuyo y coordiná tu visita.
                                         </p>
-                                    </div>
-                                </div>
+                                    </Link>
+                                </motion.div>
 
-                                {prestationsLoading ? (
-                                    <div className="flex justify-center py-10">
-                                        <ArrowPathIcon className="w-6 h-6 animate-spin text-blue-400" />
-                                    </div>
-                                ) : (
-                                    <motion.div
-                                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-                                        initial="hidden"
-                                        animate="show"
-                                        variants={containerVariants}
+                                <motion.div variants={cardVariant} whileHover="hover">
+                                    <Link
+                                        to="/veterinarias"
+                                        className="block h-full bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-brand-200 transition"
                                     >
-                                        {prestations.map((p) => (
-                                            <motion.article
-                                                key={p._id ?? p.code}
-                                                variants={cardVariant}
-                                                whileHover="hover"
-                                                className="bg-white rounded-lg shadow p-6 flex flex-col gap-3"
-                                            >
-                                                <div className="flex items-start justify-between">
-                                                    <div className="p-2 rounded-md bg-violet-50 text-violet-600">
-                                                        <ClipboardDocumentListIcon className="w-5 h-5" />
-                                                    </div>
-                                                    {p.category && (
-                                                        <span className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-full">
-                                                            {p.category}
-                                                        </span>
-                                                    )}
-                                                </div>
+                                        <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center mb-4">
+                                            <VideoCameraIcon className="w-5 h-5 text-brand-600" />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-900">Videollamada</h3>
+                                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                            Consultá a un profesional sin salir de tu casa.
+                                        </p>
+                                    </Link>
+                                </motion.div>
 
-                                                <h4 className="text-base font-semibold text-gray-900">
-                                                    {p.name}
-                                                </h4>
-
-                                                {p.description && (
-                                                    <p className="text-sm text-gray-600 line-clamp-3 flex-1">
-                                                        {p.description}
-                                                    </p>
-                                                )}
-
-                                                <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
-                                                    {p.defaultDurationMinutes ? (
-                                                        <span className="text-xs text-gray-500">
-                                                            {p.defaultDurationMinutes} min
-                                                        </span>
-                                                    ) : (
-                                                        <span />
-                                                    )}
-                                                    {p.defaultPrice?.min != null ? (
-                                                        <span className="text-sm font-medium text-gray-700">
-                                                            {p.defaultPrice.currency ?? "ARS"}{" "}
-                                                            {p.defaultPrice.min.toLocaleString()}
-                                                            {p.defaultPrice.max != null &&
-                                                                p.defaultPrice.max !== p.defaultPrice.min &&
-                                                                ` – ${p.defaultPrice.max.toLocaleString()}`}
-                                                        </span>
-                                                    ) : null}
-                                                </div>
-                                            </motion.article>
-                                        ))}
-                                    </motion.div>
-                                )}
-                            </section>
-                        )}
-
-                        {/* Contact / Know our tech */}
-                        <motion.section
-                            className="mt-16 bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                        >
-                            <div className="mb-6">
-                                <div className="inline-flex items-center gap-2 text-xs font-semibold text-blue-600 bg-blue-50 px-3 py-1 rounded-full mb-3">
-                                    <SparklesIcon className="w-3.5 h-3.5" />
-                                    Integraciones B2B
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-900">
-                                    Conocé nuestra tecnología
-                                </h3>
-                                <p className="text-gray-500 mt-1 text-sm">
-                                    Si representás una empresa, obra social o institución y querés integrar o administrar afiliados con Vetfind, dejá tus datos y te contactamos.
-                                </p>
-                            </div>
-
-                            <form
-                                onSubmit={handleTechSubmit}
-                                className="grid grid-cols-1 md:grid-cols-3 gap-4"
-                            >
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                        Nombre
-                                    </label>
-                                    <input
-                                        name="name"
-                                        value={techForm.name}
-                                        onChange={handleTechChange}
-                                        placeholder="Tu nombre"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                        Email
-                                    </label>
-                                    <input
-                                        name="email"
-                                        type="email"
-                                        value={techForm.email}
-                                        onChange={handleTechChange}
-                                        placeholder="tu@empresa.com"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div>
-                                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                        Empresa / Organización
-                                    </label>
-                                    <input
-                                        name="company"
-                                        value={techForm.company}
-                                        onChange={handleTechChange}
-                                        placeholder="Nombre de la organización"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                                <div className="md:col-span-3">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                        Tipo de organización
-                                    </label>
-                                    <select
-                                        name="role"
-                                        value={techForm.role}
-                                        onChange={handleTechChange}
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                <motion.div variants={cardVariant} whileHover="hover">
+                                    <Link
+                                        to="/emergencies"
+                                        className="block h-full bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:border-red-200 transition"
                                     >
-                                        <option value="company">
-                                            Empresa / Proveedor
-                                        </option>
-                                        <option value="institution">
-                                            Obra social / Institución
-                                        </option>
-                                        <option value="other">Otro</option>
-                                    </select>
-                                </div>
-                                <div className="md:col-span-3">
-                                    <label className="block text-xs font-medium text-gray-600 mb-1.5">
-                                        Mensaje (opcional)
-                                    </label>
-                                    <textarea
-                                        name="message"
-                                        value={techForm.message}
-                                        onChange={handleTechChange}
-                                        rows={3}
-                                        placeholder="Contanos en qué podemos ayudarte..."
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    />
-                                </div>
-                                {formError && (
-                                    <div className="md:col-span-3 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
-                                        {formError}
-                                    </div>
-                                )}
-                                {formSuccess && (
-                                    <div className="md:col-span-3 text-sm text-green-700 bg-green-50 px-3 py-2 rounded-lg">
-                                        {formSuccess}
-                                    </div>
-                                )}
-                                <div className="md:col-span-3 flex justify-end">
-                                    <motion.button
-                                        type="submit"
-                                        whileTap={{ scale: 0.98 }}
-                                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
-                                    >
-                                        Enviar consulta
-                                    </motion.button>
-                                </div>
-                            </form>
-                        </motion.section>
+                                        <div className="w-11 h-11 rounded-xl bg-red-50 flex items-center justify-center mb-4">
+                                            <BoltIcon className="w-5 h-5 text-red-600" />
+                                        </div>
+                                        <h3 className="text-base font-semibold text-gray-900">Urgencias 24 hs</h3>
+                                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                            Atención inmediata para emergencias de riesgo vital.
+                                        </p>
+                                    </Link>
+                                </motion.div>
+                            </motion.div>
+                        </section>
 
-                        {/* ... remainder of content ... */}
-
-                        {/* Promo banner, Testimonials, Contact sections continue unchanged... */}
                         {/* Testimonials */}
-                        <section className="mt-16">
+                        {/* <section className="mb-16">
                             <div className="mb-6">
-                                <h3 className="text-2xl font-bold text-gray-900">Testimonios</h3>
+                                <h2 className="text-2xl font-bold text-gray-900">Testimonios</h2>
                                 <p className="text-sm text-gray-500 mt-1">Lo que dicen nuestros usuarios.</p>
                             </div>
                             <motion.div
@@ -1138,7 +1067,7 @@ export const Home: React.FC = () => {
                                             "{t.quote}"
                                         </p>
                                         <div className="flex items-center gap-3 pt-3 border-t border-gray-100">
-                                            <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center text-blue-600 text-xs font-bold shrink-0">
+                                            <div className="w-9 h-9 rounded-xl bg-brand-50 flex items-center justify-center text-brand-600 text-xs font-bold shrink-0">
                                                 {t.name
                                                     .split(" ")
                                                     .map((n) => n[0])
@@ -1157,7 +1086,306 @@ export const Home: React.FC = () => {
                                     </motion.article>
                                 ))}
                             </motion.div>
-                        </section>
+                        </section> */}
+
+                        {/* ───────── Para profesionales e instituciones (B2B) ───────── */}
+                        <div className="border-t border-gray-200 pt-16">
+                            <div className="mb-8">
+                                <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-700 bg-brand-50 px-3 py-1 rounded-full mb-3">
+                                    <BuildingStorefrontIcon className="w-3.5 h-3.5" />
+                                    Para profesionales e instituciones
+                                </div>
+                                <h2 className="text-2xl font-bold text-gray-900">
+                                    ¿Tenés una veterinaria o representás una institución?
+                                </h2>
+                                <p className="text-sm text-gray-500 mt-1">
+                                    Vetfind también es una red abierta a veterinarias, a prepagas y empresas.
+                                </p>
+                            </div>
+
+                            <motion.div
+                                className="grid grid-cols-1 md:grid-cols-2 gap-5"
+                                initial="hidden"
+                                animate="show"
+                                variants={containerVariants}
+                            >
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-4"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-sky-50 flex items-center justify-center">
+                                        <UserCircleIcon className="w-5 h-5 text-sky-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-semibold text-gray-900">Para veterinarias</h3>
+                                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                            Gestioná turnos, atendé videollamadas y conectate con dueños de mascotas de tu zona.
+                                        </p>
+                                    </div>
+                                    <Link
+                                        to="/register-entity"
+                                        className="mt-auto text-sm text-sky-600 hover:text-sky-700 font-medium inline-flex items-center gap-1.5"
+                                    >
+                                        Sumar mi veterinaria
+                                        <ArrowRightCircleIcon className="w-4 h-4" />
+                                    </Link>
+                                </motion.div>
+
+                                <motion.div
+                                    variants={cardVariant}
+                                    whileHover="hover"
+                                    className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md flex flex-col gap-4"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-brand-50 flex items-center justify-center">
+                                        <BuildingStorefrontIcon className="w-5 h-5 text-brand-600" />
+                                    </div>
+                                    <div>
+                                        <h3 className="text-base font-semibold text-gray-900">Para instituciones</h3>
+                                        <p className="text-sm text-gray-500 mt-1 leading-relaxed">
+                                            Empresas que gestionan afiliados, descuentos y reportes.
+                                        </p>
+                                    </div>
+                                    <Link
+                                        to="/admin"
+                                        className="mt-auto text-sm text-brand-600 hover:text-brand-700 font-medium inline-flex items-center gap-1.5"
+                                    >
+                                        Conocer soluciones
+                                        <ArrowRightCircleIcon className="w-4 h-4" />
+                                    </Link>
+                                </motion.div>
+                            </motion.div>
+
+                            {/* Promo banner */}
+                            <motion.section
+                                className="mt-12 bg-linear-to-r from-brand-700 to-brand-500 rounded-xl text-white p-8 flex flex-col md:flex-row items-center gap-6"
+                                initial={{ opacity: 0, x: -12 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.6 }}
+                            >
+                                <div className="md:flex-1">
+                                    <h2 className="text-2xl md:text-3xl font-bold mb-2">
+                                        Impulsamos la atención desde la comunidad
+                                    </h2>
+                                    <p className="text-sm md:text-base opacity-90 mb-3">
+                                        Vetfind conecta usuarios, veterinarias,
+                                        profesionales y organizaciones para
+                                        facilitar cuidados, descuentos y gestión de
+                                        afiliados.
+                                    </p>
+                                    <div className="mt-3 flex gap-3">
+                                        <Link
+                                            to="/veterinarias"
+                                            className="bg-white text-sky-700 px-4 py-2 rounded-md font-medium"
+                                        >
+                                            Buscar veterinarias
+                                        </Link>
+                                    </div>
+                                </div>
+
+                                <div className="md:w-1/3 flex justify-center">
+                                    <img
+                                        src="/mascota-01.png"
+                                        alt="Perrito esperando su turno en Vetfind"
+                                        className="w-40 lg:w-48"
+                                    />
+                                </div>
+                            </motion.section>
+
+                            <InsurersSection />
+
+                            {/* Prestaciones */}
+                            {(prestationsLoading || prestations.length > 0) && (
+                                <section className="mt-12">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div>
+                                            <h3 className="text-2xl font-bold text-gray-900">
+                                                Prestaciones disponibles
+                                            </h3>
+                                            <p className="text-sm text-gray-500">
+                                                Servicios y coberturas que estamos incorporando a la plataforma.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {prestationsLoading ? (
+                                        <div className="flex justify-center py-10">
+                                            <ArrowPathIcon className="w-6 h-6 animate-spin text-brand-400" />
+                                        </div>
+                                    ) : (
+                                        <motion.div
+                                            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                                            initial="hidden"
+                                            animate="show"
+                                            variants={containerVariants}
+                                        >
+                                            {prestations.map((p) => (
+                                                <motion.article
+                                                    key={p._id ?? p.code}
+                                                    variants={cardVariant}
+                                                    whileHover="hover"
+                                                    className="bg-white rounded-lg shadow p-6 flex flex-col gap-3"
+                                                >
+                                                    <div className="flex items-start justify-between">
+                                                        <div className="p-2 rounded-md bg-violet-50 text-violet-600">
+                                                            <ClipboardDocumentListIcon className="w-5 h-5" />
+                                                        </div>
+                                                        {p.category && (
+                                                            <span className="text-xs bg-brand-50 text-brand-700 px-2 py-1 rounded-full">
+                                                                {p.category}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    <h4 className="text-base font-semibold text-gray-900">
+                                                        {p.name}
+                                                    </h4>
+
+                                                    {p.description && (
+                                                        <p className="text-sm text-gray-600 line-clamp-3 flex-1">
+                                                            {p.description}
+                                                        </p>
+                                                    )}
+
+                                                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-100">
+                                                        {p.defaultDurationMinutes ? (
+                                                            <span className="text-xs text-gray-500">
+                                                                {p.defaultDurationMinutes} min
+                                                            </span>
+                                                        ) : (
+                                                            <span />
+                                                        )}
+                                                        {p.defaultPrice?.min != null ? (
+                                                            <span className="text-sm font-medium text-gray-700">
+                                                                {p.defaultPrice.currency ?? "ARS"}{" "}
+                                                                {p.defaultPrice.min.toLocaleString()}
+                                                                {p.defaultPrice.max != null &&
+                                                                    p.defaultPrice.max !== p.defaultPrice.min &&
+                                                                    ` – ${p.defaultPrice.max.toLocaleString()}`}
+                                                            </span>
+                                                        ) : null}
+                                                    </div>
+                                                </motion.article>
+                                            ))}
+                                        </motion.div>
+                                    )}
+                                </section>
+                            )}
+
+                            {/* Contact / Know our tech */}
+                            <motion.section
+                                className="mt-12 bg-white p-8 rounded-2xl border border-gray-100 shadow-sm"
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                            >
+                                <div className="mb-6">
+                                    <div className="inline-flex items-center gap-2 text-xs font-semibold text-brand-600 bg-brand-50 px-3 py-1 rounded-full mb-3">
+                                        <SparklesIcon className="w-3.5 h-3.5" />
+                                        Integraciones B2B
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-gray-900">
+                                        Conocé nuestra tecnología
+                                    </h3>
+                                    <p className="text-gray-500 mt-1 text-sm">
+                                        Si representás una empresa, obra social o institución y querés integrar o administrar afiliados con Vetfind, dejá tus datos y te contactamos.
+                                    </p>
+                                </div>
+
+                                <form
+                                    onSubmit={handleTechSubmit}
+                                    className="grid grid-cols-1 md:grid-cols-3 gap-4"
+                                >
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                            Nombre
+                                        </label>
+                                        <input
+                                            name="name"
+                                            value={techForm.name}
+                                            onChange={handleTechChange}
+                                            placeholder="Tu nombre"
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                            Email
+                                        </label>
+                                        <input
+                                            name="email"
+                                            type="email"
+                                            value={techForm.email}
+                                            onChange={handleTechChange}
+                                            placeholder="tu@empresa.com"
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                            Empresa / Organización
+                                        </label>
+                                        <input
+                                            name="company"
+                                            value={techForm.company}
+                                            onChange={handleTechChange}
+                                            placeholder="Nombre de la organización"
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                    <div className="md:col-span-3">
+                                        <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                            Tipo de organización
+                                        </label>
+                                        <select
+                                            name="role"
+                                            value={techForm.role}
+                                            onChange={handleTechChange}
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                                        >
+                                            <option value="company">
+                                                Empresa / Proveedor
+                                            </option>
+                                            <option value="institution">
+                                                Obra social / Institución
+                                            </option>
+                                            <option value="other">Otro</option>
+                                        </select>
+                                    </div>
+                                    <div className="md:col-span-3">
+                                        <label className="block text-xs font-medium text-gray-600 mb-1.5">
+                                            Mensaje (opcional)
+                                        </label>
+                                        <textarea
+                                            name="message"
+                                            value={techForm.message}
+                                            onChange={handleTechChange}
+                                            rows={3}
+                                            placeholder="Contanos en qué podemos ayudarte..."
+                                            className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                                        />
+                                    </div>
+                                    {formError && (
+                                        <div className="md:col-span-3 text-sm text-red-600 bg-red-50 px-3 py-2 rounded-lg">
+                                            {formError}
+                                        </div>
+                                    )}
+                                    {formSuccess && (
+                                        <div className="md:col-span-3 text-sm text-green-700 bg-green-50 px-3 py-2 rounded-lg">
+                                            {formSuccess}
+                                        </div>
+                                    )}
+                                    <div className="md:col-span-3 flex justify-end">
+                                        <motion.button
+                                            type="submit"
+                                            whileTap={{ scale: 0.98 }}
+                                            className="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-xl text-sm font-semibold transition-colors"
+                                        >
+                                            Enviar consulta
+                                        </motion.button>
+                                    </div>
+                                </form>
+                            </motion.section>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -1167,7 +1395,7 @@ export const Home: React.FC = () => {
                 <div className="container mx-auto px-4 py-10">
                     <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                         <div>
-                            <h4 className="font-bold text-lg">Vetfind</h4>
+                            <BrandLogo variant="onLight" size="sm" />
                             <p className="text-sm text-slate-500 mt-2">
                                 Plataforma para encontrar veterinarias y gestionar
                                 información de salud.
@@ -1255,7 +1483,7 @@ export const Home: React.FC = () => {
                                         value={leadForm.name}
                                         onChange={handleLeadChange}
                                         placeholder="Tu nombre"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
                                         disabled={!!(isAuthenticated && user)}
                                     />
                                 </div>
@@ -1269,7 +1497,7 @@ export const Home: React.FC = () => {
                                         value={leadForm.email}
                                         onChange={handleLeadChange}
                                         placeholder="tu@email.com"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
                                         disabled={!!(isAuthenticated && user)}
                                     />
                                 </div>
@@ -1282,7 +1510,7 @@ export const Home: React.FC = () => {
                                         value={leadForm.telefono}
                                         onChange={handleLeadChange}
                                         placeholder="+54 9 ..."
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
                                         disabled={!!(isAuthenticated && user)}
                                     />
                                 </div>
@@ -1295,7 +1523,7 @@ export const Home: React.FC = () => {
                                         value={leadForm.company}
                                         onChange={handleLeadChange}
                                         placeholder="Nombre de empresa"
-                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                                     />
                                 </div>
                             </div>
@@ -1310,7 +1538,7 @@ export const Home: React.FC = () => {
                                     onChange={handleLeadChange}
                                     rows={3}
                                     placeholder="¿Algo más que quieras contarnos?"
-                                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                                 />
                             </div>
 
@@ -1336,7 +1564,7 @@ export const Home: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={leadSending}
-                                    className="px-5 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors disabled:opacity-60"
+                                    className="px-5 py-2 text-sm bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors disabled:opacity-60"
                                 >
                                     {leadSending
                                         ? "Enviando..."

@@ -434,12 +434,12 @@ export const Profile: React.FC = () => {
     };
 
     const inputClass =
-        "mt-1 w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition disabled:bg-gray-100 disabled:text-gray-500";
+        "mt-1 w-full rounded-xl border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition disabled:bg-gray-100 disabled:text-gray-500";
 
     const sectionTitleClass = "text-lg sm:text-xl font-bold text-gray-900";
 
     const actionPrimaryClass =
-        "inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed transition";
+        "inline-flex items-center justify-center rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed transition";
 
     const actionSecondaryClass =
         "inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition";
@@ -447,19 +447,19 @@ export const Profile: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50">
             <div className="mx-auto max-w-5xl space-y-6 px-4 py-6 sm:px-6 sm:py-8 pb-28">
-                <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 p-6 sm:p-8 text-white shadow-xl">
+                <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 p-6 sm:p-8 text-white shadow-xl">
                     <div className="absolute -top-16 -right-16 h-56 w-56 rounded-full bg-white/10" />
                     <div className="absolute -bottom-20 -left-10 h-48 w-48 rounded-full bg-white/10" />
 
                     <div className="relative z-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
                         <div>
-                            <p className="text-xs font-medium uppercase tracking-[0.18em] text-blue-100">
+                            <p className="text-xs font-medium uppercase tracking-[0.18em] text-brand-100">
                                 Panel de perfil
                             </p>
                             <h1 className="mt-2 text-3xl font-bold leading-tight sm:text-4xl">
                                 {personal.name || "Mi perfil"}
                             </h1>
-                            <p className="mt-2 text-sm text-blue-100 sm:text-base">
+                            <p className="mt-2 text-sm text-brand-100 sm:text-base">
                                 Gestioná tu información personal y, si corresponde, tu perfil público.
                             </p>
                         </div>
@@ -642,7 +642,7 @@ export const Profile: React.FC = () => {
                                     disabled={!personalEditing}
                                     className={`mt-1 inline-flex items-center rounded-xl px-3.5 py-2.5 text-sm font-medium transition ${
                                         personalEditing
-                                            ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                            ? "bg-brand-600 text-white hover:bg-brand-700"
                                             : "bg-gray-200 text-gray-700"
                                     }`}
                                 >
@@ -872,7 +872,7 @@ export const Profile: React.FC = () => {
                                             disabled={!entityEditing}
                                             className={`mt-1 inline-flex items-center rounded-xl px-3.5 py-2.5 text-sm font-medium transition ${
                                                 entityEditing
-                                                    ? "bg-indigo-600 text-white hover:bg-indigo-700"
+                                                    ? "bg-brand-600 text-white hover:bg-brand-700"
                                                     : "bg-gray-200 text-gray-700"
                                             }`}
                                         >

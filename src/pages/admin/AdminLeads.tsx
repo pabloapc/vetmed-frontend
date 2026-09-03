@@ -67,7 +67,7 @@ export const AdminLeads: React.FC = () => {
                 <div className="flex items-center gap-2">
                     <Link
                         to="/admin"
-                        className="text-sm text-blue-600 hover:underline"
+                        className="text-sm text-brand-600 hover:underline"
                     >
                         Volver
                     </Link>
@@ -83,7 +83,7 @@ export const AdminLeads: React.FC = () => {
                 />
                 <button
                     type="submit"
-                    className="bg-blue-600 text-white px-3 py-2 rounded"
+                    className="bg-brand-600 text-white px-3 py-2 rounded"
                 >
                     Buscar
                 </button>
@@ -150,7 +150,7 @@ export const AdminLeads: React.FC = () => {
                                         )}
                                         <Link
                                             to={`/admin/leads/${l._id}`}
-                                            className="px-2 py-1 bg-indigo-600 text-white rounded text-xs"
+                                            className="px-2 py-1 bg-brand-600 text-white rounded text-xs"
                                         >
                                             Ver
                                         </Link>

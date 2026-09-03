@@ -523,7 +523,7 @@ export const Emergencies: React.FC = () => {
                                                     {it.nombre}
                                                 </h3>
                                                 {it.distancia !== undefined && (
-                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600 whitespace-nowrap shrink-0">
+                                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-brand-50 text-brand-600 whitespace-nowrap shrink-0">
                                                         <MapPinIcon className="w-3 h-3" />
                                                         {(it.distancia / 1000).toFixed(1)} km
                                                     </span>
@@ -595,7 +595,7 @@ export const Emergencies: React.FC = () => {
                                                         href={`https://www.google.com/maps/search/?api=1&query=${it.latitud},${it.longitud}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-blue-50 text-blue-700 text-sm font-semibold active:scale-95 transition"
+                                                        className="flex items-center justify-center gap-2 py-3 rounded-2xl bg-brand-50 text-brand-700 text-sm font-semibold active:scale-95 transition"
                                                     >
                                                         <MapIcon className="w-4 h-4" />
                                                         Cómo llegar

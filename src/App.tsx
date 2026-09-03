@@ -83,14 +83,7 @@ function App() {
                               </ProtectedRoute>
                           }
                       />
-                      <Route
-                          path="/veterinarias"
-                          element={
-                              <ProtectedRoute>
-                                  <Veterinarias />
-                              </ProtectedRoute>
-                          }
-                      />
+                      <Route path="/veterinarias" element={<Veterinarias />} />
                       <Route
                           path="/veterinarias/:id"
                           element={<VeterinariaDetail />}

@@ -47,10 +47,10 @@ const statusConfig: Record<
     },
     fulfilled: {
         label: "Cumplida",
-        pillBg: "bg-blue-100",
-        pillText: "text-blue-700",
-        stripe: "bg-blue-500",
-        iconBg: "bg-blue-50",
+        pillBg: "bg-brand-100",
+        pillText: "text-brand-700",
+        stripe: "bg-brand-500",
+        iconBg: "bg-brand-50",
         icon: CheckIcon,
     },
     cancelled: {
@@ -74,8 +74,9 @@ const labelForTargetType = (t?: string) =>
 const actionTypeLabel = (actionType?: string) => {
     if (!actionType) return "";
     const at = String(actionType).toLowerCase();
+    if (at === "presencial") return "Asistencia presencial";
+    if (at === "video_llamada" || at === "video-llamada") return "Videollamada";
     if (at === "consulta_medica") return "Consulta médica";
-    if (at === "video_llamada" || at === "video-llamada") return "Video llamada";
     if (at === "visita_medica" || at === "visita médica") return "Visita médica";
     if (at === "emergency") return "Urgencia";
     return at.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
@@ -159,7 +160,7 @@ export const Requests: React.FC = () => {
     if (loading)
         return (
             <div className="min-h-[60vh] flex flex-col items-center justify-center gap-4 text-gray-500">
-                <svg className="animate-spin w-8 h-8 text-blue-500" viewBox="0 0 24 24" fill="none">
+                <svg className="animate-spin w-8 h-8 text-brand-500" viewBox="0 0 24 24" fill="none">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                 </svg>
@@ -412,7 +413,7 @@ export const Requests: React.FC = () => {
                                                     href={r.metadata.callUrl}
                                                     target="_blank"
                                                     rel="noopener noreferrer"
-                                                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition"
+                                                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-sm font-medium bg-brand-600 text-white hover:bg-brand-700 transition"
                                                 >
                                                     <LinkIcon className="w-4 h-4" />
                                                     Entrar a la llamada

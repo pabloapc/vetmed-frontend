@@ -60,7 +60,7 @@ export const AdminEmergencies: React.FC = () => {
                 <div>
                     <button
                         onClick={() => navigate("/admin/emergencies/new")}
-                        className="px-3 py-1 bg-blue-600 text-white rounded"
+                        className="px-3 py-1 bg-brand-600 text-white rounded"
                     >
                         Nuevo servicio de emergencia
                     </button>
@@ -76,7 +76,7 @@ export const AdminEmergencies: React.FC = () => {
                 />
                 <button
                     type="submit"
-                    className="bg-blue-600 text-white px-3 py-2 rounded"
+                    className="bg-brand-600 text-white px-3 py-2 rounded"
                 >
                     Buscar
                 </button>
@@ -114,7 +114,7 @@ export const AdminEmergencies: React.FC = () => {
                                             <div className="flex gap-2">
                                                 <Link
                                                     to={`/admin/emergencies/${d._id}`}
-                                                    className="px-2 py-1 bg-indigo-600 text-white rounded text-xs"
+                                                    className="px-2 py-1 bg-brand-600 text-white rounded text-xs"
                                                 >
                                                     Editar
                                                 </Link>

@@ -16,6 +16,8 @@ export interface Veterinaria {
   vademecum?: VademecumItem | VademecumItem[];
   vademecumFileUrl?: string;
   vademecumFileName?: string;
+  /** true once a user account (role "veterinaria") is linked to this entity — otherwise it's just an indexed listing */
+  isClaimed?: boolean;
 }
 
 export interface VademecumItem {
@@ -46,4 +48,5 @@ export interface BackendVeterinaria {
   vademecum?: VademecumItem | VademecumItem[];
   vademecumFileUrl?: string;
   vademecumFileName?: string;
+  isClaimed?: boolean;
 }

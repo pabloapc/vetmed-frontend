@@ -29,7 +29,7 @@ export const BottomNavMenu: React.FC = () => {
             id: "veterinaria",
             label: "Veterinaria",
             icon: BuildingStorefrontIcon,
-            gradient: "from-blue-500 to-cyan-500",
+            gradient: "from-brand-500 to-cyan-500",
             path: "/veterinarias",
         },
     ];

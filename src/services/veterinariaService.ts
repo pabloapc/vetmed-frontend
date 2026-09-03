@@ -25,10 +25,11 @@ export const veterinariaService = {
     },
 
     async getVeterinariaById(id: string): Promise<BackendVeterinaria> {
-        const response = await api.get<BackendResponse<BackendVeterinaria>>(
+        const response = await api.get<BackendResponse<any>>(
             `/veterinarias/${id}`
         );
-        return response.data.data;
+        const raw = response.data.data;
+        return raw?.veterinaria ?? raw;
     },
 
     // alias para compatibilidad con getById used in Profile

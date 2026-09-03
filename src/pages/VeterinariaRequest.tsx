@@ -176,14 +176,14 @@ export const VeterinariaRequests: React.FC = () => {
                     onClick={() => setActiveFilter("accepted")}
                     className={`rounded-xl border p-3 text-left transition-all hover:-translate-y-0.5 hover:shadow-sm ${
                         activeFilter === "accepted"
-                            ? "border-indigo-500 bg-indigo-100 ring-2 ring-indigo-200"
-                            : "border-indigo-200 bg-indigo-50"
+                            ? "border-brand-500 bg-brand-100 ring-2 ring-brand-200"
+                            : "border-brand-200 bg-brand-50"
                     }`}
                 >
-                    <div className="flex items-center gap-2 text-indigo-700 text-xs">
+                    <div className="flex items-center gap-2 text-brand-700 text-xs">
                         <CheckBadgeIcon className="w-4 h-4" /> Aceptadas
                     </div>
-                    <div className="text-2xl font-semibold mt-1 text-indigo-900">
+                    <div className="text-2xl font-semibold mt-1 text-brand-900">
                         {metrics.accepted}
                     </div>
                 </button>

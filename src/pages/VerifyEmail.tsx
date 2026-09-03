@@ -106,7 +106,7 @@ const VerifyEmail: React.FC = () => {
                     </div>
                     <div className="text-sm text-gray-700">{message}</div>
                     <div className="mt-3">
-                        <Link to="/" className="text-blue-600 hover:underline">
+                        <Link to="/" className="text-brand-600 hover:underline">
                             Ir al inicio
                         </Link>
                     </div>
@@ -126,7 +126,7 @@ const VerifyEmail: React.FC = () => {
                         </Link>
                         <Link
                             to="/resend-verification"
-                            className="px-3 py-2 bg-blue-600 text-white rounded"
+                            className="px-3 py-2 bg-brand-600 text-white rounded"
                         >
                             Reenviar email
                         </Link>

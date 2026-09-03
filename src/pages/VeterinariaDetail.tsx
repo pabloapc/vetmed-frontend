@@ -4,6 +4,7 @@ import { veterinariaService } from "../services/veterinariaService";
 import { requestService } from "../services/requestService";
 import { useAuth } from "../hooks/useAuth";
 import type { BackendVeterinaria } from "../types/veterinaria";
+import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
 import {
     ArrowLeftIcon,
     MapPinIcon,
@@ -16,14 +17,6 @@ import {
     BuildingStorefrontIcon,
 } from "@heroicons/react/24/outline";
 
-const ACTION_TYPES = [
-    { value: "medicamento", label: "Consulta de medicamento" },
-    { value: "descuento", label: "Descuento / beneficio" },
-    { value: "turno", label: "Solicitar turno" },
-    { value: "video_llamada", label: "Videollamada" },
-    { value: "informacion", label: "Información general" },
-];
-
 export const VeterinariaDetail: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -35,7 +28,7 @@ export const VeterinariaDetail: React.FC = () => {
     const [needsAuth, setNeedsAuth] = useState(false);
 
     // request form
-    const [actionType, setActionType] = useState("medicamento");
+    const [actionType, setActionType] = useState("consulta_medica");
     const [notes, setNotes] = useState("");
     const [reqLoading, setReqLoading] = useState(false);
     const [reqError, setReqError] = useState("");
@@ -62,6 +55,15 @@ export const VeterinariaDetail: React.FC = () => {
             .finally(() => setLoading(false));
     }, [id]);
 
+    useEffect(() => {
+        if (veterinaria?.name) {
+            document.title = `${veterinaria.name} · Vetfind`;
+        }
+        return () => {
+            document.title = "Vetfind";
+        };
+    }, [veterinaria]);
+
     const buildMapsUrl = () => {
         if (!veterinaria) return "https://www.google.com/maps";
         const lat = veterinaria.coordinates?.latitude;
@@ -71,6 +73,15 @@ export const VeterinariaDetail: React.FC = () => {
         return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
             veterinaria.address ?? veterinaria.name
         )}`;
+    };
+
+    const buildOsmEmbedUrl = () => {
+        const lat = veterinaria?.coordinates?.latitude;
+        const lng = veterinaria?.coordinates?.longitude;
+        if (lat == null || lng == null) return null;
+        const delta = 0.006;
+        const bbox = [lng - delta, lat - delta, lng + delta, lat + delta].join(",");
+        return `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lng}`;
     };
 
     const handleRequest = async (e: React.FormEvent) => {
@@ -110,7 +121,7 @@ export const VeterinariaDetail: React.FC = () => {
     if (loading)
         return (
             <div className="flex justify-center items-center py-24">
-                <ArrowPathIcon className="w-8 h-8 animate-spin text-blue-500" />
+                <ArrowPathIcon className="w-8 h-8 animate-spin text-brand-500" />
             </div>
         );
 
@@ -127,7 +138,7 @@ export const VeterinariaDetail: React.FC = () => {
                 <div className="flex justify-center gap-3">
                     <button
                         onClick={() => navigate("/login")}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium"
+                        className="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium"
                     >
                         Iniciar sesión
                     </button>
@@ -148,12 +159,14 @@ export const VeterinariaDetail: React.FC = () => {
                 <p className="text-gray-600">{error || "Veterinaria no encontrada"}</p>
                 <button
                     onClick={() => navigate(-1)}
-                    className="mt-4 text-blue-600 hover:underline"
+                    className="mt-4 text-brand-600 hover:underline"
                 >
                     Volver
                 </button>
             </div>
         );
+
+    const isClaimed = veterinaria.isClaimed ?? false;
 
     return (
         <div className="container mx-auto px-4 py-10 max-w-3xl">
@@ -183,8 +196,13 @@ export const VeterinariaDetail: React.FC = () => {
                                     .join(", ")}
                             </p>
                         )}
+                        {!isClaimed && (
+                            <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
+                                No registrada en VetFind
+                            </span>
+                        )}
                     </div>
-                    {veterinaria.discount != null && (
+                    {isClaimed && veterinaria.discount != null && (
                         <span className="shrink-0 bg-green-100 text-green-700 text-sm font-semibold px-3 py-1 rounded-full">
                             {veterinaria.discount}% desc.
                         </span>
@@ -202,14 +220,17 @@ export const VeterinariaDetail: React.FC = () => {
                             <div className="text-sm text-gray-700">
                                 {veterinaria.address}
                             </div>
-                            <a
-                                href={buildMapsUrl()}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-xs text-blue-600 hover:underline mt-1 inline-block"
-                            >
-                                Ver en Google Maps →
-                            </a>
+                            {!(isClaimed && buildOsmEmbedUrl()) && (
+                                <a
+                                    href={buildMapsUrl()}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 text-xs text-brand-600 hover:underline mt-1"
+                                >
+                                    <MapPinIcon className="w-3 h-3" />
+                                    Ver ubicación →
+                                </a>
+                            )}
                         </div>
                     </div>
 
@@ -223,7 +244,7 @@ export const VeterinariaDetail: React.FC = () => {
                                 </div>
                                 <a
                                     href={`tel:${veterinaria.phone}`}
-                                    className="text-sm text-gray-700 hover:text-blue-600"
+                                    className="text-sm text-gray-700 hover:text-brand-600"
                                 >
                                     {veterinaria.phone}
                                 </a>
@@ -231,39 +252,69 @@ export const VeterinariaDetail: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Hours */}
-                    {veterinaria.openingHours && (
-                        <div className="flex items-start gap-3">
-                            <ClockIcon className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
-                            <div>
-                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
-                                    Horario
+                    {isClaimed && (
+                        <>
+                            {/* Hours */}
+                            {veterinaria.openingHours && (
+                                <div className="flex items-start gap-3">
+                                    <ClockIcon className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                                    <div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                                            Horario
+                                        </div>
+                                        <div className="text-sm text-gray-700">
+                                            {veterinaria.openingHours}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="text-sm text-gray-700">
-                                    {veterinaria.openingHours}
-                                </div>
-                            </div>
-                        </div>
-                    )}
+                            )}
 
-                    {/* Benefits */}
-                    {veterinaria.benefits && (
-                        <div className="flex items-start gap-3">
-                            <TagIcon className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
-                            <div>
-                                <div className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
-                                    Beneficios
+                            {/* Benefits */}
+                            {veterinaria.benefits && (
+                                <div className="flex items-start gap-3">
+                                    <TagIcon className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                                    <div>
+                                        <div className="text-xs text-gray-400 uppercase tracking-wide mb-0.5">
+                                            Beneficios
+                                        </div>
+                                        <div className="text-sm text-gray-700">
+                                            {veterinaria.benefits}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="text-sm text-gray-700">
-                                    {veterinaria.benefits}
-                                </div>
-                            </div>
-                        </div>
+                            )}
+                        </>
                     )}
                 </div>
+
+                {/* Map */}
+                {isClaimed && buildOsmEmbedUrl() && (
+                    <div className="mt-5">
+                        <div className="text-xs text-gray-400 uppercase tracking-wide mb-2">
+                            Ubicación
+                        </div>
+                        <div className="rounded-xl overflow-hidden border border-gray-200 h-64 sm:h-80">
+                            <iframe
+                                title={`Mapa de ${veterinaria.name}`}
+                                src={buildOsmEmbedUrl() ?? undefined}
+                                className="w-full h-full border-0"
+                                loading="lazy"
+                            />
+                        </div>
+                        <a
+                            href={buildMapsUrl()}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-brand-600 hover:underline mt-2 inline-block"
+                        >
+                            Ver en Google Maps →
+                        </a>
+                    </div>
+                )}
             </div>
 
             {/* Request form */}
+            {isClaimed && (
             <div className="bg-white rounded-xl shadow p-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-1">
                     Hacer una solicitud
@@ -292,21 +343,31 @@ export const VeterinariaDetail: React.FC = () => {
                 ) : (
                     <form onSubmit={handleRequest} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
                                 Tipo de solicitud
                             </label>
-                            <select
-                                value={actionType}
-                                onChange={(e) => setActionType(e.target.value)}
-                                disabled={!isAuthenticated}
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-50 disabled:text-gray-400"
-                            >
-                                {ACTION_TYPES.map((at) => (
-                                    <option key={at.value} value={at.value}>
-                                        {at.label}
-                                    </option>
-                                ))}
-                            </select>
+                            <div className="grid grid-cols-2 gap-3">
+                                {VETERINARIA_ACTION_TYPES.map((at) => {
+                                    const selected = actionType === at.value;
+                                    return (
+                                        <button
+                                            key={at.value}
+                                            type="button"
+                                            onClick={() => setActionType(at.value)}
+                                            disabled={!isAuthenticated}
+                                            aria-pressed={selected}
+                                            className={`flex flex-col items-center justify-center gap-2 rounded-xl border-2 px-4 py-4 text-sm font-medium transition disabled:opacity-50 disabled:cursor-not-allowed ${
+                                                selected
+                                                    ? "border-brand-500 bg-brand-50 text-brand-700"
+                                                    : "border-gray-200 bg-white text-gray-600 hover:border-brand-300 hover:bg-brand-50/50"
+                                            }`}
+                                        >
+                                            <at.Icon className="w-6 h-6" />
+                                            {at.label}
+                                        </button>
+                                    );
+                                })}
+                            </div>
                         </div>
 
                         <div>
@@ -319,7 +380,7 @@ export const VeterinariaDetail: React.FC = () => {
                                 disabled={!isAuthenticated}
                                 rows={3}
                                 placeholder="Indicá qué necesitás..."
-                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 disabled:bg-gray-50 disabled:text-gray-400"
+                                className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-400 disabled:bg-gray-50 disabled:text-gray-400"
                             />
                         </div>
 
@@ -331,7 +392,7 @@ export const VeterinariaDetail: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={() => navigate("/login")}
-                                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-medium"
+                                className="w-full bg-brand-600 hover:bg-brand-700 text-white py-2.5 rounded-lg text-sm font-medium"
                             >
                                 Iniciar sesión para enviar
                             </button>
@@ -339,7 +400,7 @@ export const VeterinariaDetail: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={reqLoading}
-                                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 text-white py-2.5 rounded-lg text-sm font-medium inline-flex justify-center items-center gap-2"
+                                className="w-full bg-brand-600 hover:bg-brand-700 disabled:opacity-60 text-white py-2.5 rounded-lg text-sm font-medium inline-flex justify-center items-center gap-2"
                             >
                                 {reqLoading && (
                                     <ArrowPathIcon className="w-4 h-4 animate-spin" />
@@ -356,12 +417,13 @@ export const VeterinariaDetail: React.FC = () => {
                             setReqToken(null);
                             setNotes("");
                         }}
-                        className="mt-3 text-sm text-blue-600 hover:underline"
+                        className="mt-3 text-sm text-brand-600 hover:underline"
                     >
                         Hacer otra solicitud
                     </button>
                 )}
             </div>
+            )}
         </div>
     );
 };

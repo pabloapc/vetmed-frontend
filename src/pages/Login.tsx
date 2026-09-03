@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import useAuth from '../hooks/useAuth';
 import PasswordInput from '../components/PasswordInput';
+import { BrandLogo } from '../components/BrandLogo';
 import {
     ShieldCheckIcon,
     LockClosedIcon,
@@ -80,25 +81,23 @@ export const Login: React.FC = () => {
     return (
         <div className="min-h-screen flex">
             {/* Left panel — brand */}
-            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 flex-col justify-between p-12 relative overflow-hidden">
+            <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 flex-col justify-between p-12 relative overflow-hidden">
                 {/* decorative circles */}
                 <div className="absolute -top-24 -left-24 w-96 h-96 bg-white/5 rounded-full" />
                 <div className="absolute bottom-0 right-0 w-80 h-80 bg-white/5 rounded-full translate-x-1/3 translate-y-1/3" />
 
                 {/* Logo */}
                 <div className="relative z-10">
-                    <Link to="/" className="text-white text-2xl font-bold tracking-tight hover:opacity-80 transition">
-                        Vetfind
-                    </Link>
+                    <BrandLogo variant="onDark" size="lg" />
                 </div>
 
                 {/* Hero text */}
                 <div className="relative z-10 space-y-6">
                     <h1 className="text-4xl font-bold text-white leading-snug">
-                        Tu salud, <br />
-                        siempre cerca.
+                        Tu mascota, <br />
+                        bien cuidada.
                     </h1>
-                    <p className="text-blue-100 text-base leading-relaxed max-w-sm">
+                    <p className="text-brand-100 text-base leading-relaxed max-w-sm">
                         Accedé a veterinarias, profesionales de salud y servicios de emergencia desde una sola plataforma segura.
                     </p>
 
@@ -109,15 +108,15 @@ export const Login: React.FC = () => {
                             'Datos protegidos con cifrado TLS',
                         ].map((item) => (
                             <div key={item} className="flex items-center gap-3">
-                                <ShieldCheckIcon className="w-5 h-5 text-blue-200 shrink-0" />
-                                <span className="text-blue-100 text-sm">{item}</span>
+                                <ShieldCheckIcon className="w-5 h-5 text-brand-200 shrink-0" />
+                                <span className="text-brand-100 text-sm">{item}</span>
                             </div>
                         ))}
                     </div>
                 </div>
 
                 {/* Footer */}
-                <div className="relative z-10 text-blue-300 text-xs">
+                <div className="relative z-10 text-brand-300 text-xs">
                     © {new Date().getFullYear()} Vetfind. Todos los derechos reservados.
                 </div>
             </div>
@@ -127,19 +126,19 @@ export const Login: React.FC = () => {
                 <div className="w-full max-w-sm">
 
                     {/* Mobile logo */}
-                    <div className="lg:hidden mb-8 text-center">
-                        <Link to="/" className="text-blue-700 text-2xl font-bold tracking-tight hover:opacity-80 transition">Vetfind</Link>
+                    <div className="lg:hidden mb-8 flex justify-center">
+                        <BrandLogo variant="onLight" size="lg" />
                     </div>
 
                     {/* Header */}
                     <div className="mb-8">
                         <div className="flex items-start justify-between mb-4">
-                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-50">
-                                <LockClosedIcon className="w-6 h-6 text-blue-600" />
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-brand-50">
+                                <LockClosedIcon className="w-6 h-6 text-brand-600" />
                             </div>
                             <Link
                                 to="/"
-                                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600 transition"
+                                className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-brand-600 transition"
                             >
                                 <ArrowRightIcon className="w-3.5 h-3.5 rotate-180" />
                                 Volver al inicio
@@ -179,7 +178,7 @@ export const Login: React.FC = () => {
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="tu@email.com"
-                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+                                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg text-sm text-gray-900 placeholder-gray-400 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
                             />
                         </div>
 
@@ -193,7 +192,7 @@ export const Login: React.FC = () => {
                                 </label>
                                 <Link
                                     to="/resend-verification"
-                                    className="text-xs text-blue-600 hover:text-blue-700 hover:underline"
+                                    className="text-xs text-brand-600 hover:text-brand-700 hover:underline"
                                 >
                                     ¿Olvidaste tu contraseña?
                                 </Link>
@@ -206,14 +205,14 @@ export const Login: React.FC = () => {
                                 required
                                 autoComplete="current-password"
                                 placeholder="••••••••"
-                                className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-blue-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
+                                className="[&_input]:px-4 [&_input]:py-2.5 [&_input]:rounded-lg [&_input]:text-sm [&_input]:border-gray-300 [&_input]:focus:ring-2 [&_input]:focus:ring-brand-500 [&_input]:focus:border-transparent [&_input]:transition [&_input]:mt-0"
                             />
                         </div>
 
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            className="w-full flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-lg text-sm transition focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2"
                         >
                             {isLoading ? (
                                 <>
@@ -241,7 +240,7 @@ export const Login: React.FC = () => {
 
                     <Link
                         to="/register"
-                        className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:border-blue-400 hover:bg-blue-50 text-gray-700 hover:text-blue-700 font-medium py-2.5 px-4 rounded-lg text-sm transition"
+                        className="w-full flex items-center justify-center gap-2 border border-gray-300 hover:border-brand-400 hover:bg-brand-50 text-gray-700 hover:text-brand-700 font-medium py-2.5 px-4 rounded-lg text-sm transition"
                     >
                         Crear una cuenta nueva
                     </Link>

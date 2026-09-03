@@ -42,9 +42,9 @@ const StatCard: React.FC<{
                 </div>
                 {Icon && (
                     <div
-                        className={`p-2 rounded-md ${colorBg ?? "bg-blue-50"}`}
+                        className={`p-2 rounded-md ${colorBg ?? "bg-brand-50"}`}
                     >
-                        <Icon className="h-7 w-7 text-blue-600" />
+                        <Icon className="h-7 w-7 text-brand-600" />
                     </div>
                 )}
             </div>
@@ -102,9 +102,10 @@ const actionTypeLabel = (actionType?: string, targetType?: string) => {
             return "Visita médica";
     }
 
-    if (at === "consulta_medica") return "Consulta médica";
+    if (at === "presencial") return "Asistencia presencial";
     if (at === "video_llamada" || at === "video-llamada")
-        return "Video llamada";
+        return "Videollamada";
+    if (at === "consulta_medica") return "Consulta médica";
     if (at === "emergency" || at === "urgencia") return "Urgencia";
     if (at === "visita_medica" || at === "visita médica")
         return "Visita médica";
@@ -233,8 +234,8 @@ export const AdminDashboard: React.FC = () => {
                             <div className="text-xs text-gray-500">
                                 Cumplidas
                             </div>
-                            <div className="text-lg font-semibold text-blue-600 flex items-center gap-2">
-                                <ChartBarIcon className="w-5 h-5 text-blue-600" />
+                            <div className="text-lg font-semibold text-brand-600 flex items-center gap-2">
+                                <ChartBarIcon className="w-5 h-5 text-brand-600" />
                                 {metrics.statusCounts?.fulfilled ?? 0}
                             </div>
                         </div>
@@ -264,7 +265,7 @@ export const AdminDashboard: React.FC = () => {
                                     ? "/admin/requests"
                                     : `/admin/requests?target=${recentTargetFilter}`
                             }
-                            className="text-sm text-blue-600 hover:underline"
+                            className="text-sm text-brand-600 hover:underline"
                         >
                             Ver todas
                         </Link>
@@ -343,7 +344,7 @@ export const AdminDashboard: React.FC = () => {
                     className="p-4 bg-white rounded shadow hover:shadow-md"
                 >
                     <div className="flex items-center gap-3">
-                        <UserGroupIcon className="w-6 h-6 text-indigo-600" />
+                        <UserGroupIcon className="w-6 h-6 text-brand-600" />
                         <div>
                             <div className="font-medium">Usuarios</div>
                             <div className="text-xs text-gray-500">

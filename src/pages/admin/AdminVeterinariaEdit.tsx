@@ -188,7 +188,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 pb-10">
             {/* Hero */}
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 px-6 pt-10 pb-8">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-900 px-6 pt-10 pb-8">
                 <div className="mx-auto max-w-2xl">
                     <button
                         type="button"
@@ -226,7 +226,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                 name="name"
                                 value={data.name || ""}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -236,7 +236,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                 name="address"
                                 value={data.address || ""}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -246,7 +246,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                 name="phone"
                                 value={data.phone || ""}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -256,7 +256,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                 name="benefits"
                                 value={data.benefits || ""}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -267,7 +267,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                     name="discount"
                                     value={String(data.discount ?? "")}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -276,7 +276,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                     name="isActive"
                                     value={String(typeof data.isActive !== "undefined" ? data.isActive : "true")}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 >
                                     <option value="true">Activa</option>
                                     <option value="false">Inactiva</option>
@@ -291,7 +291,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                     name="latitude"
                                     value={data.latitude ?? data.location?.coordinates?.[1] ?? ""}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -300,7 +300,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                     name="longitude"
                                     value={data.longitude ?? data.location?.coordinates?.[0] ?? ""}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -308,14 +308,14 @@ export const AdminVeterinariaEdit: React.FC = () => {
                         {/* Vademécum */}
                         <div className="rounded-xl border border-gray-200 bg-gray-50 p-4">
                             <div className="flex items-center gap-2 mb-3">
-                                <DocumentTextIcon className="h-4 w-4 text-indigo-600" />
+                                <DocumentTextIcon className="h-4 w-4 text-brand-600" />
                                 <label className="text-sm font-medium text-gray-700">Vademécum</label>
                             </div>
                             <input
                                 type="file"
                                 accept=".csv,.xls,.xlsx"
                                 onChange={handleVademecumFile}
-                                className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-indigo-50 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-indigo-700 hover:file:bg-indigo-100"
+                                className="block w-full text-sm text-gray-500 file:mr-3 file:rounded-lg file:border-0 file:bg-brand-50 file:px-3 file:py-1.5 file:text-xs file:font-medium file:text-brand-700 hover:file:bg-brand-100"
                             />
                             <p className="text-xs text-gray-400 mt-2">
                                 Se sube el archivo completo (CSV/XLS/XLSX) para ser procesado por el backend.
@@ -328,7 +328,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                     href={toPublicFileUrl(data?.vademecumFile?.url || data?.vademecumFileUrl || data?.vademecum?.url)}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="inline-block mt-2 text-xs text-indigo-600 hover:underline"
+                                    className="inline-block mt-2 text-xs text-brand-600 hover:underline"
                                 >
                                     Ver archivo actual
                                 </a>
@@ -339,7 +339,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={saving}
-                                className="flex-1 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60 transition-colors"
+                                className="flex-1 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-500 disabled:opacity-60 transition-colors"
                             >
                                 {saving ? "Guardando…" : "Guardar cambios"}
                             </button>

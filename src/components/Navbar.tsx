@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import adminService from "../services/adminService";
+import { BrandLogo } from "./BrandLogo";
 import {
     Bars3Icon,
     HomeIcon,
@@ -134,25 +135,18 @@ export const Navbar: React.FC = () => {
     const getMobileLinkClass = (path: string, exact = false) =>
         `flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition ${
             isRouteActive(path, exact)
-                ? "bg-blue-600 text-white shadow-sm"
+                ? "bg-brand-600 text-white shadow-sm"
                 : "text-gray-800 hover:bg-slate-100"
         }`;
     const getMobileIconClass = (path: string, exact = false) =>
-        `w-5 h-5 ${isRouteActive(path, exact) ? "text-white" : "text-blue-600"}`;
+        `w-5 h-5 ${isRouteActive(path, exact) ? "text-white" : "text-brand-600"}`;
 
     return (
         <>
         <nav className="header backdrop-blur-2xl shadow-sm sticky top-0 z-50">
             <div className="container mx-auto px-4">
                 <div className="flex justify-between items-center h-16">
-                    <Link to={homePath} className="flex items-center gap-3">
-                        <span className="text-xl font-bold tracking-tight">
-                            Vetfind
-                        </span>
-                        <span className="inline-flex items-center justify-center w-7 h-7 bg-white/20 rounded-full text-sm font-bold">
-                            +
-                        </span>
-                    </Link>
+                    <BrandLogo to={homePath} variant="onLight" />
 
                     <div className="hidden md:flex items-center space-x-3">
                         {/* Common link for all */}
@@ -303,12 +297,12 @@ export const Navbar: React.FC = () => {
 
                                     {displayInsurerName && (
                                         <span className="hidden lg:inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-medium border border-emerald-200">
-                                            Obra social: {displayInsurerName}
+                                             {displayInsurerName}
                                         </span>
                                     )}
 
                                     {displayPlanName && (
-                                        <span className="hidden lg:inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium border border-blue-200">
+                                        <span className="hidden lg:inline-flex items-center px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-medium border border-brand-200">
                                             Plan: {displayPlanName}
                                         </span>
                                     )}
@@ -427,16 +421,11 @@ export const Navbar: React.FC = () => {
                 <div className="absolute right-0 top-0 h-full w-[88%] max-w-sm bg-white shadow-2xl rounded-l-3xl overflow-hidden animate-[slideInRight_.22s_ease-out]">
                     <div className="h-full flex flex-col">
                         <div
-                            className="bg-gradient-to-br from-blue-700 via-blue-600 to-indigo-700 px-5 pt-5 pb-6 text-white"
+                            className="bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 px-5 pt-5 pb-6 text-white"
                             style={{ paddingTop: "calc(env(safe-area-inset-top) + 1rem)" }}
                         >
                             <div className="flex items-center justify-between mb-6">
-                                <Link to={homePath} className="flex items-center gap-3 text-lg font-bold tracking-tight">
-                                    <span>Vetfind</span>
-                                    <span className="inline-flex items-center justify-center w-7 h-7 bg-white/20 rounded-full text-sm font-bold">
-                                        +
-                                    </span>
-                                </Link>
+                                <BrandLogo to={homePath} variant="onDark" size="sm" />
 
                                 <button
                                     type="button"
@@ -451,12 +440,12 @@ export const Navbar: React.FC = () => {
                             {isAuthenticated ? (
                                 <div className="rounded-3xl bg-white/10 border border-white/15 p-4">
                                     <div className="flex items-center gap-3">
-                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white text-blue-700 text-sm font-bold">
+                                        <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white text-brand-700 text-sm font-bold">
                                             {initials || "U"}
                                         </div>
                                         <div className="min-w-0">
                                             <p className="text-sm font-semibold truncate">{user?.name || "Usuario"}</p>
-                                            <p className="text-xs text-blue-100 truncate">{user?.email}</p>
+                                            <p className="text-xs text-brand-100 truncate">{user?.email}</p>
                                         </div>
                                     </div>
 
@@ -466,7 +455,7 @@ export const Navbar: React.FC = () => {
                                                 Cobertura: {displayInsurerName}
                                             </span>
                                             {displayPlanName && (
-                                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-blue-100 text-blue-800 text-xs font-medium border border-blue-200">
+                                                <span className="inline-flex items-center px-3 py-1 rounded-full bg-brand-100 text-brand-800 text-xs font-medium border border-brand-200">
                                                     Plan: {displayPlanName}
                                                 </span>
                                             )}
@@ -475,7 +464,7 @@ export const Navbar: React.FC = () => {
                                 </div>
                             ) : (
                                 <div className="rounded-3xl bg-white/10 border border-white/15 p-4 space-y-3">
-                                    <p className="text-sm text-blue-50">
+                                    <p className="text-sm text-brand-50">
                                         Accedé o registrate para usar todas las funciones de Vetfind.
                                     </p>
                                     <div className="grid grid-cols-2 gap-3">
@@ -487,7 +476,7 @@ export const Navbar: React.FC = () => {
                                         </Link>
                                         <Link
                                             to="/register"
-                                            className="inline-flex items-center justify-center rounded-2xl bg-white text-blue-700 px-4 py-3 text-sm font-semibold"
+                                            className="inline-flex items-center justify-center rounded-2xl bg-white text-brand-700 px-4 py-3 text-sm font-semibold"
                                         >
                                             Registro
                                         </Link>

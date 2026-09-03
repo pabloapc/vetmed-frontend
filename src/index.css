@@ -1,8 +1,21 @@
 @import "tailwindcss";
 
+@theme {
+    --color-brand-50: #e6eedd;
+    --color-brand-100: #d7e4c9;
+    --color-brand-200: #bdd3b5;
+    --color-brand-300: #a3c2a1;
+    --color-brand-400: #91b5a0;
+    --color-brand-500: #7fa89e;
+    --color-brand-600: #658d92;
+    --color-brand-700: #4a7286;
+    --color-brand-800: #375362;
+    --color-brand-900: #24333d;
+    --color-brand-950: #1b262e;
+}
 
 body {
-    font-family: "Outfit", sans-serif;
+    font-family: "Quicksand", sans-serif;
 }
 
 @keyframes fadeIn {

@@ -115,7 +115,7 @@ export const AdminVeterinarias: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 pb-10">
             {/* Hero */}
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 px-6 pt-10 pb-8">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-900 px-6 pt-10 pb-8">
                 <div className="mx-auto max-w-5xl">
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -129,7 +129,7 @@ export const AdminVeterinarias: React.FC = () => {
                         </div>
                         <button
                             onClick={() => navigate("/admin/veterinarias/new")}
-                            className="flex items-center gap-2 rounded-xl bg-indigo-500 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-indigo-400 transition-colors"
+                            className="flex items-center gap-2 rounded-xl bg-brand-500 px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-brand-400 transition-colors"
                         >
                             <PlusIcon className="h-4 w-4" />
                             Nueva veterinaria
@@ -162,7 +162,7 @@ export const AdminVeterinarias: React.FC = () => {
                             <FunnelIcon className="h-4 w-4" />
                             Filtros
                         </div>
-                        <div className="flex flex-1 items-center gap-2 rounded-xl border border-gray-300 px-3.5 py-2.5 focus-within:ring-2 focus-within:ring-indigo-400">
+                        <div className="flex flex-1 items-center gap-2 rounded-xl border border-gray-300 px-3.5 py-2.5 focus-within:ring-2 focus-within:ring-brand-400">
                             <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 shrink-0" />
                             <input
                                 value={q}
@@ -174,7 +174,7 @@ export const AdminVeterinarias: React.FC = () => {
                         <select
                             value={vademecumFilter}
                             onChange={(e) => setVademecumFilter(e.target.value as "all" | "with" | "without")}
-                            className="rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                            className="rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                         >
                             <option value="all">Todos</option>
                             <option value="with">Con vademécum</option>
@@ -182,7 +182,7 @@ export const AdminVeterinarias: React.FC = () => {
                         </select>
                         <button
                             type="submit"
-                            className="rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition-colors"
+                            className="rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-500 transition-colors"
                         >
                             Buscar
                         </button>
@@ -225,7 +225,7 @@ export const AdminVeterinarias: React.FC = () => {
                                                                     href={vm.fileUrl}
                                                                     target="_blank"
                                                                     rel="noreferrer"
-                                                                    className="text-xs text-indigo-600 hover:underline max-w-[180px] truncate"
+                                                                    className="text-xs text-brand-600 hover:underline max-w-[180px] truncate"
                                                                     title={vm.fileName || vm.fileUrl}
                                                                 >
                                                                     {vm.fileName || "Ver archivo"}
@@ -247,7 +247,7 @@ export const AdminVeterinarias: React.FC = () => {
                                                     <div className="flex items-center gap-2">
                                                         <Link
                                                             to={`/admin/veterinarias/${p._id}`}
-                                                            className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-medium text-indigo-700 hover:bg-indigo-100 transition-colors"
+                                                            className="flex items-center gap-1 rounded-lg bg-brand-50 px-2.5 py-1.5 text-xs font-medium text-brand-700 hover:bg-brand-100 transition-colors"
                                                         >
                                                             <PencilSquareIcon className="h-3.5 w-3.5" />
                                                             Editar

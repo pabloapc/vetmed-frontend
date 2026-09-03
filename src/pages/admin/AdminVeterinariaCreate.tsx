@@ -68,7 +68,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
     return (
         <div className="min-h-screen bg-gray-50 pb-10">
             {/* Hero */}
-            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 px-6 pt-10 pb-8">
+            <div className="bg-gradient-to-br from-slate-900 via-slate-800 to-brand-900 px-6 pt-10 pb-8">
                 <div className="mx-auto max-w-2xl">
                     <button
                         type="button"
@@ -106,7 +106,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="name"
                                 value={form.name}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -116,7 +116,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="address"
                                 value={form.address}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -126,7 +126,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="phone"
                                 value={form.phone}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -136,7 +136,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="openingHours"
                                 value={form.openingHours}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -146,7 +146,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="benefits"
                                 value={form.benefits}
                                 onChange={handleChange}
-                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>
 
@@ -157,7 +157,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                     name="discount"
                                     value={form.discount}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -166,7 +166,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                     name="isActive"
                                     value={String(form.isActive)}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 >
                                     <option value="true">Activa</option>
                                     <option value="false">Inactiva</option>
@@ -181,7 +181,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                     name="latitude"
                                     value={form.latitude}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                             <div>
@@ -190,7 +190,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                     name="longitude"
                                     value={form.longitude}
                                     onChange={handleChange}
-                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+                                    className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                                 />
                             </div>
                         </div>
@@ -199,7 +199,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                             <button
                                 type="submit"
                                 disabled={loading}
-                                className="flex-1 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60 transition-colors"
+                                className="flex-1 rounded-xl bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-brand-500 disabled:opacity-60 transition-colors"
                             >
                                 {loading ? "Creando…" : "Crear veterinaria"}
                             </button>

@@ -383,7 +383,7 @@ export const AdminUserEdit: React.FC = () => {
                                         type="button"
                                         onClick={() => handleSearchEntities()}
                                         disabled={searchLoading}
-                                        className="px-3 py-2 bg-blue-600 text-white rounded"
+                                        className="px-3 py-2 bg-brand-600 text-white rounded"
                                     >
                                         {searchLoading
                                             ? "Buscando..."
@@ -494,7 +494,7 @@ export const AdminUserEdit: React.FC = () => {
                     <button
                         type="submit"
                         disabled={saving}
-                        className="px-4 py-2 bg-blue-600 text-white rounded"
+                        className="px-4 py-2 bg-brand-600 text-white rounded"
                     >
                         {saving ? "Guardando..." : "Guardar"}
                     </button>
