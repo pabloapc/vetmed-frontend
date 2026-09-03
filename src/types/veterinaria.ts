@@ -1,5 +1,6 @@
 export interface Veterinaria {
   id: string;
+  slug?: string;
   nombre: string;
   direccion: string;
   ciudad: string;
@@ -32,6 +33,7 @@ export interface VademecumItem {
 // Backend veterinaria response structure
 export interface BackendVeterinaria {
   id: string;
+  slug?: string;
   name: string;
   address: string;
   phone?: string;

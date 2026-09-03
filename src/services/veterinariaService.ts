@@ -32,6 +32,14 @@ export const veterinariaService = {
         return raw?.veterinaria ?? raw;
     },
 
+    async getVeterinariaBySlug(slug: string): Promise<BackendVeterinaria> {
+        const response = await api.get<BackendResponse<any>>(
+            `/veterinarias/slug/${slug}`
+        );
+        const raw = response.data.data;
+        return raw?.veterinaria ?? raw;
+    },
+
     // alias para compatibilidad con getById used in Profile
     async getById(id: string): Promise<BackendVeterinaria> {
         return veterinariaService.getVeterinariaById(id);

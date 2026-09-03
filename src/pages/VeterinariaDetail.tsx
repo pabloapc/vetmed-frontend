@@ -5,6 +5,44 @@ import { requestService } from "../services/requestService";
 import { useAuth } from "../hooks/useAuth";
 import type { BackendVeterinaria } from "../types/veterinaria";
 import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
+import { veterinariaDetailPath } from "../utils/seoUrl";
+
+const FRONTEND_ORIGIN = "https://www.vetfind.com.ar";
+
+const setMetaTag = (attr: "name" | "property", key: string, content: string) => {
+    let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
+    if (!tag) {
+        tag = document.createElement("meta");
+        tag.setAttribute(attr, key);
+        document.head.appendChild(tag);
+    }
+    tag.setAttribute("content", content);
+};
+
+const setCanonical = (href: string) => {
+    let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (!link) {
+        link = document.createElement("link");
+        link.setAttribute("rel", "canonical");
+        document.head.appendChild(link);
+    }
+    link.setAttribute("href", href);
+};
+
+const setJsonLd = (data: Record<string, unknown> | null) => {
+    let script = document.getElementById("veterinaria-jsonld") as HTMLScriptElement | null;
+    if (!data) {
+        script?.remove();
+        return;
+    }
+    if (!script) {
+        script = document.createElement("script");
+        script.id = "veterinaria-jsonld";
+        script.type = "application/ld+json";
+        document.head.appendChild(script);
+    }
+    script.textContent = JSON.stringify(data);
+};
 import {
     ArrowLeftIcon,
     MapPinIcon,
@@ -18,7 +56,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const VeterinariaDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
+    const { id, slug } = useParams<{ id?: string; citySlug?: string; slug?: string }>();
     const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
 
@@ -35,10 +73,12 @@ export const VeterinariaDetail: React.FC = () => {
     const [reqToken, setReqToken] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!id) return;
+        if (!id && !slug) return;
         setLoading(true);
-        veterinariaService
-            .getVeterinariaById(id)
+        const fetcher = slug
+            ? veterinariaService.getVeterinariaBySlug(slug)
+            : veterinariaService.getVeterinariaById(id!);
+        fetcher
             .then((data) => setVeterinaria(data))
             .catch((err) => {
                 const status = err?.response?.status;
@@ -53,14 +93,61 @@ export const VeterinariaDetail: React.FC = () => {
                 }
             })
             .finally(() => setLoading(false));
-    }, [id]);
+    }, [id, slug]);
+
+    // Legacy /veterinarias/:id links redirect to the canonical SEO slug URL once resolved,
+    // so search engines and old bookmarks consolidate onto a single indexable URL.
+    useEffect(() => {
+        if (id && !slug && veterinaria?.slug) {
+            navigate(veterinariaDetailPath(veterinaria), { replace: true });
+        }
+    }, [id, slug, veterinaria, navigate]);
 
     useEffect(() => {
-        if (veterinaria?.name) {
-            document.title = `${veterinaria.name} · Vetfind`;
+        if (!veterinaria?.name) return;
+
+        const city = veterinaria.city;
+        document.title = city
+            ? `${veterinaria.name} - Veterinaria en ${city} | Vetfind`
+            : `${veterinaria.name} · Vetfind`;
+
+        const description = city
+            ? `${veterinaria.name}, veterinaria en ${veterinaria.address}, ${city}. Teléfono, ubicación y cómo contactarla en Vetfind.`
+            : `${veterinaria.name} en Vetfind: dirección, teléfono y ubicación.`;
+        setMetaTag("name", "description", description);
+        setMetaTag("property", "og:title", document.title);
+        setMetaTag("property", "og:description", description);
+
+        const canonicalPath = veterinariaDetailPath(veterinaria);
+        const canonicalUrl = `${FRONTEND_ORIGIN}${canonicalPath}`;
+        setCanonical(canonicalUrl);
+        setMetaTag("property", "og:url", canonicalUrl);
+
+        if (veterinaria.coordinates?.latitude && veterinaria.coordinates?.longitude) {
+            setJsonLd({
+                "@context": "https://schema.org",
+                "@type": "VeterinaryCare",
+                name: veterinaria.name,
+                address: {
+                    "@type": "PostalAddress",
+                    streetAddress: veterinaria.address,
+                    addressLocality: veterinaria.city || undefined,
+                    addressRegion: veterinaria.province || undefined,
+                    addressCountry: "AR",
+                },
+                telephone: veterinaria.phone || undefined,
+                geo: {
+                    "@type": "GeoCoordinates",
+                    latitude: veterinaria.coordinates.latitude,
+                    longitude: veterinaria.coordinates.longitude,
+                },
+                url: canonicalUrl,
+            });
         }
+
         return () => {
             document.title = "Vetfind";
+            setJsonLd(null);
         };
     }, [veterinaria]);
 
@@ -86,13 +173,13 @@ export const VeterinariaDetail: React.FC = () => {
 
     const handleRequest = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!id) return;
+        if (!veterinaria?.id) return;
         setReqError("");
         setReqLoading(true);
         try {
             const payload: any = {
                 targetType: "veterinaria",
-                targetId: id,
+                targetId: veterinaria.id,
                 actionType,
                 notes,
             };

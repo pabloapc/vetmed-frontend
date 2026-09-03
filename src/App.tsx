@@ -85,6 +85,10 @@ function App() {
                       />
                       <Route path="/veterinarias" element={<Veterinarias />} />
                       <Route
+                          path="/veterinarias/:citySlug/:slug"
+                          element={<VeterinariaDetail />}
+                      />
+                      <Route
                           path="/veterinarias/:id"
                           element={<VeterinariaDetail />}
                       />

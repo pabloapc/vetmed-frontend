@@ -23,6 +23,7 @@ import searchService from "../services/searchService";
 import adminService from "../services/adminService";
 //import { InsurancePlans } from "../components/InsurancePlans";
 import { InsurersSection } from "../components/InsurersSection";
+import { veterinariaDetailPath } from "../utils/seoUrl";
 import { BrandLogo } from "../components/BrandLogo";
 
 const PawPrint: React.FC<{
@@ -446,7 +447,7 @@ export const Home: React.FC = () => {
         setSelectedIndex(-1);
         if (!s) return;
         if (s.type === "veterinaria") {
-            navigate(`/veterinarias/${s.id}`);
+            navigate(veterinariaDetailPath(s));
         } else {
             navigate(`/search?q=${encodeURIComponent(s.name || query)}`);
         }

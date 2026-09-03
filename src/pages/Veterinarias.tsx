@@ -6,6 +6,7 @@ import type { Veterinaria, BackendVeterinaria } from "../types/veterinaria";
 import { useAuth } from "../hooks/useAuth";
 import { BottomNavMenu } from "../components/BottomNavMenu";
 import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
+import { veterinariaDetailPath } from "../utils/seoUrl";
 
 import {
     MagnifyingGlassIcon,
@@ -173,6 +174,7 @@ export const Veterinarias: React.FC = () => {
 
         return {
             id: p.id,
+            slug: p.slug,
             nombre: p.name,
             direccion: p.address,
             telefono: p.phone,
@@ -600,7 +602,7 @@ export const Veterinarias: React.FC = () => {
                                                     <div className="flex-1" />
                                                 )}
                                                 <Link
-                                                    to={`/veterinarias/${veterinaria.id}`}
+                                                    to={veterinariaDetailPath(veterinaria)}
                                                     title="Ver ficha completa"
                                                     className="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:scale-95 transition"
                                                 >
@@ -662,7 +664,7 @@ export const Veterinarias: React.FC = () => {
                                                     <div className="flex-1" />
                                                 )}
                                                 <Link
-                                                    to={`/veterinarias/${veterinaria.id}`}
+                                                    to={veterinariaDetailPath(veterinaria)}
                                                     title="Ver ficha completa"
                                                     className="shrink-0 w-12 h-12 flex items-center justify-center rounded-2xl bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-gray-700 active:scale-95 transition"
                                                 >
