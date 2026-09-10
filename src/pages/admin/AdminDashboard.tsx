@@ -384,66 +384,94 @@ export const AdminDashboard: React.FC = () => {
                         </div>
                     </div>
                 </Link>
+            </div>
 
-                <Link
-                    to="/admin/insurers"
-                    className="p-4 bg-white rounded shadow hover:shadow-md"
-                >
-                    <div className="flex items-center gap-3">
-                        <ShieldCheckIcon className="w-6 h-6 text-sky-600" />
-                        <div>
-                            <div className="font-medium">Obras sociales</div>
-                            <div className="text-xs text-gray-500">
-                                Listar y administrar financiadores
+            {/* Obras sociales / planes / coberturas: entidades relacionadas entre sí —
+                agrupadas aparte, con el orden de carga sugerido, para que el alta de
+                punta a punta se entienda como un solo flujo y no como 4 pantallas sueltas. */}
+            <div className="mt-8">
+                <h2 className="text-lg font-semibold text-gray-900">
+                    Obras sociales y coberturas
+                </h2>
+                <p className="text-xs text-gray-500 mt-0.5 mb-3">
+                    Flujo sugerido: cargá la obra social, después sus planes (desde su
+                    ficha), y por último qué prestaciones cubre cada plan (desde la
+                    ficha del plan). Prestaciones es un catálogo aparte, compartido por
+                    todos los planes.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <Link
+                        to="/admin/insurers"
+                        className="p-4 bg-white rounded shadow hover:shadow-md relative"
+                    >
+                        <span className="absolute top-3 right-3 w-5 h-5 rounded-full bg-sky-100 text-sky-700 text-[11px] font-semibold flex items-center justify-center">
+                            1
+                        </span>
+                        <div className="flex items-center gap-3">
+                            <ShieldCheckIcon className="w-6 h-6 text-sky-600" />
+                            <div>
+                                <div className="font-medium">Obras sociales</div>
+                                <div className="text-xs text-gray-500">
+                                    Alta de financiadores (obra social/prepaga)
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
 
-                <Link
-                    to="/admin/plans"
-                    className="p-4 bg-white rounded shadow hover:shadow-md"
-                >
-                    <div className="flex items-center gap-3">
-                        <DocumentTextIcon className="w-6 h-6 text-cyan-600" />
-                        <div>
-                            <div className="font-medium">Planes</div>
-                            <div className="text-xs text-gray-500">
-                                Estructura de planes por obra social
+                    <Link
+                        to="/admin/plans"
+                        className="p-4 bg-white rounded shadow hover:shadow-md relative"
+                    >
+                        <span className="absolute top-3 right-3 w-5 h-5 rounded-full bg-cyan-100 text-cyan-700 text-[11px] font-semibold flex items-center justify-center">
+                            2
+                        </span>
+                        <div className="flex items-center gap-3">
+                            <DocumentTextIcon className="w-6 h-6 text-cyan-600" />
+                            <div>
+                                <div className="font-medium">Planes</div>
+                                <div className="text-xs text-gray-500">
+                                    Se cargan desde la ficha de cada obra social
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
 
-                <Link
-                    to="/admin/prestations"
-                    className="p-4 bg-white rounded shadow hover:shadow-md"
-                >
-                    <div className="flex items-center gap-3">
-                        <ClipboardDocumentListIcon className="w-6 h-6 text-violet-600" />
-                        <div>
-                            <div className="font-medium">Prestaciones</div>
-                            <div className="text-xs text-gray-500">
-                                Listar y administrar prestaciones
+                    <Link
+                        to="/admin/plan-coverages"
+                        className="p-4 bg-white rounded shadow hover:shadow-md relative"
+                    >
+                        <span className="absolute top-3 right-3 w-5 h-5 rounded-full bg-teal-100 text-teal-700 text-[11px] font-semibold flex items-center justify-center">
+                            3
+                        </span>
+                        <div className="flex items-center gap-3">
+                            <ClipboardDocumentListIcon className="w-6 h-6 text-teal-600" />
+                            <div>
+                                <div className="font-medium">Coberturas</div>
+                                <div className="text-xs text-gray-500">
+                                    Se cargan desde la ficha de cada plan
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
 
-                <Link
-                    to="/admin/plan-coverages"
-                    className="p-4 bg-white rounded shadow hover:shadow-md"
-                >
-                    <div className="flex items-center gap-3">
-                        <ClipboardDocumentListIcon className="w-6 h-6 text-teal-600" />
-                        <div>
-                            <div className="font-medium">Coberturas</div>
-                            <div className="text-xs text-gray-500">
-                                Reglas de cobertura por plan
+                    <Link
+                        to="/admin/prestations"
+                        className="p-4 bg-white rounded shadow hover:shadow-md relative"
+                    >
+                        <span className="absolute top-3 right-3 px-1.5 h-5 rounded-full bg-violet-100 text-violet-700 text-[10px] font-semibold flex items-center justify-center">
+                            catálogo
+                        </span>
+                        <div className="flex items-center gap-3">
+                            <ClipboardDocumentListIcon className="w-6 h-6 text-violet-600" />
+                            <div>
+                                <div className="font-medium">Prestaciones</div>
+                                <div className="text-xs text-gray-500">
+                                    Catálogo de servicios, independiente de los planes
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </Link>
+                    </Link>
+                </div>
             </div>
         </div>
     );

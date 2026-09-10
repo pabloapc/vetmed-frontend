@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import adminService from "../../services/adminService";
 
 export const AdminPlans: React.FC = () => {
@@ -196,7 +197,14 @@ export const AdminPlans: React.FC = () => {
                             const iid = String(p?.insurerId?._id ?? p?.insurerId ?? "");
                             return (
                                 <tr key={p._id} className="border-t">
-                                    <td className="p-2">{p.name}</td>
+                                    <td className="p-2">
+                                        <Link
+                                            to={`/admin/plans/${p._id}`}
+                                            className="text-brand-600 hover:underline"
+                                        >
+                                            {p.name}
+                                        </Link>
+                                    </td>
                                     <td className="p-2">{p.code ?? "-"}</td>
                                     <td className="p-2">
                                         {insurerMap[iid] || p?.insurerId?.name || iid || "-"}
@@ -204,12 +212,20 @@ export const AdminPlans: React.FC = () => {
                                     <td className="p-2">{p.tier ?? "-"}</td>
                                     <td className="p-2">{p.isActive ? "Sí" : "No"}</td>
                                     <td className="p-2">
-                                        <button
-                                            onClick={() => handleDelete(p._id)}
-                                            className="px-2 py-1 bg-red-600 text-white rounded text-xs"
-                                        >
-                                            Eliminar
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <Link
+                                                to={`/admin/plans/${p._id}`}
+                                                className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs"
+                                            >
+                                                Editar
+                                            </Link>
+                                            <button
+                                                onClick={() => handleDelete(p._id)}
+                                                className="px-2 py-1 bg-red-600 text-white rounded text-xs"
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             );

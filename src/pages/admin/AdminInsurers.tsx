@@ -112,7 +112,14 @@ export const AdminInsurers: React.FC = () => {
                     <tbody>
                         {items.map((p) => (
                             <tr key={p._id} className="border-t">
-                                <td className="p-2">{p.name}</td>
+                                <td className="p-2">
+                                    <Link
+                                        to={`/admin/insurers/${p._id}`}
+                                        className="text-brand-600 hover:underline"
+                                    >
+                                        {p.name}
+                                    </Link>
+                                </td>
                                 <td className="p-2">{p.kind ?? p.category ?? "-"}</td>
                                 <td className="p-2">{p.phone ?? "-"}</td>
                                 <td className="p-2">{p.isActive ? "Sí" : "No"}</td>

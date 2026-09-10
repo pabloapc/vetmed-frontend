@@ -254,7 +254,14 @@ export const AdminPlanCoverages: React.FC = () => {
                         {coverages.map((c) => (
                             <tr key={c._id} className="border-t">
                                 <td className="p-2">{findName(insurers, c.insurerId?._id ?? c.insurerId)}</td>
-                                <td className="p-2">{findName(plans, c.planId?._id ?? c.planId)}</td>
+                                <td className="p-2">
+                                    <Link
+                                        to={`/admin/plans/${c.planId?._id ?? c.planId}`}
+                                        className="text-brand-600 hover:underline"
+                                    >
+                                        {findName(plans, c.planId?._id ?? c.planId)}
+                                    </Link>
+                                </td>
                                 <td className="p-2">{findName(prestations, c.prestationId?._id ?? c.prestationId)}</td>
                                 <td className="p-2">
                                     {String(c.coverageMode || "covered")} {c.coveragePercent != null ? `(${c.coveragePercent}%)` : ""}

@@ -42,9 +42,12 @@ export const AdminInsurerCreate: React.FC = () => {
                 url: form.url,
                 isActive: !!form.isActive,
             };
-            await adminService.createInsurerAdmin(payload);
-            alert("Obra social creada");
-            navigate("/admin/insurers");
+            const res: any = await adminService.createInsurerAdmin(payload);
+            const created = res?.data?.insurer ?? res?.data ?? res?.insurer ?? res;
+            const newId = created?._id ?? created?.id;
+            // Va directo a la ficha para poder seguir cargando los planes de esta
+            // obra social sin tener que buscarla de nuevo en el listado.
+            navigate(newId ? `/admin/insurers/${newId}` : "/admin/insurers");
         } catch (err: any) {
             setError(
                 err?.response?.data?.message ||

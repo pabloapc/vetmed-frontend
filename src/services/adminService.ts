@@ -192,6 +192,10 @@ export const adminService = {
         const res = await api.get(`${base}/plan-coverages`, { params });
         return res.data;
     },
+    async getPlanCoverageAdmin(id: string) {
+        const res = await api.get(`${base}/plan-coverages/${id}`);
+        return res.data;
+    },
     async createPlanCoverageAdmin(payload: any) {
         const res = await api.post(`${base}/plan-coverages`, payload);
         return res.data;

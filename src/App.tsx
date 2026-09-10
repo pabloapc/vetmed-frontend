@@ -42,6 +42,7 @@ const AdminInsurers = lazy(() => import('./pages/admin/AdminInsurers').then((m) 
 const AdminInsurerCreate = lazy(() => import('./pages/admin/AdminInsurerCreate').then((m) => ({ default: m.AdminInsurerCreate })));
 const AdminInsurerEdit = lazy(() => import('./pages/admin/AdminInsurerEdit').then((m) => ({ default: m.AdminInsurerEdit })));
 const AdminPlans = lazy(() => import('./pages/admin/AdminPlans').then((m) => ({ default: m.AdminPlans })));
+const AdminPlanEdit = lazy(() => import('./pages/admin/AdminPlanEdit').then((m) => ({ default: m.AdminPlanEdit })));
 const AdminPrestations = lazy(() => import('./pages/admin/AdminPrestations').then((m) => ({ default: m.AdminPrestations })));
 const AdminPrestationCreate = lazy(() => import('./pages/admin/AdminPrestationCreate').then((m) => ({ default: m.AdminPrestationCreate })));
 const AdminPrestationEdit = lazy(() => import('./pages/admin/AdminPrestationEdit').then((m) => ({ default: m.AdminPrestationEdit })));
@@ -171,6 +172,10 @@ function App() {
                           <Route
                               path="/admin/plans"
                               element={<AdminPlans />}
+                          />
+                          <Route
+                              path="/admin/plans/:id"
+                              element={<AdminPlanEdit />}
                           />
                           <Route
                               path="/admin/prestations"
