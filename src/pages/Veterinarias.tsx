@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation as useRouterLocation, useNavigate } from "react-router-dom";
 import { veterinariaService } from "../services/veterinariaService";
 import { requestService } from "../services/requestService";
 import type { Veterinaria, BackendVeterinaria } from "../types/veterinaria";
 import { useAuth } from "../hooks/useAuth";
 import { BottomNavMenu } from "../components/BottomNavMenu";
 import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
-import { veterinariaDetailPath } from "../utils/seoUrl";
+import { veterinariaDetailPath, slugify } from "../utils/seoUrl";
+import { setMetaTag, setCanonical } from "../utils/pageMeta";
+
+const FRONTEND_ORIGIN = "https://www.vetfind.com.ar";
 
 import {
     MagnifyingGlassIcon,
@@ -52,6 +55,32 @@ export const Veterinarias: React.FC = () => {
     );
     const { user } = useAuth();
     const navigate = useNavigate();
+    const routerLocation = useRouterLocation();
+
+    // /veterinarias/cordoba (and future /veterinarias/<ciudad> literal routes) render this
+    // same listing filtered to that city — derived from the pathname rather than a router
+    // param so it never collides with the legacy /veterinarias/:id detail route.
+    const citySlug = useMemo(() => {
+        const segments = routerLocation.pathname.split("/").filter(Boolean);
+        if (segments[0] === "veterinarias" && segments.length === 2) {
+            return segments[1];
+        }
+        return undefined;
+    }, [routerLocation.pathname]);
+
+    // narrow to the city from the URL (e.g. /veterinarias/cordoba) before applying search
+    const byCity = useMemo(() => {
+        if (!citySlug) return veterinarias;
+        return veterinarias.filter((p) => slugify(p.ciudad) === citySlug);
+    }, [veterinarias, citySlug]);
+
+    // the real (accented, capitalized) city name as it comes from the data, for headings/meta
+    const cityDisplayName = useMemo(() => {
+        if (!citySlug) return undefined;
+        const match = byCity.find((p) => p.ciudad)?.ciudad;
+        if (match) return match;
+        return citySlug.charAt(0).toUpperCase() + citySlug.slice(1);
+    }, [byCity, citySlug]);
 
     // tokens state: a mapping veterinariaId -> TokenInfo
     const [tokens, setTokens] = useState<Record<string, TokenInfo>>({});
@@ -85,6 +114,23 @@ export const Veterinarias: React.FC = () => {
     useEffect(() => {
         setVisibleCount(PAGE_SIZE);
     }, [debouncedSearch, veterinarias]);
+
+    useEffect(() => {
+        if (!citySlug) return;
+        const cityName = cityDisplayName || citySlug;
+        document.title = `Veterinarias en ${cityName} | Vetfind`;
+        const description = `Encontrá veterinarias en ${cityName}: dirección, teléfono, horarios y beneficios. Listado actualizado en Vetfind.`;
+        setMetaTag("name", "description", description);
+        setMetaTag("property", "og:title", document.title);
+        setMetaTag("property", "og:description", description);
+        const canonicalUrl = `${FRONTEND_ORIGIN}/veterinarias/${citySlug}`;
+        setCanonical(canonicalUrl);
+        setMetaTag("property", "og:url", canonicalUrl);
+
+        return () => {
+            document.title = "Vetfind";
+        };
+    }, [citySlug, cityDisplayName]);
 
     useEffect(
         () => {
@@ -379,14 +425,14 @@ export const Veterinarias: React.FC = () => {
     // filter by debounced search
     const filtered = useMemo(() => {
         const q = debouncedSearch;
-        if (!q) return veterinarias;
-        return veterinarias.filter((p) => {
+        if (!q) return byCity;
+        return byCity.filter((p) => {
             return (
                 p.nombre.toLowerCase().includes(q) ||
                 (p.beneficios || "").toLowerCase().includes(q)
             );
         });
-    }, [veterinarias, debouncedSearch]);
+    }, [byCity, debouncedSearch]);
 
     // displayed slice for pagination
     const displayed = useMemo(
@@ -439,7 +485,9 @@ export const Veterinarias: React.FC = () => {
                             <BuildingStorefrontIcon className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-lg font-bold text-white leading-tight">Veterinarias</h1>
+                            <h1 className="text-lg font-bold text-white leading-tight">
+                                {cityDisplayName ? `Veterinarias en ${cityDisplayName}` : "Veterinarias"}
+                            </h1>
                             <p className="text-xs text-brand-100">{filtered.length} disponibles</p>
                         </div>
                     </div>

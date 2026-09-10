@@ -13,6 +13,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
         name: "",
         address: "",
         phone: "",
+        description: "",
         benefits: "",
         discount: "",
         openingHours: "",
@@ -24,7 +25,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
     const [error, setError] = useState("");
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
         const v =
             e.target.type === "checkbox"
@@ -42,6 +43,7 @@ export const AdminVeterinariaCreate: React.FC = () => {
                 name: form.name,
                 address: form.address,
                 phone: form.phone,
+                description: form.description,
                 benefits: form.benefits,
                 discount: form.discount ? Number(form.discount) : undefined,
                 openingHours: form.openingHours,
@@ -136,6 +138,24 @@ export const AdminVeterinariaCreate: React.FC = () => {
                                 name="openingHours"
                                 value={form.openingHours}
                                 onChange={handleChange}
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Descripción
+                                <span className="ml-1.5 font-normal text-gray-400">
+                                    (aparece en la ficha pública y ayuda al posicionamiento en Google)
+                                </span>
+                            </label>
+                            <textarea
+                                name="description"
+                                value={form.description}
+                                onChange={handleChange}
+                                rows={4}
+                                maxLength={600}
+                                placeholder="Contá qué servicios ofrece, especialidades, atención de urgencias, etc."
                                 className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
                         </div>

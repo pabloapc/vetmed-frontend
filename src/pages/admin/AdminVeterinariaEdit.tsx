@@ -77,7 +77,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
     }, [id]);
 
     const handleChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
     ) => {
         setData({ ...data, [e.target.name]: e.target.value });
     };
@@ -118,6 +118,7 @@ export const AdminVeterinariaEdit: React.FC = () => {
                 "name",
                 "address",
                 "phone",
+                "description",
                 "benefits",
                 "discount",
                 "openingHours",
@@ -248,6 +249,27 @@ export const AdminVeterinariaEdit: React.FC = () => {
                                 onChange={handleChange}
                                 className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
                             />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Descripción
+                                <span className="ml-1.5 font-normal text-gray-400">
+                                    (aparece en la ficha pública y ayuda al posicionamiento en Google)
+                                </span>
+                            </label>
+                            <textarea
+                                name="description"
+                                value={data.description || ""}
+                                onChange={handleChange}
+                                rows={4}
+                                maxLength={600}
+                                placeholder="Contá qué servicios ofrece, especialidades, atención de urgencias, etc."
+                                className="w-full rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-brand-400 focus:outline-none"
+                            />
+                            <p className="text-xs text-gray-400 mt-1">
+                                {(data.description || "").length}/600
+                            </p>
                         </div>
 
                         <div>

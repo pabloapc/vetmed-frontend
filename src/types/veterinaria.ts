@@ -12,6 +12,7 @@ export interface Veterinaria {
   horarioApertura?: string;
   horarioCierre?: string;
   distancia?: number;
+  descripcion?: string;
   beneficios?: string;
   descuento?: number;
   vademecum?: VademecumItem | VademecumItem[];
@@ -45,6 +46,7 @@ export interface BackendVeterinaria {
   };
   openingHours?: string;
   distance?: number;
+  description?: string;
   benefits?: string;
   discount?: number;
   vademecum?: VademecumItem | VademecumItem[];

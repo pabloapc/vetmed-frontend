@@ -6,43 +6,9 @@ import { useAuth } from "../hooks/useAuth";
 import type { BackendVeterinaria } from "../types/veterinaria";
 import { VETERINARIA_ACTION_TYPES } from "../constants/veterinariaActionTypes";
 import { veterinariaDetailPath } from "../utils/seoUrl";
+import { setMetaTag, setCanonical, setJsonLd } from "../utils/pageMeta";
 
 const FRONTEND_ORIGIN = "https://www.vetfind.com.ar";
-
-const setMetaTag = (attr: "name" | "property", key: string, content: string) => {
-    let tag = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
-    if (!tag) {
-        tag = document.createElement("meta");
-        tag.setAttribute(attr, key);
-        document.head.appendChild(tag);
-    }
-    tag.setAttribute("content", content);
-};
-
-const setCanonical = (href: string) => {
-    let link = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
-    if (!link) {
-        link = document.createElement("link");
-        link.setAttribute("rel", "canonical");
-        document.head.appendChild(link);
-    }
-    link.setAttribute("href", href);
-};
-
-const setJsonLd = (data: Record<string, unknown> | null) => {
-    let script = document.getElementById("veterinaria-jsonld") as HTMLScriptElement | null;
-    if (!data) {
-        script?.remove();
-        return;
-    }
-    if (!script) {
-        script = document.createElement("script");
-        script.id = "veterinaria-jsonld";
-        script.type = "application/ld+json";
-        document.head.appendChild(script);
-    }
-    script.textContent = JSON.stringify(data);
-};
 import {
     ArrowLeftIcon,
     MapPinIcon,
@@ -111,9 +77,11 @@ export const VeterinariaDetail: React.FC = () => {
             ? `${veterinaria.name} - Veterinaria en ${city} | Vetfind`
             : `${veterinaria.name} · Vetfind`;
 
-        const description = city
-            ? `${veterinaria.name}, veterinaria en ${veterinaria.address}, ${city}. Teléfono, ubicación y cómo contactarla en Vetfind.`
-            : `${veterinaria.name} en Vetfind: dirección, teléfono y ubicación.`;
+        const description =
+            veterinaria.description ||
+            (city
+                ? `${veterinaria.name}, veterinaria en ${veterinaria.address}, ${city}. Teléfono, ubicación y cómo contactarla en Vetfind.`
+                : `${veterinaria.name} en Vetfind: dirección, teléfono y ubicación.`);
         setMetaTag("name", "description", description);
         setMetaTag("property", "og:title", document.title);
         setMetaTag("property", "og:description", description);
@@ -124,10 +92,11 @@ export const VeterinariaDetail: React.FC = () => {
         setMetaTag("property", "og:url", canonicalUrl);
 
         if (veterinaria.coordinates?.latitude && veterinaria.coordinates?.longitude) {
-            setJsonLd({
+            setJsonLd("veterinaria-jsonld", {
                 "@context": "https://schema.org",
                 "@type": "VeterinaryCare",
                 name: veterinaria.name,
+                description: veterinaria.description || undefined,
                 address: {
                     "@type": "PostalAddress",
                     streetAddress: veterinaria.address,
@@ -147,7 +116,7 @@ export const VeterinariaDetail: React.FC = () => {
 
         return () => {
             document.title = "Vetfind";
-            setJsonLd(null);
+            setJsonLd("veterinaria-jsonld", null);
         };
     }, [veterinaria]);
 
@@ -287,6 +256,11 @@ export const VeterinariaDetail: React.FC = () => {
                             <span className="inline-flex items-center mt-1.5 px-2 py-0.5 rounded-full text-[11px] font-medium bg-gray-100 text-gray-500">
                                 No registrada en VetFind
                             </span>
+                        )}
+                        {veterinaria.description && (
+                            <p className="text-sm text-gray-600 mt-3 whitespace-pre-line">
+                                {veterinaria.description}
+                            </p>
                         )}
                     </div>
                     {isClaimed && veterinaria.discount != null && (

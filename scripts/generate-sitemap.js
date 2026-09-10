@@ -14,6 +14,8 @@ const API_URL = process.argv[2] || "https://vetmed-backend-9eqc.onrender.com/api
 const STATIC_PATHS = [
     { path: "/", changefreq: "weekly", priority: "1.0" },
     { path: "/veterinarias", changefreq: "daily", priority: "0.9" },
+    // One entry per literal per-city listing route added in App.tsx (e.g. /veterinarias/cordoba).
+    { path: "/veterinarias/cordoba", changefreq: "daily", priority: "0.9" },
     { path: "/organizaciones", changefreq: "monthly", priority: "0.5" },
     { path: "/login", changefreq: "yearly", priority: "0.2" },
     { path: "/register", changefreq: "yearly", priority: "0.2" },

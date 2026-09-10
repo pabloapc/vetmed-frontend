@@ -527,33 +527,36 @@ export const Home: React.FC = () => {
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
-            <header className="w-full bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 relative overflow-hidden">
-                {/* Paw print pattern */}
-                <svg
-                    className="absolute inset-0 w-full h-full pointer-events-none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    preserveAspectRatio="xMidYMid slice"
-                    viewBox="0 0 1200 400"
-                    aria-hidden="true"
-                >
-                    <PawPrint x={70} y={70} scale={1.3} rotate={-18} opacity={0.14} />
-                    <PawPrint x={190} y={230} scale={0.9} rotate={24} opacity={0.09} />
-                    <PawPrint x={330} y={90} scale={1.1} rotate={8} opacity={0.11} />
-                    <PawPrint x={470} y={280} scale={1.5} rotate={-10} opacity={0.08} />
-                    <PawPrint x={600} y={130} scale={0.8} rotate={30} opacity={0.12} />
-                    <PawPrint x={730} y={330} scale={1.2} rotate={-25} opacity={0.09} />
-                    <PawPrint x={860} y={80} scale={1} rotate={15} opacity={0.13} />
-                    <PawPrint x={980} y={260} scale={1.4} rotate={-6} opacity={0.08} />
-                    <PawPrint x={1110} y={110} scale={0.9} rotate={20} opacity={0.11} />
-                    <PawPrint x={1150} y={320} scale={1.1} rotate={-30} opacity={0.1} />
-                    <PawPrint x={40} y={330} scale={1} rotate={12} opacity={0.09} />
-                </svg>
-                <img
-                    src="/mascota-04.png"
-                    alt=""
-                    aria-hidden="true"
-                    className="hidden xl:block absolute bottom-0 right-6 w-72 pointer-events-none select-none drop-shadow-2xl"
-                />
+            <header className="w-full bg-gradient-to-br from-brand-900 via-brand-700 to-brand-600 relative">
+                {/* Decorative background layer (clipped so it never causes a scrollbar or bleeds outside the header) */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    {/* Paw print pattern */}
+                    <svg
+                        className="absolute inset-0 w-full h-full"
+                        xmlns="http://www.w3.org/2000/svg"
+                        preserveAspectRatio="xMidYMid slice"
+                        viewBox="0 0 1200 400"
+                        aria-hidden="true"
+                    >
+                        <PawPrint x={70} y={70} scale={1.3} rotate={-18} opacity={0.14} />
+                        <PawPrint x={190} y={230} scale={0.9} rotate={24} opacity={0.09} />
+                        <PawPrint x={330} y={90} scale={1.1} rotate={8} opacity={0.11} />
+                        <PawPrint x={470} y={280} scale={1.5} rotate={-10} opacity={0.08} />
+                        <PawPrint x={600} y={130} scale={0.8} rotate={30} opacity={0.12} />
+                        <PawPrint x={730} y={330} scale={1.2} rotate={-25} opacity={0.09} />
+                        <PawPrint x={860} y={80} scale={1} rotate={15} opacity={0.13} />
+                        <PawPrint x={980} y={260} scale={1.4} rotate={-6} opacity={0.08} />
+                        <PawPrint x={1110} y={110} scale={0.9} rotate={20} opacity={0.11} />
+                        <PawPrint x={1150} y={320} scale={1.1} rotate={-30} opacity={0.1} />
+                        <PawPrint x={40} y={330} scale={1} rotate={12} opacity={0.09} />
+                    </svg>
+                    <img
+                        src="/mascota-04.png"
+                        alt=""
+                        aria-hidden="true"
+                        className="hidden xl:block absolute bottom-0 right-6 w-72 select-none drop-shadow-2xl"
+                    />
+                </div>
                 <div className="container mx-auto px-8 py-20 relative z-10">
                     <motion.div
                         initial={{ opacity: 0, y: 8 }}
@@ -568,7 +571,7 @@ export const Home: React.FC = () => {
                                 videollamadas o atención presencial y gestioná turnos,  desde una
                                 sola plataforma.
                             </motion.p>
-                            <div className="mt-6 max-w-2xl mx-auto relative">
+                            <div className="mt-6 max-w-2xl mx-auto relative z-30">
                                 <div className="flex items-stretch gap-3">
                                     <div className="flex-1 relative">
                                         <input
@@ -738,26 +741,27 @@ export const Home: React.FC = () => {
                             </div>
 
                             {!isAuthenticated ? (
-                                <motion.div
-                                    className="flex justify-center space-x-4 mt-6"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ delay: 0.12 }}
-                                >
-                                    <Link
-                                        to="/register"
-                                        className="bg-white hover:bg-gray-50 text-brand-700 font-semibold px-7 py-3 rounded-full transition shadow-sm inline-flex items-center gap-2"
-                                    >
-                                        <ArrowRightCircleIcon className="w-5 h-5" />
-                                        <span>Registrarse</span>
-                                    </Link>
-                                    <Link
-                                        to="/login"
-                                        className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium px-7 py-3 rounded-full transition"
-                                    >
-                                        Iniciar Sesión
-                                    </Link>
-                                </motion.div>
+                                <></>
+                                // <motion.div
+                                //     className="flex justify-center space-x-4 mt-6"
+                                //     initial={{ opacity: 0 }}
+                                //     animate={{ opacity: 1 }}
+                                //     transition={{ delay: 0.12 }}
+                                // >
+                                //     <Link
+                                //         to="/register"
+                                //         className="bg-white hover:bg-gray-50 text-brand-700 font-semibold px-7 py-3 rounded-full transition shadow-sm inline-flex items-center gap-2"
+                                //     >
+                                //         <ArrowRightCircleIcon className="w-5 h-5" />
+                                //         <span>Registrarse</span>
+                                //     </Link>
+                                //     <Link
+                                //         to="/login"
+                                //         className="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium px-7 py-3 rounded-full transition"
+                                //     >
+                                //         Iniciar Sesión
+                                //     </Link>
+                                // </motion.div>
                             ) : (
                                 // <motion.div
                                 //     initial={{ opacity: 0 }}

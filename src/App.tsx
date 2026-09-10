@@ -84,6 +84,10 @@ function App() {
                           }
                       />
                       <Route path="/veterinarias" element={<Veterinarias />} />
+                      {/* Literal per-city listing routes for SEO landing pages — add one per
+                          province/city as they go live. A literal path always outranks the
+                          dynamic /veterinarias/:id route below, so this is safe to extend. */}
+                      <Route path="/veterinarias/cordoba" element={<Veterinarias />} />
                       <Route
                           path="/veterinarias/:citySlug/:slug"
                           element={<VeterinariaDetail />}
